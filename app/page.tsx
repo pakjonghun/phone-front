@@ -1,95 +1,84 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
 
-export default function Home() {
+import SubmitButton from '@/components/SubmitButton';
+import { Form } from '@/components/common';
+import { useSnackbar } from '@/context/SnackBarProvicer';
+import { useLogin } from '@/hooks/useAuthData';
+import { useAuthStore } from '@/lib/store/auth/auth';
+import { User } from '@/model/user';
+import { Stack, TextField, Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+
+type LoginUser = Omit<User, 'role'>;
+
+const Login = () => {
+  const snackbar = useSnackbar();
+  const { mutate: login, isLoading } = useLogin();
+  const router = useRouter();
+  const setUser = useAuthStore((state) => state.setUser);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginUser>();
+
+  const submit = (value: LoginUser) => {
+    login(value, {
+      onSuccess: (response) => {
+        snackbar('로그인 성공', 'success');
+        setUser(response.userInfo);
+        router.push('/dashboard');
+      },
+      onError: (error) => {
+        const errorMessage = error.response?.data.message;
+        snackbar(errorMessage ?? '로그인 실패', 'error');
+      },
+    });
+  };
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
+    <Form
+      onSubmit={handleSubmit(submit)}
+      sx={{ pt: '20%', mx: 'auto', width: '50%', maxWidth: '500px' }}
+    >
+      <Typography variant="h5" sx={{ mb: '10%' }}>
+        로그인
+      </Typography>
+      <Stack direction="column" gap={2}>
+        <TextField
+          {...register('id', {
+            required: '아이디를 입력하세요',
+            minLength: {
+              value: 2,
+              message: '아이디는 2글자 이상을 입력하세요.',
+            },
+          })}
+          label="아이디"
+          variant="outlined"
+          error={!!errors.id}
+          helperText={errors.id?.message}
         />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+        <TextField
+          {...register('password', {
+            required: '비밀번호를 입력하세요',
+            minLength: {
+              value: 8,
+              message: '비밀번호는 8글자 이상을 입력하세요.',
+            },
+          })}
+          label="비밀번호"
+          variant="outlined"
+          type="password"
+          error={!!errors.password}
+          helperText={errors.password?.message}
+        />
+        <SubmitButton isLoading={isLoading} text="로그인" />
+      </Stack>
+    </Form>
   );
-}
+};
+
+export default Login;
