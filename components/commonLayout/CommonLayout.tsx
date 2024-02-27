@@ -5,7 +5,10 @@ import MenuList from './MenuList';
 import { usePathname, useRouter } from 'next/navigation';
 import { AppBar } from '@mui/material';
 import { useSnackbar } from '@/context/SnackBarProvicer';
-import { logout, useMyInfo } from '@/hooks/auth/useAuthData';
+import {
+  logout,
+  useMyInfo,
+} from '@/hooks/auth/useAuthData';
 import { useAuthStore } from '@/lib/store/auth/auth';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -46,7 +49,9 @@ export default function CommonLayout(props: Props) {
 
   const userRole = useAuthStore((state) => state.role);
   const userId = useAuthStore((state) => state.id);
-  const setUserInfo = useAuthStore((state) => state.setUser);
+  const setUserInfo = useAuthStore(
+    (state) => state.setUser
+  );
   const pathname = usePathname();
   const { data, isFetching } = useMyInfo();
 
@@ -70,14 +75,24 @@ export default function CommonLayout(props: Props) {
   if (!userRole) return <></>;
 
   const drawer = (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+      }}
+    >
       <Toolbar />
       <Divider />
       <MenuList />
       <Box sx={{ mt: 'auto', pb: 4, mb: 1 }}>
         <Divider />
-        <Typography sx={{ mt: 2, ml: 2 }}>{`권한 : ${userRole}`}</Typography>
-        <Typography sx={{ ml: 2 }}>{`아이디 : ${userId}`}</Typography>
+        <Typography
+          sx={{ mt: 2, ml: 2 }}
+        >{`권한 : ${userRole}`}</Typography>
+        <Typography
+          sx={{ ml: 2 }}
+        >{`아이디 : ${userId}`}</Typography>
         <ListItemButton
           onClick={handleLogout}
           sx={{
@@ -97,10 +112,18 @@ export default function CommonLayout(props: Props) {
 
   // Remove this const when copying and pasting into your project.
   const container =
-    window !== undefined ? () => window().document.body : undefined;
+    window !== undefined
+      ? () => window().document.body
+      : undefined;
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        height: '100%',
+        bgcolor: 'skyblue',
+      }}
+    >
       <AppBar
         position="fixed"
         sx={{
@@ -125,7 +148,10 @@ export default function CommonLayout(props: Props) {
       </AppBar>
       <Box
         component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+        sx={{
+          width: { sm: drawerWidth },
+          flexShrink: { sm: 0 },
+        }}
         aria-label="mailbox folders"
       >
         <Drawer
@@ -164,7 +190,10 @@ export default function CommonLayout(props: Props) {
       <Box
         component="main"
         sx={{
-          flexGrow: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          bgcolor: 'green',
+          height: '100%',
           p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}

@@ -20,17 +20,34 @@ function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
   return (
-    <Container
-      role="tabpanel"
-      hidden={value !== index}
-      id={`vertical-tabpanel-${index}`}
-      aria-labelledby={`vertical-tab-${index}`}
-      {...other}
-    >
+    // <Container
+    //   sx={{
+    //     width: '100%',
+    //     bgColor: 'red',
+    //     flex: 1,
+    //     bgcolor: 'black',
+    //   }}
+    //   role="tabpanel"
+    //   hidden={value !== index}
+    //   id={`vertical-tabpanel-${index}`}
+    //   aria-labelledby={`vertical-tab-${index}`}
+    //   {...other}
+    // >
+    <>
       {value === index && (
-        <Box sx={{ p: 3 }}>{children}</Box>
+        <Box
+          sx={{
+            // flex: 1,
+            width: '100%',
+            height: '100%',
+            // bgcolor: 'yellow',
+          }}
+        >
+          {children}
+        </Box>
       )}
-    </Container>
+    </>
+    // </Container>
   );
 }
 
@@ -40,10 +57,17 @@ const Search = () => {
     setSelectedTab(newValue);
   };
   return (
-    <Box>
+    <Box
+      sx={{
+        width: '100%',
+        height: '100%',
+        bgcolor: 'blue',
+      }}
+    >
       <Stack
         direction="row"
         sx={{
+          // height: '100%',
           borderBottom: 1,
           borderColor: 'divider',
           justifyContent: 'space-between',
@@ -57,12 +81,16 @@ const Search = () => {
           <Tab label="매입" {...a11yProps(1)} />
         </Tabs>
       </Stack>
-      <TabPanel value={selectedTab} index={0}>
-        <SaleTable />
-      </TabPanel>
-      <TabPanel value={selectedTab} index={1}>
-        gg
-      </TabPanel>
+      {selectedTab === 0 && (
+        <TabPanel value={selectedTab} index={0}>
+          <SaleTable />
+        </TabPanel>
+      )}
+      {selectedTab === 1 && (
+        <TabPanel value={selectedTab} index={1}>
+          gg
+        </TabPanel>
+      )}
     </Box>
   );
 };

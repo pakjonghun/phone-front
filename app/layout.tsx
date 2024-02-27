@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import MuiThemeProvider from '@/context/MuiThemeProvider';
-import { CssBaseline } from '@mui/material';
+import { CssBaseline, styled } from '@mui/material';
 import SnackBarProvider from '@/context/SnackBarProvicer';
 import ReactQueryClientProvider from '@/context/ReactQueryClientProvider';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
@@ -21,7 +21,10 @@ export default function RootLayout({
 }>) {
   return (
     <html>
-      <body className={inter.className}>
+      <body
+        style={{ height: '100vh' }}
+        className={inter.className}
+      >
         <AppRouterCacheProvider>
           <CssBaseline />
           <MuiThemeProvider>
