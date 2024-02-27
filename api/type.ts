@@ -11,3 +11,9 @@ export type CommonError = {
 };
 
 export type Order = 1 | -1;
+
+export type ListData<T> = {
+  data: T;
+  totalCount: number;
+  hasNext: boolean;
+};

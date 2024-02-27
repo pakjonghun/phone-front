@@ -6,7 +6,11 @@ import { useSnackbar } from '@/context/SnackBarProvicer';
 import { useLogin } from '@/hooks/auth/useAuthData';
 import { useAuthStore } from '@/lib/store/auth/auth';
 import { User } from '@/model/user';
-import { Stack, TextField, Typography } from '@mui/material';
+import {
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useForm } from 'react-hook-form';
@@ -23,7 +27,12 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginUser>();
+  } = useForm<LoginUser>({
+    defaultValues: {
+      id: '',
+      password: '',
+    },
+  });
 
   const submit = (value: LoginUser) => {
     login(value, {
@@ -42,7 +51,12 @@ const Login = () => {
   return (
     <Form
       onSubmit={handleSubmit(submit)}
-      sx={{ pt: '20%', mx: 'auto', width: '50%', maxWidth: '500px' }}
+      sx={{
+        pt: '20%',
+        mx: 'auto',
+        width: '50%',
+        maxWidth: '500px',
+      }}
     >
       <Typography variant="h5" sx={{ mb: '10%' }}>
         로그인
@@ -66,7 +80,8 @@ const Login = () => {
             required: '비밀번호를 입력하세요',
             minLength: {
               value: 8,
-              message: '비밀번호는 8글자 이상을 입력하세요.',
+              message:
+                '비밀번호는 8글자 이상을 입력하세요.',
             },
           })}
           label="비밀번호"

@@ -79,6 +79,7 @@ export default function CommonLayout(props: Props) {
         <Typography sx={{ mt: 2, ml: 2 }}>{`권한 : ${userRole}`}</Typography>
         <Typography sx={{ ml: 2 }}>{`아이디 : ${userId}`}</Typography>
         <ListItemButton
+          onClick={handleLogout}
           sx={{
             display: 'flex',
             alignItems: 'center',

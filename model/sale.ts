@@ -1,9 +1,16 @@
+import { Client } from './client';
+import { Product } from './product';
+
 export type Sale = {
+  _id: string;
+  outDate: string;
+  inDate: string;
   isConfirmed: boolean;
-  modelNumber: string;
   rank: string;
   distanceLog: string | null;
-  recentHighSalePrice: number;
-  recentLowPrice: number;
-  belowAverageCount: number;
+  inClient: Client;
+  outClient: Client;
+  product: Product;
+  inPrice: number;
+  outPrice: number;
 };

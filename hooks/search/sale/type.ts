@@ -1,16 +1,15 @@
-import { Sale } from '@/model/sale';
 import { Order } from './../../../api/type';
 
-type SaleSort = Pick<
-  Sale,
-  'rank' | 'recentHighSalePrice' | 'recentLowPrice' | 'isConfirmed'
->;
+export type SaleSort =
+  | 'rank'
+  | 'recentHighSalePrice'
+  | 'recentLowPrice'
+  | 'isConfirmed';
 
-type SaleSortList = Partial<Record<keyof SaleSort, Order>>[];
+export type SaleSortItem = [SaleSort, Order];
 
 export type RequestSaleList = {
   keyword: string;
-  sort: SaleSortList;
-  page: number;
+  sort: SaleSortItem[];
   length: number;
 };

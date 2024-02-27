@@ -1,7 +1,13 @@
 'use client';
 
 import SaleTable from '@/app/search/_component/SaleTable/SaleTable';
-import { Box, Stack, Tab, Tabs, Typography } from '@mui/material';
+import {
+  Box,
+  Stack,
+  Tab,
+  Tabs,
+  styled,
+} from '@mui/material';
 import React, { useState } from 'react';
 
 interface TabPanelProps {
@@ -14,7 +20,7 @@ function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
   return (
-    <div
+    <Container
       role="tabpanel"
       hidden={value !== index}
       id={`vertical-tabpanel-${index}`}
@@ -22,11 +28,9 @@ function TabPanel(props: TabPanelProps) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
+        <Box sx={{ p: 3 }}>{children}</Box>
       )}
-    </div>
+    </Container>
   );
 }
 
@@ -45,7 +49,10 @@ const Search = () => {
           justifyContent: 'space-between',
         }}
       >
-        <Tabs value={selectedTab} onChange={handleChangeTab}>
+        <Tabs
+          value={selectedTab}
+          onChange={handleChangeTab}
+        >
           <Tab label="판매" {...a11yProps(0)} />
           <Tab label="매입" {...a11yProps(1)} />
         </Tabs>
@@ -68,3 +75,8 @@ function a11yProps(index: number) {
     'aria-controls': `vertical-tabpanel-${index}`,
   };
 }
+
+const Container = styled('div')({
+  display: 'flex',
+  flexDirection: 'column',
+});
