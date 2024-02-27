@@ -3,7 +3,6 @@ import { serverMe } from './api/user';
 
 export async function middleware(req: NextRequest) {
   const userInfo = await serverMe();
-  console.log(userInfo);
 
   if (req.nextUrl.pathname === '/') {
     if (userInfo) {
@@ -17,5 +16,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/:path*', '/'],
+  matcher: ['/', '/search/:path*', '/dashboard/:path*', '/admin/:path*'],
 };

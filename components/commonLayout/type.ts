@@ -1,5 +1,7 @@
+import { ReactNode } from 'react';
+
 export type MenuItem = {
   id: string;
   name: string;
-  path: string;
+  icon?: ReactNode;
 };
