@@ -3,7 +3,7 @@
 import SubmitButton from '@/components/SubmitButton';
 import { Form, MtButton } from '@/components/common';
 import { useSnackbar } from '@/context/SnackBarProvicer';
-import { useSignUp } from '@/hooks/useAuthData';
+import { useSignUp } from '@/hooks/auth/useAuthData';
 import { User } from '@/model/user';
 import {
   CircularProgress,

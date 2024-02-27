@@ -1,9 +1,17 @@
 import { Sale } from '@/model/sale';
 import { createColumnHelper } from '@tanstack/react-table';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 const columnHelper = createColumnHelper<Sale>();
 
 export const SaleColumns = [
+  columnHelper.display({
+    id: 'collapseButton',
+    header: '',
+    cell: ({ row }) => {
+      return <KeyboardArrowUpIcon />;
+    },
+  }),
   columnHelper.display({
     id: 'isConfirmed',
     header: '관리자 승인',
@@ -43,7 +51,7 @@ export const SaleColumns = [
     id: 'recentRowPrice',
     header: '최근 저가 판매가',
     cell: ({ row }) => {
-      return <div>{row.original.recentRowPrice}</div>;
+      return <div>{row.original.recentLowPrice}</div>;
     },
   }),
   columnHelper.display({

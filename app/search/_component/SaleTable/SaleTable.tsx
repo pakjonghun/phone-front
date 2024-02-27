@@ -1,3 +1,4 @@
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 import * as React from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -8,14 +9,19 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import {
+  ExpandedState,
   flexRender,
   getCoreRowModel,
+  getExpandedRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
 import { Sale } from '@/model/sale';
 import { SaleColumns } from './column';
 import {
   Box,
+  Button,
   Collapse,
   ListItem,
   Select,
@@ -23,6 +29,13 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import {
+  useSaleList,
+  useUploadSaleExcel,
+} from '@/hooks/search/sale/useSaleData';
+import UploadFileButton from '@/components/button/UploadButton';
+import { useSnackbar } from '@/context/SnackBarProvicer';
+import SearchFilter from './SearchFilter';
 
 const saleList: Sale[] = [
   {
@@ -31,7 +44,7 @@ const saleList: Sale[] = [
     rank: 'A',
     distanceLog: '150km',
     recentHighSalePrice: 500,
-    recentRowPrice: 450,
+    recentLowPrice: 450,
     belowAverageCount: 2,
   },
   {
@@ -40,7 +53,7 @@ const saleList: Sale[] = [
     rank: 'B',
     distanceLog: null,
     recentHighSalePrice: 400,
-    recentRowPrice: 350,
+    recentLowPrice: 350,
     belowAverageCount: 3,
   },
   {
@@ -49,7 +62,7 @@ const saleList: Sale[] = [
     rank: 'S',
     distanceLog: '200km',
     recentHighSalePrice: 600,
-    recentRowPrice: 550,
+    recentLowPrice: 550,
     belowAverageCount: 1,
   },
   {
@@ -58,7 +71,7 @@ const saleList: Sale[] = [
     rank: 'C',
     distanceLog: '100km',
     recentHighSalePrice: 300,
-    recentRowPrice: 250,
+    recentLowPrice: 250,
     belowAverageCount: 4,
   },
   {
@@ -67,7 +80,7 @@ const saleList: Sale[] = [
     rank: 'A',
     distanceLog: '250km',
     recentHighSalePrice: 700,
-    recentRowPrice: 650,
+    recentLowPrice: 650,
     belowAverageCount: 0,
   },
 ];
@@ -75,6 +88,8 @@ const saleList: Sale[] = [
 export default function SaleTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  useSaleList();
 
   const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
@@ -87,23 +102,26 @@ export default function SaleTable() {
     setPage(0);
   };
 
+  const [expanded, setExpanded] = React.useState<ExpandedState>({});
+
   const table = useReactTable({
     columns: SaleColumns,
     data: saleList,
+    state: {
+      expanded,
+    },
     getCoreRowModel: getCoreRowModel(),
+    onExpandedChange: setExpanded,
+    getSubRows: (row) => [],
+    getPaginationRowModel: getPaginationRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getExpandedRowModel: getExpandedRowModel(),
+    debugTable: true,
   });
 
   return (
     <>
-      <Box sx={{ display: 'flex', my: 3 }}>
-        <TextField label="검색 키워드" />
-        <Select>
-          <ListItem>모델번호</ListItem>
-          <ListItem>등급</ListItem>
-          <ListItem>차감내역</ListItem>
-        </Select>
-      </Box>
-
+      <SearchFilter />
       <Paper sx={{ width: '100%' }}>
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">

@@ -4,6 +4,6 @@ export type Sale = {
   rank: string;
   distanceLog: string | null;
   recentHighSalePrice: number;
-  recentRowPrice: number;
+  recentLowPrice: number;
   belowAverageCount: number;
 };

@@ -3,7 +3,7 @@
 import SubmitButton from '@/components/SubmitButton';
 import { Form } from '@/components/common';
 import { useSnackbar } from '@/context/SnackBarProvicer';
-import { useLogin } from '@/hooks/useAuthData';
+import { useLogin } from '@/hooks/auth/useAuthData';
 import { useAuthStore } from '@/lib/store/auth/auth';
 import { User } from '@/model/user';
 import { Stack, TextField, Typography } from '@mui/material';

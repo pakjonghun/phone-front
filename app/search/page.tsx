@@ -1,7 +1,7 @@
 'use client';
 
 import SaleTable from '@/app/search/_component/SaleTable/SaleTable';
-import { Box, Tab, Tabs, Typography } from '@mui/material';
+import { Box, Stack, Tab, Tabs, Typography } from '@mui/material';
 import React, { useState } from 'react';
 
 interface TabPanelProps {
@@ -37,14 +37,19 @@ const Search = () => {
   };
   return (
     <Box>
-      <Tabs
-        sx={{ borderBottom: 1, borderColor: 'divider' }}
-        value={selectedTab}
-        onChange={handleChangeTab}
+      <Stack
+        direction="row"
+        sx={{
+          borderBottom: 1,
+          borderColor: 'divider',
+          justifyContent: 'space-between',
+        }}
       >
-        <Tab label="매입" {...a11yProps(0)} />
-        <Tab label="판매" {...a11yProps(1)} />
-      </Tabs>
+        <Tabs value={selectedTab} onChange={handleChangeTab}>
+          <Tab label="판매" {...a11yProps(0)} />
+          <Tab label="매입" {...a11yProps(1)} />
+        </Tabs>
+      </Stack>
       <TabPanel value={selectedTab} index={0}>
         <SaleTable />
       </TabPanel>

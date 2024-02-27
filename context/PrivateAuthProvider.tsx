@@ -1,7 +1,7 @@
 'use client';
 
 import CommonLayout from '@/components/commonLayout/CommonLayout';
-import { useMyInfo } from '@/hooks/useAuthData';
+import { useMyInfo } from '@/hooks/auth/useAuthData';
 import { FC, ReactNode } from 'react';
 
 interface Props {

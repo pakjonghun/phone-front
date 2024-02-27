@@ -20,10 +20,10 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { MenuList } from './constant';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Button, Stack } from '@mui/material';
 import { useSnackbar } from '@/context/SnackBarProvicer';
-import { logout, useMyInfo } from '@/hooks/useAuthData';
+import { logout, useMyInfo } from '@/hooks/auth/useAuthData';
 import { useAuthStore } from '@/lib/store/auth/auth';
 
 const drawerWidth = 240;
@@ -81,8 +81,17 @@ interface Props {
 }
 
 export default function CommonLayout({ children }: Props) {
-  const userInfo = useAuthStore((state) => state.user);
+  const userRole = useAuthStore((state) => state.role);
   const setUserInfo = useAuthStore((state) => state.setUser);
+  const pathname = usePathname();
+
+  const { data, isFetching } = useMyInfo();
+
+  React.useEffect(() => {
+    if (!isFetching && data) {
+      setUserInfo(data);
+    }
+  }, [data, isFetching, setUserInfo]);
 
   const router = useRouter();
   const theme = useTheme();
@@ -100,11 +109,12 @@ export default function CommonLayout({ children }: Props) {
   const handleLogout = async () => {
     await logout();
     router.replace('/');
-    setUserInfo(null);
+    setUserInfo({ role: null, id: null });
     snackBar('안녕히 가세요.', 'success');
   };
 
-  if (!userInfo) return children;
+  if (!userRole && pathname === '/') return children;
+  if (!userRole) return <></>;
 
   return (
     <Box sx={{ display: 'flex' }}>

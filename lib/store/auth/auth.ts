@@ -1,24 +1,27 @@
 import { StateCreator, create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-import { ResponseMyInfo } from '@/hooks/type';
+import { Role } from '@/model/user';
 
-interface AuthStore {
-  user: ResponseMyInfo | null;
-  setUser: (user: ResponseMyInfo | null) => void;
-}
-
-const initState = {
-  user: null,
+type AuthUser = {
+  id: string | null;
+  role: Role | null;
 };
 
-const authApi: StateCreator<AuthStore, [['zustand/devtools', never]]> = (
-  set
-) => ({
+interface AuthAction {
+  setUser: (user: AuthUser) => void;
+}
+
+const initState: AuthUser = {
+  id: null,
+  role: null,
+};
+
+const authApi: StateCreator<
+  AuthUser & AuthAction,
+  [['zustand/devtools', never]]
+> = (set) => ({
   ...initState,
-  setUser: (user: ResponseMyInfo | null) =>
-    set(() => ({ user }), false, 'user'),
+  setUser: (user) => set(() => ({ ...user }), false, 'user'),
 });
 
-export const useAuthStore = create<AuthStore>()(
-  persist(devtools(authApi), { name: 'PHONE_USER_INFO' })
-);
+export const useAuthStore = create<AuthAction & AuthUser>()(devtools(authApi));
