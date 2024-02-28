@@ -20,7 +20,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { ExitToApp } from '@mui/icons-material';
 
-const drawerWidth = 240;
+export const drawerWidth = 240;
 
 interface Props {
   window?: () => Window;
@@ -121,7 +121,6 @@ export default function CommonLayout(props: Props) {
       sx={{
         display: 'flex',
         height: '100%',
-        bgcolor: 'skyblue',
       }}
     >
       <AppBar
@@ -190,9 +189,6 @@ export default function CommonLayout(props: Props) {
       <Box
         component="main"
         sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          bgcolor: 'green',
           height: '100%',
           p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },

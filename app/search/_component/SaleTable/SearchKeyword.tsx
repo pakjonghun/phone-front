@@ -1,3 +1,4 @@
+import { useDebounce } from '@/hooks/common/useDebounce';
 import { useSaleList } from '@/hooks/search/sale/useSaleData';
 import { useSaleQueryStore } from '@/lib/store/sale/saleList';
 import { TextField } from '@mui/material';
@@ -11,16 +12,15 @@ const SearchKeyword = () => {
     (state) => state.setKeyword
   );
 
-  // const length = useSaleQueryStore((state) => state.length);
-  // const sort = useSaleQueryStore((state) => state.sort);
+  const delayText = useDebounce({ text: keyword });
+  const length = useSaleQueryStore((state) => state.length);
+  const sort = useSaleQueryStore((state) => state.sort);
 
-  // useSaleList({
-  //   length,
-  //   sort,
-  //   keyword,
-  // });
-
-  // console.log(data)
+  useSaleList({
+    length,
+    sort,
+    keyword: delayText,
+  });
 
   return (
     <TextField

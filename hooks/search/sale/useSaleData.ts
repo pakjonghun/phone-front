@@ -32,7 +32,6 @@ const saleList = async (
 };
 
 export const useSaleList = (query: RequestSaleList) => {
-  console.log(query);
   return useInfiniteQuery<ListData<Sale>, RequestSaleList>({
     queryKey: [SALE_LIST, JSON.stringify(query)],
     queryFn: ({ pageParam = 1 }) =>

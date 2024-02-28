@@ -19,36 +19,7 @@ interface TabPanelProps {
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
-  return (
-    // <Container
-    //   sx={{
-    //     width: '100%',
-    //     bgColor: 'red',
-    //     flex: 1,
-    //     bgcolor: 'black',
-    //   }}
-    //   role="tabpanel"
-    //   hidden={value !== index}
-    //   id={`vertical-tabpanel-${index}`}
-    //   aria-labelledby={`vertical-tab-${index}`}
-    //   {...other}
-    // >
-    <>
-      {value === index && (
-        <Box
-          sx={{
-            // flex: 1,
-            width: '100%',
-            height: '100%',
-            // bgcolor: 'yellow',
-          }}
-        >
-          {children}
-        </Box>
-      )}
-    </>
-    // </Container>
-  );
+  return <>{value === index && <Box>{children}</Box>}</>;
 }
 
 const Search = () => {
@@ -57,13 +28,7 @@ const Search = () => {
     setSelectedTab(newValue);
   };
   return (
-    <Box
-      sx={{
-        width: '100%',
-        height: '100%',
-        bgcolor: 'blue',
-      }}
-    >
+    <Box>
       <Stack
         direction="row"
         sx={{
