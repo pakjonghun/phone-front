@@ -25,17 +25,25 @@ const Admin = () => {
         openSignUp={openSignUp}
         onClose={() => setOpenSignUp(false)}
       />
-
-      <Header sx={{ justifyContent: 'space-between', mb: 2 }}>
+      <Header
+        sx={{ justifyContent: 'space-between', mb: 2 }}
+      >
         <H4 variant="h4">관리자 </H4>
-        <Button onClick={() => setOpenSignUp(true)} variant="contained">
+        <Button
+          onClick={() => setOpenSignUp(true)}
+          variant="contained"
+        >
           회원생성
         </Button>
       </Header>
       <Stack sx={{ width: '100%' }}>
         <Card>
           <CardHeader
-            avatar={<Avatar sx={{ bgcolor: 'gray-200' }}>A</Avatar>}
+            avatar={
+              <Avatar sx={{ bgcolor: 'gray-200' }}>
+                A
+              </Avatar>
+            }
             action={
               <IconButton>
                 <MoreHoriz />

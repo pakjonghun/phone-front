@@ -1,11 +1,15 @@
-import { CommonError, ListData } from '@/api/type';
+import {
+  CommonError,
+  CommonMutation,
+  ListData,
+} from '@/api/type';
 import { client } from '@/api/client';
 import { useMutation } from 'react-query';
 import { SALE_LIST } from './constant';
 import { useInfiniteQuery } from 'react-query';
 import { RequestSaleList } from './type';
 import { Sale } from '@/model/sale';
-import { LENGTH } from '@/api/constant';
+import dayjs from 'dayjs';
 
 const uploadSaleExcel = (excelFile: FormData) => {
   return client
@@ -39,5 +43,55 @@ export const useSaleList = (query: RequestSaleList) => {
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.hasNext ? allPages.length + 1 : null;
     },
+  });
+};
+
+const confirmSale = async (saleIdList: string[]) => {
+  return client
+    .put('/sale', { idList: saleIdList })
+    .then((res) => res.data);
+};
+
+export const useConfirmSale = () => {
+  return useMutation<CommonMutation, CommonError, string[]>(
+    {
+      mutationFn: confirmSale,
+    }
+  );
+};
+
+const applySale = () => {
+  return client('/sale/apply').then((res) => res.data);
+};
+
+export const useApplySale = () => {
+  return useMutation<CommonMutation, CommonError, void>(
+    applySale
+  );
+};
+
+const downloadSale = async (saleIdList: string[]) => {
+  client('/sale/download', {
+    params: { idList: saleIdList },
+    responseType: 'blob',
+  }).then((res) => {
+    const url = window.URL.createObjectURL(
+      new Blob([res.data])
+    );
+    const link = document.createElement('a');
+    link.href = url;
+    const fileName =
+      dayjs().format('YYYYMMDDHHmmss') + '판매.xlsx';
+    link.setAttribute('download', fileName);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.URL.revokeObjectURL(url);
+  });
+};
+
+export const useDownloadSale = () => {
+  return useMutation<void, CommonError, string[]>({
+    mutationFn: downloadSale,
   });
 };

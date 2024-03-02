@@ -1,3 +1,3 @@
 export const BASE_URL = 'http://localhost:8000';
 
-export const LENGTH = 10;
+export const LENGTH = 20;

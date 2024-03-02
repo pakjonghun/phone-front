@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import React from 'react';
 import SearchKeyword from './SearchKeyword';
-import SaleSort from './SortSelect';
+import SortList from './SortList';
 
 const SearchFilter = () => {
   return (
@@ -13,16 +13,17 @@ const SearchFilter = () => {
           md: 'row',
         },
         alignItems: 'flexStart',
-        mt: 8,
         gap: {
           xs: 2,
         },
-        p: 3,
+        py: 3,
         borderRadius: '10px',
       }}
     >
-      <SearchKeyword />
-      <SaleSort />
+      <Box sx={{ width: '100%' }}>
+        <SearchKeyword />
+        <SortList />
+      </Box>
     </Box>
   );
 };

@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html>
       <body
-        style={{ height: '100vh' }}
+        style={{ height: '100vh', minWidth: '800px' }}
         className={inter.className}
       >
         <AppRouterCacheProvider>

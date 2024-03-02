@@ -11,7 +11,7 @@ export const menuList: MenuItem[] = [
   },
   {
     id: 'search',
-    name: '판매・매입 검색',
+    name: '판매・매입 관리',
     icon: <ShoppingCartIcon />,
   },
   {

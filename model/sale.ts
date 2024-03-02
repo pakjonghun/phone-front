@@ -6,7 +6,7 @@ export type Sale = {
   outDate: string;
   inDate: string;
   isConfirmed: boolean;
-  rank: string;
+  rank: number;
   distanceLog: string | null;
   inClient: Client;
   outClient: Client;

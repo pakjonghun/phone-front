@@ -10,20 +10,31 @@ import {
 import Link from 'next/link';
 import React from 'react';
 import { menuList } from './constant';
+import { useAuthStore } from '@/lib/store/auth/auth';
+import { Role } from '@/model/user';
 
 const MenuList = () => {
+  const role = useAuthStore((state) => state.role);
+  const isAdmin = role === Role.ADMIN;
+
   return (
     <List>
-      {menuList.map(({ name, id, icon }) => (
-        <ListItem key={id} disablePadding>
-          <ListItemButton sx={{ p: 0 }}>
-            <CustomLink href={id}>
-              <ListItemIcon>{!!icon && icon}</ListItemIcon>
-              <ListItemText primary={name} />
-            </CustomLink>
-          </ListItemButton>
-        </ListItem>
-      ))}
+      {menuList.map(({ name, id, icon }) => {
+        const adminItem = id === 'admin';
+        if (adminItem && !isAdmin) return <></>;
+        return (
+          <ListItem key={id} disablePadding>
+            <ListItemButton sx={{ p: 0 }}>
+              <CustomLink href={id}>
+                <ListItemIcon>
+                  {!!icon && icon}
+                </ListItemIcon>
+                <ListItemText primary={name} />
+              </CustomLink>
+            </ListItemButton>
+          </ListItem>
+        );
+      })}
       <Divider />
     </List>
   );

@@ -2,7 +2,6 @@ import { useDebounce } from '@/hooks/common/useDebounce';
 import { useSaleList } from '@/hooks/search/sale/useSaleData';
 import { useSaleQueryStore } from '@/lib/store/sale/saleList';
 import { TextField } from '@mui/material';
-import React from 'react';
 
 const SearchKeyword = () => {
   const keyword = useSaleQueryStore(
@@ -24,7 +23,13 @@ const SearchKeyword = () => {
 
   return (
     <TextField
-      sx={{ maxWidth: '600px', width: '100%' }}
+      sx={{
+        maxWidth: {
+          xs: '100%',
+          md: '600px',
+        },
+        width: '100%',
+      }}
       label="검색할 제품이름"
       value={keyword}
       onChange={(event) => setKeyword(event.target.value)}

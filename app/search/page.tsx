@@ -22,17 +22,24 @@ function TabPanel(props: TabPanelProps) {
   return <>{value === index && <Box>{children}</Box>}</>;
 }
 
+type Tab = 0 | 1;
+
 const Search = () => {
-  const [selectedTab, setSelectedTab] = useState(0);
-  const handleChangeTab = (_: any, newValue: number) => {
+  const [selectedTab, setSelectedTab] = useState<Tab>(0);
+  const handleChangeTab = (_: any, newValue: Tab) => {
     setSelectedTab(newValue);
   };
+
+  const TabMapper = {
+    0: <SaleTable />,
+    1: 'gg',
+  };
+
   return (
     <Box>
       <Stack
         direction="row"
         sx={{
-          // height: '100%',
           borderBottom: 1,
           borderColor: 'divider',
           justifyContent: 'space-between',
@@ -46,16 +53,9 @@ const Search = () => {
           <Tab label="매입" {...a11yProps(1)} />
         </Tabs>
       </Stack>
-      {selectedTab === 0 && (
-        <TabPanel value={selectedTab} index={0}>
-          <SaleTable />
-        </TabPanel>
-      )}
-      {selectedTab === 1 && (
-        <TabPanel value={selectedTab} index={1}>
-          gg
-        </TabPanel>
-      )}
+      <Box sx={{ minWidth: '930px' }}>
+        {TabMapper[selectedTab]}
+      </Box>
     </Box>
   );
 };
