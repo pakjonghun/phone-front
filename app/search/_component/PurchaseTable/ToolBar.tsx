@@ -54,7 +54,6 @@ export default function EnhancedTableToolbar(
     useApplyPurchase();
 
   const snackBar = useSnackbar();
-  const queryClient = useQueryClient();
 
   const handleClickDownload = () => {
     download(
@@ -62,7 +61,6 @@ export default function EnhancedTableToolbar(
       {
         onSuccess: () => {
           snackBar('다운로드가 완료되었습니다.', 'success');
-          queryClient.invalidateQueries([PURCHASE_LIST]);
         },
         onError: (error) => {
           const errorMessage =
@@ -76,6 +74,7 @@ export default function EnhancedTableToolbar(
     );
   };
 
+  const queryClient = useQueryClient();
   const handleClickRefresh = () => {
     refresh(undefined, {
       onSuccess: () => {

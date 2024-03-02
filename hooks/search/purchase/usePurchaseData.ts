@@ -81,14 +81,13 @@ const downloadPurchase = async (
     params: { idList: purchaseIdList },
     responseType: 'blob',
   }).then((res) => {
-    console.log('res : ', res.data);
     const url = window.URL.createObjectURL(
       new Blob([res.data])
     );
     const link = document.createElement('a');
     link.href = url;
     const fileName =
-      dayjs().format('YYYYMMDDHHmmss') + '판매.xlsx';
+      dayjs().format('YYYYMMDDHHmmss') + '매입.xlsx';
     link.setAttribute('download', fileName);
     document.body.appendChild(link);
     link.click();
