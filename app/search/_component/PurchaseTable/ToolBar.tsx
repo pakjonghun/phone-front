@@ -86,7 +86,7 @@ export default function EnhancedTableToolbar(
       onError: (error) => {
         const errorMessage = error?.response?.data?.message;
         snackBar(
-          errorMessage ?? '승인이 실패했습니다.',
+          errorMessage ?? '갱신이 실패했습니다.',
           'error'
         );
       },

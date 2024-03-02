@@ -1,9 +1,11 @@
 import UploadFileButton from '@/components/button/UploadButton';
 import { useSnackbar } from '@/context/SnackBarProvicer';
+import { PURCHASE_LIST } from '@/hooks/search/purchase/constant';
 import { useUploadPurchaseExcel } from '@/hooks/search/purchase/usePurchaseData';
 import { useUploadSaleExcel } from '@/hooks/search/sale/useSaleData';
 import { SxProps } from '@mui/material';
 import React, { FC } from 'react';
+import { useQueryClient } from 'react-query';
 
 interface Props {
   sx?: SxProps;
@@ -17,6 +19,8 @@ const UploadExcel: FC<Props> = ({ sx = {} }) => {
   const inputRef = React.useRef<null | HTMLInputElement>(
     null
   );
+
+  const queryClient = useQueryClient();
 
   const onChangeInputFile = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -33,12 +37,13 @@ const UploadExcel: FC<Props> = ({ sx = {} }) => {
           '매입 엑셀파일 업로드가 완료되었습니다.',
           'success'
         );
+        queryClient.invalidateQueries([PURCHASE_LIST]);
       },
       onError: (error) => {
         const errorMessage = error.response.data.message;
         snackbar(
           errorMessage ??
-            '매입 엑셀파일 업로드가 완료되었습니다.',
+            '매입 엑셀파일 업로드가 실패 하였습니다.',
           'error'
         );
       },
