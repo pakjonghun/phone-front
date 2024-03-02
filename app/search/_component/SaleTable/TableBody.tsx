@@ -109,7 +109,14 @@ const TableBodyList = () => {
         variant="confirm"
         title="승인"
         message={
-          <Typography sx={{ width: '300px' }}>
+          <Typography
+            variant="caption"
+            sx={{
+              display: 'block',
+              width: '300px',
+              fontSize: '14px',
+            }}
+          >
             정말 승인하겠습니까?
             <br /> 승인후 되돌릴수 없습니다.
           </Typography>

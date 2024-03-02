@@ -5,12 +5,7 @@ import TableContainer from '@mui/material/TableContainer';
 import Paper from '@mui/material/Paper';
 import { useSaleQueryStore } from '@/lib/store/sale/saleList';
 import { useSaleList } from '@/hooks/search/sale/useSaleData';
-import {
-  CircularProgress,
-  Skeleton,
-  TableCell,
-  TableRow,
-} from '@mui/material';
+import { CircularProgress } from '@mui/material';
 import useInfinity from '@/hooks/common/useInfinity';
 import EnhancedTableHead from './TableHeader';
 import EnhancedTableToolbar from './ToolBar';

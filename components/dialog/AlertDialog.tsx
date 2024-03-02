@@ -46,15 +46,15 @@ export default function AlertDialog({
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button variant="contained" onClick={onClickApply}>
-          확인
-        </Button>
         <Button
           variant="outlined"
           onClick={handleClose}
           autoFocus
         >
           취소
+        </Button>
+        <Button variant="contained" onClick={onClickApply}>
+          확인
         </Button>
       </DialogActions>
     </Dialog>

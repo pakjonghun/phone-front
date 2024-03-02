@@ -21,27 +21,27 @@ const SortList = () => {
     <Box
       sx={{
         display: 'flex',
-        gap: 1,
-        mt: 3,
-        height: '94px',
+        gap: 2,
+        mt: 1,
+        height: '30px',
       }}
     >
       {sortList.map(([sortKey, order], index) => (
         <Chip
+          size="medium"
           onDelete={() => reSetSort(sortKey)}
           avatar={<Avatar>{index + 1}</Avatar>}
-          size="small"
           key={`${index}_order_sortKey`}
           label={
             <Stack alignItems="center" direction="row">
               <Typography>{`${sortEngToHangle[sortKey]}`}</Typography>
               {order == 1 ? (
                 <ArrowUpwardIcon
-                  sx={{ fontSize: '16px' }}
+                  sx={{ fontSize: '14px' }}
                 />
               ) : (
                 <ArrowDownwardIcon
-                  sx={{ fontSize: '16px' }}
+                  sx={{ fontSize: '14px' }}
                 />
               )}
             </Stack>
