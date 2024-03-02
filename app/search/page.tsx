@@ -9,6 +9,7 @@ import {
   styled,
 } from '@mui/material';
 import React, { useState } from 'react';
+import PurchaseTable from './_component/PurchaseTable/PurchaseTable';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -32,7 +33,7 @@ const Search = () => {
 
   const TabMapper = {
     0: <SaleTable />,
-    1: 'gg',
+    1: <PurchaseTable />,
   };
 
   return (

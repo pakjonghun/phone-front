@@ -5,26 +5,20 @@ import { Person } from '@mui/icons-material';
 import {
   Box,
   Button,
-  DialogActions,
-  DialogContent,
-  FormControl,
   Grid,
-  TextField,
+  Skeleton,
   Typography,
 } from '@mui/material';
-import { FormEvent, useState } from 'react';
+import { useState } from 'react';
 import SignUpDialog from './_component/SignUpDialog';
 import {
-  useChangePassword,
   useDropAccount,
   useUserList,
 } from '@/hooks/user/useUserData';
 import UserCard from './_component/UserCard';
 import { useUserAlert } from '@/lib/store/user/userAlert';
 import FormDialog from '@/components/dialog/FormDialog';
-import { ChangePasswordRequest } from '@/hooks/user/type';
 import { useSnackbar } from '@/context/SnackBarProvicer';
-import { useForm } from 'react-hook-form';
 import ChangePasswordDialog from './_component/ChangePasswordDialog';
 import AlertDialog from '@/components/dialog/AlertDialog';
 import { useUserId } from '@/lib/store/user/userId';
@@ -33,7 +27,9 @@ import { USER_LIST } from '@/hooks/user/constant';
 
 const Admin = () => {
   const snackbar = useSnackbar();
-  const { data: userList } = useUserList();
+  const { data: userList, isLoading } = useUserList();
+
+  const userData = userList ?? Array.from({ length: 10 });
 
   const setShowDropAlert = useUserAlert(
     (state) => state.setWarnShow
@@ -141,10 +137,27 @@ const Admin = () => {
         </Button>
       </Header>
       <Grid container rowSpacing={1} columnSpacing={1}>
-        {userList?.map((user) => {
+        {userData?.map((user, index) => {
           return (
-            <Grid key={user.id} item xs={10} md={6} lg={3}>
-              <UserCard key={user.id} user={user} />
+            <Grid
+              key={user?.id ?? index}
+              item
+              xs={100}
+              md={6}
+              lg={4}
+              xl={3}
+            >
+              <>
+                {isLoading ? (
+                  <Skeleton
+                    sx={{ mx: 2, my: 1.2 }}
+                    height={240}
+                    variant="rounded"
+                  />
+                ) : (
+                  <UserCard key={user.id} user={user} />
+                )}
+              </>
             </Grid>
           );
         })}
