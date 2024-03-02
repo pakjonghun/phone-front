@@ -1,76 +1,28 @@
 'use client';
 
-import SaleTable from '@/app/search/_component/SaleTable/SaleTable';
-import {
-  Box,
-  Stack,
-  Tab,
-  Tabs,
-  styled,
-} from '@mui/material';
-import React, { useState } from 'react';
-import PurchaseTable from './_component/PurchaseTable/PurchaseTable';
+import * as React from 'react';
+import { Box, Typography } from '@mui/material';
+import SearchFilter from './_component/SearchFilter';
+import UploadExcel from './_component/UploadExcel';
+import SaleTableMain from './_component/TableMain';
 
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return <>{value === index && <Box>{children}</Box>}</>;
-}
-
-type Tab = 0 | 1;
-
-const Search = () => {
-  const [selectedTab, setSelectedTab] = useState<Tab>(0);
-  const handleChangeTab = (_: any, newValue: Tab) => {
-    setSelectedTab(newValue);
-  };
-
-  const TabMapper = {
-    0: <SaleTable />,
-    1: <PurchaseTable />,
-  };
-
+export default function SaleTable() {
   return (
-    <Box>
-      <Stack
-        direction="row"
+    <>
+      <Box
         sx={{
-          borderBottom: 1,
-          borderColor: 'divider',
-          justifyContent: 'space-between',
+          mt: 4,
+          ml: 'auto',
+          textAlign: 'right',
+          display: 'flex',
+          alignItems: 'center',
         }}
       >
-        <Tabs
-          value={selectedTab}
-          onChange={handleChangeTab}
-        >
-          <Tab label="판매" {...a11yProps(0)} />
-          <Tab label="매입" {...a11yProps(1)} />
-        </Tabs>
-      </Stack>
-      <Box sx={{ minWidth: '930px' }}>
-        {TabMapper[selectedTab]}
+        <Typography variant="h4">판매 검색</Typography>
+        <UploadExcel sx={{ ml: 'auto' }} />
       </Box>
-    </Box>
+      <SearchFilter />
+      <SaleTableMain />
+    </>
   );
-};
-
-export default Search;
-
-function a11yProps(index: number) {
-  return {
-    id: `vertical-tab-${index}`,
-    'aria-controls': `vertical-tabpanel-${index}`,
-  };
 }
-
-const Container = styled('div')({
-  display: 'flex',
-  flexDirection: 'column',
-});

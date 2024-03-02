@@ -6,6 +6,7 @@ import {
   Box,
   Button,
   Grid,
+  Paper,
   Skeleton,
   Typography,
 } from '@mui/material';
@@ -75,6 +76,7 @@ const Admin = () => {
   return (
     <Box
       sx={{
+        mt: 4,
         display: 'flex',
         flexDirection: 'column',
         width: '100%',
@@ -124,9 +126,10 @@ const Admin = () => {
       <Header
         sx={{
           justifyContent: 'space-between',
-          mb: 2,
+          mb: 4,
         }}
       >
+        <Typography variant="h4">관리자 관리</Typography>
         <Button
           startIcon={<Person />}
           sx={{ ml: 'auto' }}
@@ -136,32 +139,34 @@ const Admin = () => {
           회원생성
         </Button>
       </Header>
-      <Grid container rowSpacing={1} columnSpacing={1}>
-        {userData?.map((user, index) => {
-          return (
-            <Grid
-              key={user?.id ?? index}
-              item
-              xs={100}
-              md={6}
-              lg={4}
-              xl={3}
-            >
-              <>
-                {isLoading ? (
-                  <Skeleton
-                    sx={{ mx: 2, my: 1.2 }}
-                    height={240}
-                    variant="rounded"
-                  />
-                ) : (
-                  <UserCard key={user.id} user={user} />
-                )}
-              </>
-            </Grid>
-          );
-        })}
-      </Grid>
+      <Paper>
+        <Grid container rowSpacing={1} columnSpacing={1}>
+          {userData?.map((user, index) => {
+            return (
+              <Grid
+                key={user?.id ?? index}
+                item
+                xs={100}
+                md={6}
+                lg={4}
+                xl={3}
+              >
+                <>
+                  {isLoading ? (
+                    <Skeleton
+                      sx={{ mx: 2, my: 1.2 }}
+                      height={240}
+                      variant="rounded"
+                    />
+                  ) : (
+                    <UserCard key={user.id} user={user} />
+                  )}
+                </>
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Paper>
     </Box>
   );
 };

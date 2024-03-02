@@ -12,10 +12,12 @@ import React, { Fragment } from 'react';
 import { menuList } from './constant';
 import { useAuthStore } from '@/lib/store/auth/auth';
 import { Role } from '@/model/user';
+import { usePathname } from 'next/navigation';
 
 const MenuList = () => {
   const role = useAuthStore((state) => state.role);
   const isAdmin = role === Role.ADMIN;
+  const pathname = usePathname();
 
   return (
     <List>
@@ -25,7 +27,10 @@ const MenuList = () => {
           return <Fragment key={id} />;
         return (
           <ListItem key={`${name}_${id}`} disablePadding>
-            <ListItemButton sx={{ p: 0 }}>
+            <ListItemButton
+              selected={pathname.includes(id)}
+              sx={{ p: 0 }}
+            >
               <CustomLink href={id}>
                 <ListItemIcon>
                   {!!icon && icon}
