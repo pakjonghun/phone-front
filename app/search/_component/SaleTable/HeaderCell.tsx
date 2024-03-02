@@ -41,12 +41,11 @@ const HeaderCell: FC<Props> = ({ headCell }) => {
           whiteSpace: 'nowrap',
           display: 'flex',
           alignItems: 'center',
+          gap: 1,
         }}
         onClick={() => handleClickHeader(headCell.id)}
       >
-        <TableHead sx={{ mr: 1 }}>
-          {headCell.label}
-        </TableHead>
+        {headCell.label}
         <HeadSortIcon orderValue={orderValue} />
       </Button>
     </TableCell>

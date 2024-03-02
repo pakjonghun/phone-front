@@ -50,7 +50,7 @@ export default function EnhancedTableHead(
         {headCells.map((headCell) => {
           return (
             <HeaderCell
-              key={headCell.id}
+              key={`${headCell.id}_${headCell.label}_${headCell.numeric}`}
               headCell={headCell}
             />
           );

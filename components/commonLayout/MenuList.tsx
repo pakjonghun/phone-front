@@ -8,7 +8,7 @@ import {
   styled,
 } from '@mui/material';
 import Link from 'next/link';
-import React from 'react';
+import React, { Fragment } from 'react';
 import { menuList } from './constant';
 import { useAuthStore } from '@/lib/store/auth/auth';
 import { Role } from '@/model/user';
@@ -21,9 +21,10 @@ const MenuList = () => {
     <List>
       {menuList.map(({ name, id, icon }) => {
         const adminItem = id === 'admin';
-        if (adminItem && !isAdmin) return <></>;
+        if (adminItem && !isAdmin)
+          return <Fragment key={id} />;
         return (
-          <ListItem key={id} disablePadding>
+          <ListItem key={`${name}_${id}`} disablePadding>
             <ListItemButton sx={{ p: 0 }}>
               <CustomLink href={id}>
                 <ListItemIcon>
