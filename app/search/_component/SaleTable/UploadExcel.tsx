@@ -28,7 +28,10 @@ const UploadExcel: FC<Props> = ({ sx = {} }) => {
 
     upload(formBody, {
       onSuccess: () => {
-        snackbar('판매 엑셀파일 업로드가 완료되었습니다.');
+        snackbar(
+          '판매 엑셀파일 업로드가 완료되었습니다.',
+          'success'
+        );
       },
       onError: (error) => {
         const errorMessage = error.response.data.message;

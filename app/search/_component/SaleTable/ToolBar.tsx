@@ -22,74 +22,58 @@ import {
   useDownloadSale,
 } from '@/hooks/search/sale/useSaleData';
 import { useSaleQueryStore } from '@/lib/store/sale/saleList';
-import AlertDialog from '@/components/dialog/AlertDialog';
 import { useSaleAlert } from '@/lib/store/sale/saleAlert';
+import { useSaleTable } from '@/lib/store/sale/saleTable';
+import SelectedIndicator from './SelectedIndicator';
 
 interface EnhancedTableToolbarProps {
-  selectedIdList: string[];
   searchDataCount: number;
-  setSelectedIdList: (selectedIdList: string[]) => void;
 }
 
 export default function EnhancedTableToolbar(
   props: EnhancedTableToolbarProps
 ) {
-  const {
-    selectedIdList,
-    searchDataCount,
-    setSelectedIdList,
-  } = props;
+  const { searchDataCount } = props;
+
+  const selectedSaleList = useSaleTable(
+    (state) => state.selectedSaleList
+  );
+
+  const setSelectedSaleList = useSaleTable(
+    (state) => state.setSelectedSaleList
+  );
 
   const { mutate: download, isLoading: isDownloading } =
     useDownloadSale();
 
-  const numSelected = selectedIdList.length;
-
-  const openApplyDialog = useSaleAlert(
-    (state) => state.warnShow
-  );
+  const { isLoading } = useConfirmSale();
   const setOpenApplyDialog = useSaleAlert(
     (state) => state.setWarnShow
   );
   const { mutate: refresh, isLoading: isRefreshing } =
     useApplySale();
-  const { mutate: confirm, isLoading } = useConfirmSale();
+
   const snackBar = useSnackbar();
   const queryClient = useQueryClient();
 
   const handleClickDownload = () => {
-    download(selectedIdList, {
-      onSuccess: () => {
-        snackBar('다운로드가 완료되었습니다.', 'success');
-      },
-      onError: (error) => {
-        const errorMessage = error?.response?.data?.message;
-        snackBar(
-          errorMessage ?? '다운로드가 실패했습니다.',
-          'error'
-        );
-      },
-    });
-  };
-
-  const handleClickConfirm = (idList: string[]) => {
-    confirm(idList, {
-      onSuccess: () => {
-        snackBar('승인이 완료되었습니다.', 'success');
-        queryClient.invalidateQueries([SALE_LIST]);
-        setSelectedIdList([]);
-      },
-      onError: (error) => {
-        const errorMessage = error?.response?.data?.message;
-        snackBar(
-          errorMessage ?? '승인이 실패했습니다.',
-          'error'
-        );
-      },
-      onSettled: () => {
-        setOpenApplyDialog(false);
-      },
-    });
+    download(
+      selectedSaleList.map((item) => item._id),
+      {
+        onSuccess: () => {
+          snackBar('다운로드가 완료되었습니다.', 'success');
+          queryClient.invalidateQueries([SALE_LIST]);
+        },
+        onError: (error) => {
+          const errorMessage =
+            error?.response?.data?.message;
+          snackBar(
+            errorMessage ?? '다운로드가 실패했습니다.',
+            'error'
+          );
+        },
+      }
+    );
   };
 
   const handleClickRefresh = () => {
@@ -97,7 +81,7 @@ export default function EnhancedTableToolbar(
       onSuccess: () => {
         snackBar('갱신이 완료되었습니다.', 'success');
         queryClient.invalidateQueries([SALE_LIST]);
-        setSelectedIdList([]);
+        setSelectedSaleList([]);
       },
       onError: (error) => {
         const errorMessage = error?.response?.data?.message;
@@ -116,6 +100,14 @@ export default function EnhancedTableToolbar(
     (state) => state.toggleSortType
   );
 
+  const confirmedInclude = selectedSaleList.some(
+    (item) => item.isConfirmed
+  );
+
+  const hasSelectedItem = useSaleTable((state) =>
+    state.hasSelectedItem()
+  );
+
   return (
     <Toolbar
       sx={{
@@ -123,7 +115,7 @@ export default function EnhancedTableToolbar(
         justifyContent: 'space-between',
         pl: { sm: 2 },
         pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
+        ...(hasSelectedItem && {
           bgcolor: (theme) =>
             alpha(
               theme.palette.primary.main,
@@ -132,16 +124,9 @@ export default function EnhancedTableToolbar(
         }),
       }}
     >
-      {numSelected > 0 ? (
+      {hasSelectedItem ? (
         <Stack direction="row" alignItems="center">
-          <Typography
-            sx={{ flex: '1 1 100%' }}
-            color="inherit"
-            variant="subtitle1"
-            component="div"
-          >
-            {numSelected}개 데이터가 선택되었습니다.
-          </Typography>
+          <SelectedIndicator />
           <Tooltip title="선택한 데이터를 다운받습니다.">
             <IconButton onClick={handleClickDownload}>
               {isDownloading ? (
@@ -196,38 +181,42 @@ export default function EnhancedTableToolbar(
             갱신
           </Button>
         </Tooltip>
-        <AlertDialog
-          onClickApply={() =>
-            handleClickConfirm(selectedIdList)
+        <Tooltip
+          title={
+            !hasSelectedItem
+              ? '선택된 데이터가 없습니다.'
+              : confirmedInclude
+              ? '승인할수 없는 데이터가 선택되어 있습니다.'
+              : ''
           }
-          open={openApplyDialog}
-          setOpen={setOpenApplyDialog}
-          variant="confirm"
-          title="승인"
-          message={
-            <Typography sx={{ width: '300px' }}>
-              정말 승인하겠습니까?
-              <br /> 승인후 되돌릴수 없습니다.
-            </Typography>
-          }
-          trigger={
-            <Button
-              onClick={() => setOpenApplyDialog(true)}
-              disabled={numSelected == 0}
-              variant="outlined"
-              sx={{ width: '120px' }}
-              startIcon={
-                isLoading ? (
-                  <CircularProgress size={18} />
-                ) : (
-                  <></>
-                )
+        >
+          <Button
+            onClick={() => {
+              const message = !hasSelectedItem
+                ? '선택된 데이터가 없습니다.'
+                : confirmedInclude
+                ? '승인할수 없는 데이터가 선택되어 있습니다.'
+                : '';
+
+              if (message) {
+                snackBar(message, 'warning');
+                return;
               }
-            >
-              일괄승인
-            </Button>
-          }
-        />
+              setOpenApplyDialog(true);
+            }}
+            variant="outlined"
+            sx={{ width: '120px' }}
+            startIcon={
+              isLoading ? (
+                <CircularProgress size={18} />
+              ) : (
+                <></>
+              )
+            }
+          >
+            일괄승인
+          </Button>
+        </Tooltip>
       </Stack>
     </Toolbar>
   );

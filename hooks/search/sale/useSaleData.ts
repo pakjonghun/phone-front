@@ -75,6 +75,7 @@ const downloadSale = async (saleIdList: string[]) => {
     params: { idList: saleIdList },
     responseType: 'blob',
   }).then((res) => {
+    console.log('res : ', res.data);
     const url = window.URL.createObjectURL(
       new Blob([res.data])
     );

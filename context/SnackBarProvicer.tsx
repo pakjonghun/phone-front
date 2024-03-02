@@ -1,23 +1,38 @@
 'use client';
 
+import { VerticalAlignBottom } from '@mui/icons-material';
 import { Alert, Snackbar } from '@mui/material';
-import { FC, ReactNode, createContext, useContext, useState } from 'react';
+import {
+  FC,
+  ReactNode,
+  createContext,
+  useContext,
+  useState,
+} from 'react';
 
 interface Props {
   children: ReactNode;
 }
 
 type SnackBarVariant = 'success' | 'warning' | 'error';
-type SnackbarContextValue = (msg: string, variant?: SnackBarVariant) => void;
+type SnackbarContextValue = (
+  msg: string,
+  variant?: SnackBarVariant
+) => void;
 
-const SnackBarContext = createContext<null | SnackbarContextValue>(null);
+const SnackBarContext =
+  createContext<null | SnackbarContextValue>(null);
 
 const SnackBarProvider: FC<Props> = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState('zzz');
-  const [variant, setVariant] = useState<SnackBarVariant>('success');
+  const [variant, setVariant] =
+    useState<SnackBarVariant>('success');
 
-  const showSnackBar = (message: string, variant?: SnackBarVariant) => {
+  const showSnackBar = (
+    message: string,
+    variant?: SnackBarVariant
+  ) => {
     if (variant) setVariant(variant);
     setMessage(message);
     setIsOpen(true);
@@ -31,6 +46,10 @@ const SnackBarProvider: FC<Props> = ({ children }) => {
     <SnackBarContext.Provider value={showSnackBar}>
       {children}
       <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
         open={isOpen}
         autoHideDuration={10000}
         onClose={handleCloseSnackBar}

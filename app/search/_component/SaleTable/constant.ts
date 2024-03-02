@@ -1,6 +1,6 @@
 import { SaleSort } from '@/hooks/search/sale/type';
 
-interface HeadCell {
+export interface HeadCell {
   disablePadding: boolean;
   id: SaleSort;
   label: string;

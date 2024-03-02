@@ -9,6 +9,7 @@ import { devtools } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 
 type SaleQueryAction = {
+  getSort: (headerId: string) => SaleSortItem | undefined;
   setQuery: (query: RequestSaleList) => void;
   setKeyword: (keyword: string) => void;
   setSort: (sortItem: SaleSortItem) => void;
@@ -39,6 +40,13 @@ const saleQueryStoreApi: StateCreator<
   [['zustand/immer', never], ['zustand/devtools', never]]
 > = (set, get) => ({
   ...initSaleQuery,
+  getSort: (headerId) => {
+    const targetHeader = get().sort.find(
+      ([sortKey]) => sortKey == headerId
+    );
+    return targetHeader;
+  },
+
   setQuery: (query: RequestSaleList) =>
     set(query, false, 'setQuery'),
   setKeyword: (keyword) =>

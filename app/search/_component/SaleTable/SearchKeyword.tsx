@@ -1,7 +1,9 @@
 import { useDebounce } from '@/hooks/common/useDebounce';
 import { useSaleList } from '@/hooks/search/sale/useSaleData';
 import { useSaleQueryStore } from '@/lib/store/sale/saleList';
+import { useSaleTable } from '@/lib/store/sale/saleTable';
 import { TextField } from '@mui/material';
+import { useEffect } from 'react';
 
 const SearchKeyword = () => {
   const keyword = useSaleQueryStore(
@@ -10,6 +12,14 @@ const SearchKeyword = () => {
   const setKeyword = useSaleQueryStore(
     (state) => state.setKeyword
   );
+
+  const setSelectedIdList = useSaleTable(
+    (state) => state.setSelectedSaleList
+  );
+
+  useEffect(() => {
+    setSelectedIdList([]);
+  }, [keyword]);
 
   const delayText = useDebounce({ text: keyword });
   const length = useSaleQueryStore((state) => state.length);

@@ -1,3 +1,5 @@
+'use client';
+
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -9,7 +11,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 type DialogVariant = 'error' | 'confirm';
 
 interface Props {
-  trigger: React.ReactNode;
   title: React.ReactNode;
   message: React.ReactNode;
   variant: DialogVariant;
@@ -19,7 +20,6 @@ interface Props {
 }
 
 export default function AlertDialog({
-  trigger,
   title,
   message,
   onClickApply,
@@ -31,38 +31,32 @@ export default function AlertDialog({
   };
 
   return (
-    <React.Fragment>
-      {trigger}
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {title}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            {message}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            variant="contained"
-            onClick={onClickApply}
-          >
-            확인
-          </Button>
-          <Button
-            variant="outlined"
-            onClick={handleClose}
-            autoFocus
-          >
-            취소
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </React.Fragment>
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+    >
+      <DialogTitle id="alert-dialog-title">
+        {title}
+      </DialogTitle>
+      <DialogContent>
+        <DialogContentText id="alert-dialog-description">
+          {message}
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button variant="contained" onClick={onClickApply}>
+          확인
+        </Button>
+        <Button
+          variant="outlined"
+          onClick={handleClose}
+          autoFocus
+        >
+          취소
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }
