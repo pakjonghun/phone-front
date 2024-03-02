@@ -1,8 +1,8 @@
-import { SaleSort } from '@/hooks/search/sale/type';
+import { PurchaseSort } from '@/hooks/search/purchase/type';
 
 export interface HeadCell {
   disablePadding: boolean;
-  id: SaleSort;
+  id: PurchaseSort;
   label: string;
   numeric: boolean;
   sort?: boolean;
@@ -31,22 +31,22 @@ export const headCells: readonly HeadCell[] = [
     label: '차감내역',
   },
   {
-    id: 'recentHighSalePrice',
+    id: 'recentHighPurchasePrice',
     numeric: true,
     disablePadding: false,
-    label: '최근 고가 판매가',
+    label: '최근 고가 매입가',
   },
   {
-    id: 'recentLowPrice',
+    id: 'recentLowPurchasePrice',
     numeric: true,
     disablePadding: false,
-    label: '최근 저가 판매가',
+    label: '최근 저가 매입가',
   },
   {
-    id: 'belowAverageCount',
+    id: 'belowAveragePurchaseCount',
     numeric: true,
     disablePadding: false,
-    label: '평균 이하 판매수',
+    label: '평균 이하 매입수',
   },
   {
     id: 'isConfirmed',
@@ -56,7 +56,7 @@ export const headCells: readonly HeadCell[] = [
   },
 ];
 
-export const saleRank = [
+export const purchaseRank = [
   'A+',
   'A',
   'A-',

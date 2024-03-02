@@ -6,8 +6,8 @@ import {
 } from '@mui/material';
 
 import { HeadCell } from './constant';
-import { useSaleQueryStore } from '@/lib/store/sale/saleList';
-import { SaleSort } from '@/hooks/search/sale/type';
+import { usePurchaseQueryStore } from '@/lib/store/purchase/purchaseList';
+import { PurchaseSort } from '@/hooks/search/purchase/type';
 import HeadSortIcon from './HeadSortIcon';
 
 interface Props {
@@ -15,15 +15,15 @@ interface Props {
 }
 
 const HeaderCell: FC<Props> = ({ headCell }) => {
-  const setSortList = useSaleQueryStore(
+  const setSortList = usePurchaseQueryStore(
     (state) => state.setSort
   );
 
-  const sortItem = useSaleQueryStore((state) =>
+  const sortItem = usePurchaseQueryStore((state) =>
     state.getSort(headCell.id)
   );
   const orderValue = sortItem?.[1];
-  const handleClickHeader = (headerId: SaleSort) => {
+  const handleClickHeader = (headerId: PurchaseSort) => {
     setSortList([headerId, orderValue === 1 ? -1 : 1]);
   };
 

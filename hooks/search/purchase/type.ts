@@ -1,18 +1,21 @@
 import { Order } from './../../../api/type';
 
-export type SaleSort =
+export type PurchaseSort =
   | 'product'
-  | 'belowAverageCount'
   | 'distanceLog'
   | 'isConfirmed'
   | 'rank'
-  | 'recentHighSalePrice'
-  | 'recentLowPrice';
+  | 'recentHighPurchasePrice'
+  | 'recentLowPurchasePrice'
+  | 'belowAveragePurchaseCount';
 
-export type SaleSortItem = [SaleSort, Order | undefined];
+export type PurchaseSortItem = [
+  PurchaseSort,
+  Order | undefined
+];
 
-export type RequestSaleList = {
+export type RequestPurchaseList = {
   keyword: string;
-  sort: SaleSortItem[];
+  sort: PurchaseSortItem[];
   length: number;
 };

@@ -3,4 +3,7 @@ export type Product = {
   recentHighSalePrice: number;
   recentLowPrice: number;
   belowAverageCount: number;
+  recentHighPurchasePrice: number;
+  recentLowPurchasePrice: number;
+  belowAveragePurchaseCount: number;
 };

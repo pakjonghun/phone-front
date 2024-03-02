@@ -1,20 +1,20 @@
 import { useDebounce } from '@/hooks/common/useDebounce';
-import { useSaleList } from '@/hooks/search/sale/useSaleData';
-import { useSaleQueryStore } from '@/lib/store/sale/saleList';
-import { useSaleTable } from '@/lib/store/sale/saleTable';
+import { usePurchaseList } from '@/hooks/search/purchase/usePurchaseData';
+import { usePurchaseQueryStore } from '@/lib/store/purchase/purchaseList';
+import { usePurchaseTable } from '@/lib/store/purchase/purchaseTable';
 import { TextField } from '@mui/material';
 import { useEffect } from 'react';
 
 const SearchKeyword = () => {
-  const keyword = useSaleQueryStore(
+  const keyword = usePurchaseQueryStore(
     (state) => state.keyword
   );
-  const setKeyword = useSaleQueryStore(
+  const setKeyword = usePurchaseQueryStore(
     (state) => state.setKeyword
   );
 
-  const setSelectedIdList = useSaleTable(
-    (state) => state.setSelectedSaleList
+  const setSelectedIdList = usePurchaseTable(
+    (state) => state.setSelectedPurchaseList
   );
 
   useEffect(() => {
@@ -22,10 +22,12 @@ const SearchKeyword = () => {
   }, [keyword]);
 
   const delayText = useDebounce({ text: keyword });
-  const length = useSaleQueryStore((state) => state.length);
-  const sort = useSaleQueryStore((state) => state.sort);
+  const length = usePurchaseQueryStore(
+    (state) => state.length
+  );
+  const sort = usePurchaseQueryStore((state) => state.sort);
 
-  useSaleList({
+  usePurchaseList({
     length,
     sort,
     keyword: delayText,

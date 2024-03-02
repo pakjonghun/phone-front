@@ -1,5 +1,6 @@
 import UploadFileButton from '@/components/button/UploadButton';
 import { useSnackbar } from '@/context/SnackBarProvicer';
+import { useUploadPurchaseExcel } from '@/hooks/search/purchase/usePurchaseData';
 import { useUploadSaleExcel } from '@/hooks/search/sale/useSaleData';
 import { SxProps } from '@mui/material';
 import React, { FC } from 'react';
@@ -11,7 +12,7 @@ interface Props {
 const UploadExcel: FC<Props> = ({ sx = {} }) => {
   const snackbar = useSnackbar();
   const { mutate: upload, isLoading } =
-    useUploadSaleExcel();
+    useUploadPurchaseExcel();
 
   const inputRef = React.useRef<null | HTMLInputElement>(
     null
@@ -29,7 +30,7 @@ const UploadExcel: FC<Props> = ({ sx = {} }) => {
     upload(formBody, {
       onSuccess: () => {
         snackbar(
-          '판매 엑셀파일 업로드가 완료되었습니다.',
+          '매입 엑셀파일 업로드가 완료되었습니다.',
           'success'
         );
       },
@@ -37,7 +38,7 @@ const UploadExcel: FC<Props> = ({ sx = {} }) => {
         const errorMessage = error.response.data.message;
         snackbar(
           errorMessage ??
-            '판매 엑셀파일 업로드가 완료되었습니다.',
+            '매입 엑셀파일 업로드가 완료되었습니다.',
           'error'
         );
       },

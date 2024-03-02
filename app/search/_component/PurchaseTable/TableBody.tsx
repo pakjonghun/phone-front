@@ -3,11 +3,11 @@ import React from 'react';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import Checkbox from '@mui/material/Checkbox';
-import { useSaleQueryStore } from '@/lib/store/sale/saleList';
+import { usePurchaseQueryStore } from '@/lib/store/purchase/purchaseList';
 import {
-  useConfirmSale,
-  useSaleList,
-} from '@/hooks/search/sale/useSaleData';
+  useConfirmPurchase,
+  usePurchaseList,
+} from '@/hooks/search/purchase/usePurchaseData';
 import {
   Button,
   CircularProgress,
@@ -15,56 +15,60 @@ import {
   TableBody,
   Typography,
 } from '@mui/material';
-import { saleRank } from './constant';
+import { purchaseRank } from './constant';
 import { useAuthStore } from '@/lib/store/auth/auth';
-import { Sale } from '@/model/sale';
+import { Purchase } from '@/model/purchase';
 import AlertDialog from '@/components/dialog/AlertDialog';
 import { useQueryClient } from 'react-query';
-import { SALE_LIST } from '@/hooks/search/sale/constant';
-import { useSaleAlert } from '@/lib/store/sale/saleAlert';
+import { PURCHASE_LIST } from '@/hooks/search/purchase/constant';
+import { usePurchaseAlert } from '@/lib/store/purchase/purchaseAlert';
 import { useSnackbar } from '@/context/SnackBarProvicer';
-import { useSaleTable } from '@/lib/store/sale/saleTable';
+import { usePurchaseTable } from '@/lib/store/purchase/purchaseTable';
 
 const TableBodyList = () => {
-  const selectedIdList = useSaleTable(
-    (state) => state.selectedSaleList
+  const selectedIdList = usePurchaseTable(
+    (state) => state.selectedPurchaseList
   );
-  const setSelectedIdList = useSaleTable(
-    (state) => state.setSelectedSaleList
+  const setSelectedIdList = usePurchaseTable(
+    (state) => state.setSelectedPurchaseList
   );
 
   const snackBar = useSnackbar();
-  const setOpenApplyDialog = useSaleAlert(
+  const setOpenApplyDialog = usePurchaseAlert(
     (state) => state.setWarnShow
   );
 
   const role = useAuthStore((state) => state.role);
-  const keyword = useSaleQueryStore(
+  const keyword = usePurchaseQueryStore(
     (state) => state.keyword
   );
 
-  const sort = useSaleQueryStore((state) => state.sort);
-  const length = useSaleQueryStore((state) => state.length);
-  const { data, isLoading: isCellLoading } = useSaleList({
-    keyword,
-    sort,
-    length: length,
-  });
+  const sort = usePurchaseQueryStore((state) => state.sort);
+  const length = usePurchaseQueryStore(
+    (state) => state.length
+  );
+  const { data, isLoading: isCellLoading } =
+    usePurchaseList({
+      keyword,
+      sort,
+      length: length,
+    });
 
-  const selectedSaleIdList = selectedIdList.map(
-    (sale) => sale._id
+  const selectedPurchaseIdList = selectedIdList.map(
+    (purchase) => purchase._id
   );
   const queryClient = useQueryClient();
 
-  const openApplyDialog = useSaleAlert(
+  const openApplyDialog = usePurchaseAlert(
     (state) => state.warnShow
   );
-  const { mutate: confirm, isLoading } = useConfirmSale();
+  const { mutate: confirm, isLoading } =
+    useConfirmPurchase();
   const handleClickConfirm = () => {
-    confirm(selectedSaleIdList, {
+    confirm(selectedPurchaseIdList, {
       onSuccess: () => {
         snackBar('승인이 완료되었습니다.', 'success');
-        queryClient.invalidateQueries([SALE_LIST]);
+        queryClient.invalidateQueries([PURCHASE_LIST]);
         setSelectedIdList([]);
       },
       onError: (error) => {
@@ -80,23 +84,23 @@ const TableBodyList = () => {
     });
   };
 
-  const flatSaleData =
+  const flatPurchaseData =
     data?.pages.flatMap((item) => item.data) ??
     Array.from({ length: 14 });
 
-  const handleClickRow = (saleItem: Sale) => {
+  const handleClickRow = (purchaseItem: Purchase) => {
     if (role === Role.STAFF) return;
     const isIdInclude = selectedIdList.find(
-      (item) => item._id === saleItem._id
+      (item) => item._id === purchaseItem._id
     );
     if (isIdInclude) {
       setSelectedIdList(
         selectedIdList.filter(
-          (item) => item._id !== saleItem._id
+          (item) => item._id !== purchaseItem._id
         )
       );
     } else {
-      setSelectedIdList([...selectedIdList, saleItem]);
+      setSelectedIdList([...selectedIdList, purchaseItem]);
     }
   };
 
@@ -123,9 +127,9 @@ const TableBodyList = () => {
         }
       />
       <>
-        {flatSaleData?.map((row, index) => {
+        {flatPurchaseData?.map((row, index) => {
           const isItemSelected = selectedIdList.some(
-            (item) => item._id === row._id
+            (item) => item._id === row?._id
           );
 
           const labelId = `enhanced-table-checkbox-${index}`;
@@ -169,19 +173,19 @@ const TableBodyList = () => {
                     {row.product._id}
                   </TableCell>
                   <TableCell align="left">
-                    {saleRank.at(row.rank)}
+                    {purchaseRank.at(row.rank)}
                   </TableCell>
                   <TableCell align="left">
                     {row.distanceLog || '-'}
                   </TableCell>
                   <TableCell align="left">
-                    {row.product.recentHighSalePrice}
+                    {row.product.recentHighPurchasePrice}
                   </TableCell>
                   <TableCell align="left">
-                    {row.product.recentLowPrice}
+                    {row.product.recentLowPurchasePrice}
                   </TableCell>
                   <TableCell align="left">
-                    {row.product.belowAverageCount}
+                    {row.product.belowAveragePurchaseCount}
                   </TableCell>
                   <TableCell
                     align="center"
@@ -211,8 +215,9 @@ const TableBodyList = () => {
                             variant="contained"
                             startIcon={
                               selectedIdList.find(
-                                (saleItem) =>
-                                  saleItem._id == row._id
+                                (purchaseItem) =>
+                                  purchaseItem._id ==
+                                  row._id
                               ) && isLoading ? (
                                 <CircularProgress
                                   size={18}

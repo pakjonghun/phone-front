@@ -1,12 +1,12 @@
 import { CommonMutation, ListData } from '@/api/type';
 import { useInfiniteQuery } from 'react-query';
-import { RequestSaleList } from './type';
-import { Sale } from '@/model/sale';
+import { RequestPurchaseList } from './type';
 import dayjs from 'dayjs';
 import { CommonError } from '@/api/type';
 import { client } from '@/api/client';
 import { useMutation } from 'react-query';
 import { PURCHASE_LIST } from './constant';
+import { Purchase } from '@/model/purchase';
 
 const uploadPurchaseExcel = (excelFile: FormData) => {
   return client
@@ -24,68 +24,61 @@ export const useUploadPurchaseExcel = () => {
   });
 };
 
-const uploadSaleExcel = (excelFile: FormData) => {
-  return client
-    .post('/sale/upload', excelFile, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-    .then((res) => res.data);
-};
-
-export const useUploadSaleExcel = () => {
-  return useMutation<void, CommonError, FormData>({
-    mutationFn: uploadSaleExcel,
-  });
-};
-
-const saleList = async (
-  query: RequestSaleList & { page: number }
+const purchaseList = async (
+  query: RequestPurchaseList & { page: number }
 ) => {
-  return client('/sale', { params: query }).then<
-    ListData<Sale>
+  return client('/purchase', { params: query }).then<
+    ListData<Purchase>
   >((res) => res.data);
 };
 
-export const useSaleList = (query: RequestSaleList) => {
-  return useInfiniteQuery<ListData<Sale>, RequestSaleList>({
+export const usePurchaseList = (
+  query: RequestPurchaseList
+) => {
+  return useInfiniteQuery<
+    ListData<Purchase>,
+    RequestPurchaseList
+  >({
     queryKey: [PURCHASE_LIST, { ...query }],
     queryFn: ({ pageParam = 1 }) =>
-      saleList({ ...query, page: pageParam }),
+      purchaseList({ ...query, page: pageParam }),
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.hasNext ? allPages.length + 1 : null;
     },
   });
 };
 
-const confirmSale = async (saleIdList: string[]) => {
+const confirmPurchase = async (
+  purchaseIdList: string[]
+) => {
   return client
-    .put('/sale', { idList: saleIdList })
+    .put('/purchase', { idList: purchaseIdList })
     .then((res) => res.data);
 };
 
-export const useConfirmSale = () => {
+export const useConfirmPurchase = () => {
   return useMutation<CommonMutation, CommonError, string[]>(
     {
-      mutationFn: confirmSale,
+      mutationFn: confirmPurchase,
     }
   );
 };
 
-const applySale = () => {
-  return client('/sale/apply').then((res) => res.data);
+const applyPurchase = () => {
+  return client('/purchase/apply').then((res) => res.data);
 };
 
-export const useApplySale = () => {
+export const useApplyPurchase = () => {
   return useMutation<CommonMutation, CommonError, void>(
-    applySale
+    applyPurchase
   );
 };
 
-const downloadSale = async (saleIdList: string[]) => {
-  client('/sale/download', {
-    params: { idList: saleIdList },
+const downloadPurchase = async (
+  purchaseIdList: string[]
+) => {
+  client('/purchase/download', {
+    params: { idList: purchaseIdList },
     responseType: 'blob',
   }).then((res) => {
     console.log('res : ', res.data);
@@ -104,8 +97,8 @@ const downloadSale = async (saleIdList: string[]) => {
   });
 };
 
-export const useDownloadSale = () => {
+export const useDownloadPurchase = () => {
   return useMutation<void, CommonError, string[]>({
-    mutationFn: downloadSale,
+    mutationFn: downloadPurchase,
   });
 };

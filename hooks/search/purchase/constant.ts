@@ -1,23 +1,24 @@
-import { SaleSort } from './type';
+import { PurchaseSort } from './type';
 
 export const PURCHASE_LIST = 'PURCHASE_LIST';
 
-export const canSortList: SaleSort[] = [
+export const canSortList: PurchaseSort[] = [
   'product',
-  'belowAverageCount',
   'distanceLog',
   'isConfirmed',
   'rank',
-  'recentHighSalePrice',
-  'recentLowPrice',
+  'recentHighPurchasePrice',
+  'recentLowPurchasePrice',
+  'belowAveragePurchaseCount',
 ];
 
-export const sortEngToHangle: Record<SaleSort, string> = {
-  product: '상품',
-  belowAverageCount: '평균이하 판매가',
-  distanceLog: '차감내역',
-  isConfirmed: '승인',
-  rank: '등급',
-  recentHighSalePrice: '최고가',
-  recentLowPrice: '최저가',
-};
+export const sortEngToHangle: Record<PurchaseSort, string> =
+  {
+    product: '상품',
+    belowAveragePurchaseCount: '평균이하 구매가',
+    distanceLog: '차감내역',
+    isConfirmed: '승인',
+    rank: '등급',
+    recentHighPurchasePrice: '최고가',
+    recentLowPurchasePrice: '최저가',
+  };

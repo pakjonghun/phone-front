@@ -3,23 +3,25 @@ import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableContainer from '@mui/material/TableContainer';
 import Paper from '@mui/material/Paper';
-import { useSaleQueryStore } from '@/lib/store/sale/saleList';
-import { useSaleList } from '@/hooks/search/sale/useSaleData';
+import { usePurchaseQueryStore } from '@/lib/store/purchase/purchaseList';
+import { usePurchaseList } from '@/hooks/search/purchase/usePurchaseData';
 import { CircularProgress } from '@mui/material';
 import useInfinity from '@/hooks/common/useInfinity';
 import EnhancedTableHead from './TableHeader';
 import EnhancedTableToolbar from './ToolBar';
 import TableBodyList from './TableBody';
-import { useSaleTable } from '@/lib/store/sale/saleTable';
+import { usePurchaseTable } from '@/lib/store/purchase/purchaseTable';
 
-export default function SaleTableMain() {
-  const keyword = useSaleQueryStore(
+export default function PurchaseTableMain() {
+  const keyword = usePurchaseQueryStore(
     (state) => state.keyword
   );
-  const sort = useSaleQueryStore((state) => state.sort);
-  const length = useSaleQueryStore((state) => state.length);
+  const sort = usePurchaseQueryStore((state) => state.sort);
+  const length = usePurchaseQueryStore(
+    (state) => state.length
+  );
   const { data, hasNextPage, fetchNextPage, isLoading } =
-    useSaleList({
+    usePurchaseList({
       keyword,
       sort,
       length: length,
@@ -39,18 +41,18 @@ export default function SaleTableMain() {
 
   const setLastItemRef = useInfinity({ callback });
 
-  const flatSaleData = data?.pages.flatMap(
+  const flatPurchaseData = data?.pages.flatMap(
     (item) => item.data
   );
 
-  const handleSelectAllClick = useSaleTable(
+  const handleSelectAllClick = usePurchaseTable(
     (state) => state.handleSelectAllClick
   );
 
   return (
     <Paper sx={{ width: '100%', mb: 2 }}>
       <EnhancedTableToolbar
-        searchDataCount={flatSaleData?.length ?? 0}
+        searchDataCount={flatPurchaseData?.length ?? 0}
       />
       <TableContainer
         sx={{
@@ -61,9 +63,9 @@ export default function SaleTableMain() {
         <Table stickyHeader aria-labelledby="tableTitle">
           <EnhancedTableHead
             onSelectAllClick={() =>
-              handleSelectAllClick(flatSaleData ?? [])
+              handleSelectAllClick(flatPurchaseData ?? [])
             }
-            rowCount={flatSaleData?.length ?? 0}
+            rowCount={flatPurchaseData?.length ?? 0}
           />
 
           <TableBodyList />

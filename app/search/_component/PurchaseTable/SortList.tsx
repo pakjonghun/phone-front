@@ -1,7 +1,7 @@
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import { sortEngToHangle } from '@/hooks/search/sale/constant';
-import { useSaleQueryStore } from '@/lib/store/sale/saleList';
+import { sortEngToHangle } from '@/hooks/search/purchase/constant';
+import { usePurchaseQueryStore } from '@/lib/store/purchase/purchaseList';
 import {
   Avatar,
   Box,
@@ -12,8 +12,10 @@ import {
 import React from 'react';
 
 const SortList = () => {
-  const sortList = useSaleQueryStore((state) => state.sort);
-  const reSetSort = useSaleQueryStore(
+  const sortList = usePurchaseQueryStore(
+    (state) => state.sort
+  );
+  const reSetSort = usePurchaseQueryStore(
     (state) => state.resetSort
   );
 

@@ -124,12 +124,14 @@ const TableBodyList = () => {
       />
       <>
         {flatSaleData?.map((row, index) => {
-          const isItemSelected = selectedIdList.some(
-            (item) => item._id === row._id
-          );
+          const rowKey = row?._id ?? index;
+          const isItemSelected = row
+            ? selectedIdList.some(
+                (item) => item._id === row?._id
+              )
+            : false;
 
           const labelId = `enhanced-table-checkbox-${index}`;
-          const rowKey = row?._id ?? index;
 
           return (
             <TableRow
@@ -143,7 +145,7 @@ const TableBodyList = () => {
               key={rowKey}
               selected={isItemSelected}
             >
-              {isCellLoading ? (
+              {isCellLoading || !row ? (
                 <TableCell padding="none" colSpan={8}>
                   <Skeleton height={60} />
                 </TableCell>

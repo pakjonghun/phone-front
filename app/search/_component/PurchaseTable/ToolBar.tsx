@@ -15,15 +15,15 @@ import {
 } from '@mui/material';
 import { useSnackbar } from '@/context/SnackBarProvicer';
 import { useQueryClient } from 'react-query';
-import { SALE_LIST } from '@/hooks/search/sale/constant';
+import { PURCHASE_LIST } from '@/hooks/search/purchase/constant';
 import {
-  useApplySale,
-  useConfirmSale,
-  useDownloadSale,
-} from '@/hooks/search/sale/useSaleData';
-import { useSaleQueryStore } from '@/lib/store/sale/saleList';
-import { useSaleAlert } from '@/lib/store/sale/saleAlert';
-import { useSaleTable } from '@/lib/store/sale/saleTable';
+  useApplyPurchase,
+  useConfirmPurchase,
+  useDownloadPurchase,
+} from '@/hooks/search/purchase/usePurchaseData';
+import { usePurchaseQueryStore } from '@/lib/store/purchase/purchaseList';
+import { usePurchaseAlert } from '@/lib/store/purchase/purchaseAlert';
+import { usePurchaseTable } from '@/lib/store/purchase/purchaseTable';
 import SelectedIndicator from './SelectedIndicator';
 
 interface EnhancedTableToolbarProps {
@@ -35,34 +35,34 @@ export default function EnhancedTableToolbar(
 ) {
   const { searchDataCount } = props;
 
-  const selectedSaleList = useSaleTable(
-    (state) => state.selectedSaleList
+  const selectedPurchaseList = usePurchaseTable(
+    (state) => state.selectedPurchaseList
   );
 
-  const setSelectedSaleList = useSaleTable(
-    (state) => state.setSelectedSaleList
+  const setSelectedPurchaseList = usePurchaseTable(
+    (state) => state.setSelectedPurchaseList
   );
 
   const { mutate: download, isLoading: isDownloading } =
-    useDownloadSale();
+    useDownloadPurchase();
 
-  const { isLoading } = useConfirmSale();
-  const setOpenApplyDialog = useSaleAlert(
+  const { isLoading } = useConfirmPurchase();
+  const setOpenApplyDialog = usePurchaseAlert(
     (state) => state.setWarnShow
   );
   const { mutate: refresh, isLoading: isRefreshing } =
-    useApplySale();
+    useApplyPurchase();
 
   const snackBar = useSnackbar();
   const queryClient = useQueryClient();
 
   const handleClickDownload = () => {
     download(
-      selectedSaleList.map((item) => item._id),
+      selectedPurchaseList.map((item) => item._id),
       {
         onSuccess: () => {
           snackBar('다운로드가 완료되었습니다.', 'success');
-          queryClient.invalidateQueries([SALE_LIST]);
+          queryClient.invalidateQueries([PURCHASE_LIST]);
         },
         onError: (error) => {
           const errorMessage =
@@ -80,8 +80,8 @@ export default function EnhancedTableToolbar(
     refresh(undefined, {
       onSuccess: () => {
         snackBar('갱신이 완료되었습니다.', 'success');
-        queryClient.invalidateQueries([SALE_LIST]);
-        setSelectedSaleList([]);
+        queryClient.invalidateQueries([PURCHASE_LIST]);
+        setSelectedPurchaseList([]);
       },
       onError: (error) => {
         const errorMessage = error?.response?.data?.message;
@@ -93,18 +93,18 @@ export default function EnhancedTableToolbar(
     });
   };
 
-  const sortType = useSaleQueryStore(
+  const sortType = usePurchaseQueryStore(
     (state) => state.sortType
   );
-  const toggleSortType = useSaleQueryStore(
+  const toggleSortType = usePurchaseQueryStore(
     (state) => state.toggleSortType
   );
 
-  const confirmedInclude = selectedSaleList.some(
+  const confirmedInclude = selectedPurchaseList.some(
     (item) => item.isConfirmed
   );
 
-  const hasSelectedItem = useSaleTable((state) =>
+  const hasSelectedItem = usePurchaseTable((state) =>
     state.hasSelectedItem()
   );
 
