@@ -1,4 +1,3 @@
-import { ResponseMyInfo } from '@/hooks/type';
 import { client } from '@/util';
 import { cookies } from 'next/headers';
 
@@ -16,5 +15,5 @@ export const serverMe = () => {
       cache: 'no-store',
       next: { revalidate: 0 },
     })
-  ) as Promise<ResponseMyInfo>;
+  );
 };
