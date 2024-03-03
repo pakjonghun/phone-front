@@ -24,6 +24,10 @@ import { SALE_LIST } from '@/hooks/search/sale/constant';
 import { useSaleAlert } from '@/lib/store/sale/saleAlert';
 import { useSnackbar } from '@/context/SnackBarProvicer';
 import { useSaleTable } from '@/lib/store/sale/saleTable';
+import {
+  getCurrencyToKRW,
+  getWithCommaNumber,
+} from '@/util/util';
 
 const TableBodyList = () => {
   const selectedIdList = useSaleTable(
@@ -185,13 +189,19 @@ const TableBodyList = () => {
                     {row.distanceLog || '-'}
                   </TableCell>
                   <TableCell align="left">
-                    {row.product.recentHighSalePrice}
+                    {getCurrencyToKRW(
+                      row.product.recentHighSalePrice
+                    )}
                   </TableCell>
                   <TableCell align="left">
-                    {row.product.recentLowPrice}
+                    {getCurrencyToKRW(
+                      row.product.recentLowPrice
+                    )}
                   </TableCell>
                   <TableCell align="left">
-                    {row.product.belowAverageCount}
+                    {getWithCommaNumber(
+                      row.product.belowAverageCount
+                    )}
                   </TableCell>
                   <TableCell
                     align="center"

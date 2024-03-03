@@ -15,7 +15,10 @@ const SubmitButton: FC<Props> = ({
     <MtButton
       startIcon={
         isLoading ? (
-          <CircularProgress size={18} color="info" />
+          <CircularProgress
+            size={18}
+            sx={{ color: 'white' }}
+          />
         ) : null
       }
       type="submit"

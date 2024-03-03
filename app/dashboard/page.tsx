@@ -15,7 +15,7 @@ import TopTenClient from './_component/TopTenClient';
 import {
   getCurrencyToKRW,
   getWithCommaNumber,
-} from './util';
+} from '@/util/util';
 
 const Dashboard = () => {
   const { data, isLoading } = useDashboardData();

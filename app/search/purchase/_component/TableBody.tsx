@@ -24,6 +24,10 @@ import { PURCHASE_LIST } from '@/hooks/search/purchase/constant';
 import { usePurchaseAlert } from '@/lib/store/purchase/purchaseAlert';
 import { useSnackbar } from '@/context/SnackBarProvicer';
 import { usePurchaseTable } from '@/lib/store/purchase/purchaseTable';
+import {
+  getCurrencyToKRW,
+  getWithCommaNumber,
+} from '@/util/util';
 
 const TableBodyList = () => {
   const selectedIdList = usePurchaseTable(
@@ -186,13 +190,19 @@ const TableBodyList = () => {
                     {row.distanceLog || '-'}
                   </TableCell>
                   <TableCell align="left">
-                    {row.product.recentHighPurchasePrice}
+                    {getCurrencyToKRW(
+                      row.product.recentHighPurchasePrice
+                    )}
                   </TableCell>
                   <TableCell align="left">
-                    {row.product.recentLowPurchasePrice}
+                    {getCurrencyToKRW(
+                      row.product.recentLowPurchasePrice
+                    )}
                   </TableCell>
                   <TableCell align="left">
-                    {row.product.belowAveragePurchaseCount}
+                    {getWithCommaNumber(
+                      row.product.belowAveragePurchaseCount
+                    )}
                   </TableCell>
                   <TableCell
                     align="center"

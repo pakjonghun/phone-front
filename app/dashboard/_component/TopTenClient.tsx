@@ -11,7 +11,7 @@ import { Aggregate } from '@/model/dashboard';
 import {
   getCurrencyToKRW,
   getWithCommaNumber,
-} from '../util';
+} from '@/util/util';
 
 function createData(
   name: string,

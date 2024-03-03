@@ -1,4 +1,4 @@
-import { client } from '@/util';
+import { client } from '@/util/util';
 import { cookies } from 'next/headers';
 
 export const serverMe = async () => {

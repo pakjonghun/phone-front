@@ -8,7 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Typography } from '@mui/material';
 import { RecentPurchase } from '@/model/dashboard';
-import { getCurrencyToKRW } from '../util';
+import { getCurrencyToKRW } from '@/util/util';
 
 function createData(
   name: string,
