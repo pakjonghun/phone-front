@@ -1,5 +1,6 @@
 'use client';
 
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { Header } from '@/components/common';
 import { Person } from '@mui/icons-material';
 import {
@@ -215,7 +216,7 @@ const Admin = () => {
                 isResetting ? (
                   <CircularProgress size={18} />
                 ) : (
-                  <Person />
+                  <RestartAltIcon />
                 )
               }
               sx={{ ml: 'auto' }}
