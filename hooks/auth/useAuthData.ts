@@ -6,16 +6,22 @@ import { ResponseMyInfo } from './type';
 
 const signUp = (body: User) => {
   return client
-    .post(`/user/signup/${body.id}`, body, { params: { id: body.id } })
+    .post(`/user/signup/${body.id}`, body, {
+      params: { id: body.id },
+    })
     .then((res) => res.data);
 };
 
 export const useSignUp = () => {
-  return useMutation<CommonMutation, CommonError, User>({ mutationFn: signUp });
+  return useMutation<CommonMutation, CommonError, User>({
+    mutationFn: signUp,
+  });
 };
 
 const login = (body: Omit<User, 'role'>) => {
-  return client.post('/user/login', body).then((res) => res.data);
+  return client
+    .post('/user/login', body)
+    .then((res) => res.data);
 };
 
 export const useLogin = () => {
@@ -43,8 +49,9 @@ export const useMyInfo = () => {
 };
 
 export const logout = () => {
-  return fetch('/api/auth', {
-    method: 'post',
-    credentials: 'include',
-  }).then<CommonMutation>((res) => res.json());
+  // return fetch('/api/auth', {
+  //   method: 'post',
+  //   credentials: 'include',
+  // }).then<CommonMutation>((res) => res.json());
+  client.get('/user/logout').then((res) => res.data);
 };
