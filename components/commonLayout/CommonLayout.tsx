@@ -1,6 +1,5 @@
 'use client';
 import * as React from 'react';
-
 import MenuList from './MenuList';
 import { usePathname, useRouter } from 'next/navigation';
 import { AppBar } from '@mui/material';
@@ -52,7 +51,6 @@ export default function CommonLayout(props: Props) {
   const setUserInfo = useAuthStore(
     (state) => state.setUser
   );
-  const pathname = usePathname();
   const { data, isFetching } = useMyInfo();
 
   React.useEffect(() => {
@@ -66,13 +64,10 @@ export default function CommonLayout(props: Props) {
 
   const handleLogout = async () => {
     await logout();
-    router.replace('/');
+    router.replace('/login');
     setUserInfo({ role: null, id: null });
     snackBar('안녕히 가세요.', 'success');
   };
-
-  if (!userRole && pathname === '/') return children;
-  if (!userRole) return <></>;
 
   const drawer = (
     <Box
@@ -195,6 +190,7 @@ export default function CommonLayout(props: Props) {
         }}
       >
         <Toolbar />
+
         {children}
       </Box>
     </Box>

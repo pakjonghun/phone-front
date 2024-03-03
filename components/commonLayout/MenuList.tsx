@@ -18,7 +18,7 @@ const MenuList = () => {
   const role = useAuthStore((state) => state.role);
   const isAdmin = role === Role.ADMIN;
   const pathname = usePathname();
-
+  const firstURL = pathname.match(/^\/([^/]+)/)?.[1] ?? '';
   return (
     <List>
       {menuList.map(({ name, id, icon }) => {
@@ -28,7 +28,7 @@ const MenuList = () => {
         return (
           <ListItem key={`${name}_${id}`} disablePadding>
             <ListItemButton
-              selected={pathname.includes(id)}
+              selected={id === firstURL}
               sx={{ p: 0 }}
             >
               <CustomLink href={`/${id}`}>

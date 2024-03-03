@@ -1,8 +1,9 @@
 'use client';
 
 import { Box, Stack, Tab, Tabs } from '@mui/material';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
+import CommonLayout from '@/components/commonLayout/CommonLayout';
 
 interface Props {
   children?: React.ReactNode;
@@ -12,15 +13,11 @@ type Tab = 0 | 1;
 
 const Search: FC<Props> = ({ children }) => {
   const pathname = usePathname();
-  const [selectedTab, setSelectedTab] = useState<Tab>(0);
-  const handleChangeTab = (_: any, newValue: Tab) => {
-    setSelectedTab(newValue);
-  };
 
   const route = useRouter();
 
   return (
-    <Box>
+    <CommonLayout>
       <Stack
         direction="row"
         sx={{
@@ -29,7 +26,7 @@ const Search: FC<Props> = ({ children }) => {
           justifyContent: 'space-between',
         }}
       >
-        <Tabs value={pathname} onChange={handleChangeTab}>
+        <Tabs value={pathname}>
           <Tab
             value={'/search'}
             label="판매"
@@ -46,7 +43,7 @@ const Search: FC<Props> = ({ children }) => {
         </Tabs>
       </Stack>
       <Box sx={{ minWidth: '930px' }}>{children}</Box>
-    </Box>
+    </CommonLayout>
   );
 };
 

@@ -5,7 +5,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 
 export const menuList: MenuItem[] = [
   {
-    id: 'dashboard',
+    id: '',
     name: '대시보드',
     icon: <DashboardIcon />,
   },

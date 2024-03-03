@@ -33,7 +33,7 @@ export default function RootLayout({
           <MuiThemeProvider>
             <SnackBarProvider>
               <ReactQueryClientProvider>
-                <CommonLayout>{children}</CommonLayout>
+                {children}
               </ReactQueryClientProvider>
             </SnackBarProvider>
           </MuiThemeProvider>

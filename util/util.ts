@@ -12,7 +12,7 @@ export const client = (fetch: Promise<Response>) => {
 
 const isNotNumber = (number: unknown) => {
   const isNan = isNaN(Number(number));
-  return isNan;
+  return !isNan;
 };
 
 export function getCurrencyToKRW(number: number) {
