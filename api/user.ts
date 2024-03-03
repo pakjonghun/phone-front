@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 
 export const serverMe = async () => {
   const cookie = cookies().get('userInfo')?.value;
+  console.log('send cookiecookie', cookie);
   if (!cookie) {
     return;
   }
