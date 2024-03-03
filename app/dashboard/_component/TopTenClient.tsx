@@ -7,29 +7,29 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Typography } from '@mui/material';
-import { RecentSale } from '@/model/dashboard';
+import { Aggregate, RecentSale } from '@/model/dashboard';
 
 function createData(
   name: string,
-  date: string,
+  date: number,
   client: number
 ) {
   return { name, date, client };
 }
 
-const header = ['상품', '날짜', '판매가'];
+const header = ['거래처', '건수', '누적가격'];
 
 interface Props {
   title: string;
-  data: RecentSale[];
+  data: Aggregate[];
 }
 
-export default function RecentSaleTable({
+export default function TopTenClient({
   title,
   data,
 }: Props) {
   const rows = data.map((item) =>
-    createData(item.product, item.outDate, item.outPrice)
+    createData(item._id, item.accPrice, item.accPrice)
   );
 
   return (

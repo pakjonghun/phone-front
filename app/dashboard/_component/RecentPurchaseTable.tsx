@@ -7,7 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Typography } from '@mui/material';
-import { RecentSale } from '@/model/dashboard';
+import { RecentPurchase } from '@/model/dashboard';
 
 function createData(
   name: string,
@@ -17,19 +17,19 @@ function createData(
   return { name, date, client };
 }
 
-const header = ['상품', '날짜', '판매가'];
+const header = ['상품', '거래처', '매입가'];
 
 interface Props {
   title: string;
-  data: RecentSale[];
+  data: RecentPurchase[];
 }
 
-export default function RecentSaleTable({
+export default function RecentPurchaseTable({
   title,
   data,
 }: Props) {
   const rows = data.map((item) =>
-    createData(item.product, item.outDate, item.outPrice)
+    createData(item.product, item.inClient, item.inPrice)
   );
 
   return (

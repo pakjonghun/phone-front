@@ -1,12 +1,11 @@
 'use client';
 
 import SubmitButton from '@/components/SubmitButton';
-import { Form, MtButton } from '@/components/common';
+import { Form } from '@/components/common';
 import { useSnackbar } from '@/context/SnackBarProvicer';
 import { useSignUp } from '@/hooks/auth/useAuthData';
 import { User } from '@/model/user';
 import {
-  CircularProgress,
   Dialog,
   DialogContent,
   DialogContentText,
@@ -23,7 +22,10 @@ interface Props {
   onClose: () => void;
 }
 
-const SignUpDialog: FC<Props> = ({ openSignUp, onClose }) => {
+const SignUpDialog: FC<Props> = ({
+  openSignUp,
+  onClose,
+}) => {
   const { mutate, isLoading } = useSignUp();
   const snackbar = useSnackbar();
 
@@ -52,7 +54,9 @@ const SignUpDialog: FC<Props> = ({ openSignUp, onClose }) => {
     <Dialog fullWidth open={openSignUp} onClose={onClose}>
       <DialogTitle>회원가입</DialogTitle>
       <DialogContent>
-        <DialogContentText>새로운 계정을 생성합니다.</DialogContentText>
+        <DialogContentText>
+          새로운 계정을 생성합니다.
+        </DialogContentText>
         <Form
           onSubmit={handleSubmit(submit)}
           sx={{
@@ -67,7 +71,8 @@ const SignUpDialog: FC<Props> = ({ openSignUp, onClose }) => {
               required: '아이디를 입력하세요',
               minLength: {
                 value: 2,
-                message: '아이디는 2글자 이상을 입력하세요.',
+                message:
+                  '아이디는 2글자 이상을 입력하세요.',
               },
             })}
             label="아이디"
@@ -80,7 +85,8 @@ const SignUpDialog: FC<Props> = ({ openSignUp, onClose }) => {
               required: '비밀번호를 입력하세요',
               minLength: {
                 value: 8,
-                message: '비밀번호는 8글자 이상을 입력하세요.',
+                message:
+                  '비밀번호는 8글자 이상을 입력하세요.',
               },
             })}
             label="비밀번호"
@@ -99,7 +105,10 @@ const SignUpDialog: FC<Props> = ({ openSignUp, onClose }) => {
             <MenuItem value="MANAGER">매니저</MenuItem>
             <MenuItem value="STAFF">일반</MenuItem>
           </Select>
-          <SubmitButton isLoading={isLoading} text="회원가입" />
+          <SubmitButton
+            isLoading={isLoading}
+            text="회원가입"
+          />
         </Form>
       </DialogContent>
     </Dialog>

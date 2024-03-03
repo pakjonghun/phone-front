@@ -7,10 +7,17 @@ interface Props {
   isLoading?: boolean;
 }
 
-const SubmitButton: FC<Props> = ({ text, isLoading = false }) => {
+const SubmitButton: FC<Props> = ({
+  text,
+  isLoading = false,
+}) => {
   return (
     <MtButton
-      startIcon={isLoading ? <CircularProgress size={20} color="info" /> : null}
+      startIcon={
+        isLoading ? (
+          <CircularProgress size={18} color="info" />
+        ) : null
+      }
       type="submit"
       size="large"
       variant="contained"

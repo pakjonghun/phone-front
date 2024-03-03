@@ -49,9 +49,5 @@ export const useMyInfo = () => {
 };
 
 export const logout = () => {
-  // return fetch('/api/auth', {
-  //   method: 'post',
-  //   credentials: 'include',
-  // }).then<CommonMutation>((res) => res.json());
   client.get('/user/logout').then((res) => res.data);
 };
