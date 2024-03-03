@@ -15,10 +15,7 @@ import {
 } from '@mui/material';
 import { useSnackbar } from '@/context/SnackBarProvicer';
 import { useQueryClient } from 'react-query';
-import {
-  SALE_CONFIRM,
-  SALE_LIST,
-} from '@/hooks/search/sale/constant';
+import { SALE_LIST } from '@/hooks/search/sale/constant';
 import {
   useApplySale,
   useConfirmSale,
@@ -109,9 +106,9 @@ export default function EnhancedTableToolbar(
     state.hasSelectedItem()
   );
 
-  const isLoading = queryClient.getQueryState([
-    SALE_CONFIRM,
-  ]);
+  const isMultiSalePurchaseLoading = useSaleTable(
+    (state) => state.isMultiConfirmLoading
+  );
 
   return (
     <Toolbar
@@ -212,7 +209,7 @@ export default function EnhancedTableToolbar(
             variant="outlined"
             sx={{ width: '120px' }}
             startIcon={
-              isLoading ? (
+              isMultiSalePurchaseLoading ? (
                 <CircularProgress size={18} />
               ) : (
                 <></>

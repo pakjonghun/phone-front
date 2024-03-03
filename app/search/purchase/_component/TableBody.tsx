@@ -62,9 +62,15 @@ const TableBodyList = () => {
   const openApplyDialog = usePurchaseAlert(
     (state) => state.warnShow
   );
+
+  const setMultiPurchaseConfirmLoading = usePurchaseTable(
+    (state) => state.setIsMultiConfirmingLoading
+  );
   const { mutate: confirm, isLoading } =
     useConfirmPurchase();
+
   const handleClickConfirm = () => {
+    setMultiPurchaseConfirmLoading(true);
     confirm(selectedPurchaseIdList, {
       onSuccess: () => {
         snackBar('승인이 완료되었습니다.', 'success');
@@ -79,6 +85,7 @@ const TableBodyList = () => {
         );
       },
       onSettled: () => {
+        setMultiPurchaseConfirmLoading(false);
         setOpenApplyDialog(false);
       },
     });

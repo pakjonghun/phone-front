@@ -5,7 +5,7 @@ import {
 } from '@/api/type';
 import { client } from '@/api/client';
 import { useMutation } from 'react-query';
-import { SALE_CONFIRM, SALE_LIST } from './constant';
+import { SALE_LIST } from './constant';
 import { useInfiniteQuery } from 'react-query';
 import { RequestSaleList } from './type';
 import { Sale } from '@/model/sale';
@@ -55,7 +55,6 @@ const confirmSale = async (saleIdList: string[]) => {
 export const useConfirmSale = () => {
   return useMutation<CommonMutation, CommonError, string[]>(
     {
-      mutationKey: [SALE_CONFIRM],
       mutationFn: confirmSale,
     }
   );

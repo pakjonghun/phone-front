@@ -12,12 +12,19 @@ type PurchaseTable = {
     flatPurchaseData: Purchase[]
   ) => void;
   hasSelectedItem: () => boolean;
+  isMultiConfirmingLoading: boolean;
+  setIsMultiConfirmingLoading: (value: boolean) => void;
 };
 
 const purchaseTableApi: StateCreator<
   PurchaseTable,
   [['zustand/immer', never], ['zustand/devtools', never]]
 > = (set, get) => ({
+  isMultiConfirmingLoading: false,
+  setIsMultiConfirmingLoading: (value) =>
+    set((state) => {
+      state.isMultiConfirmingLoading = value;
+    }),
   selectedPurchaseList: [],
   hasSelectedItem: () =>
     get().selectedPurchaseList.length > 0,

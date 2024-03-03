@@ -8,12 +8,19 @@ type SaleTable = {
   setSelectedSaleList: (saleList: Sale[]) => void;
   handleSelectAllClick: (flatSaleData: Sale[]) => void;
   hasSelectedItem: () => boolean;
+  isMultiConfirmLoading: boolean;
+  setIsMultiConfirmLoading: (value: boolean) => void;
 };
 
 const saleTableApi: StateCreator<
   SaleTable,
   [['zustand/immer', never], ['zustand/devtools', never]]
 > = (set, get) => ({
+  isMultiConfirmLoading: false,
+  setIsMultiConfirmLoading: (value) =>
+    set((state) => {
+      state.isMultiConfirmLoading = value;
+    }),
   selectedSaleList: [],
   hasSelectedItem: () => get().selectedSaleList.length > 0,
   setSelectedSaleList: (saleList) =>

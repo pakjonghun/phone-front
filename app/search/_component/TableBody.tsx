@@ -59,8 +59,15 @@ const TableBodyList = () => {
   const openApplyDialog = useSaleAlert(
     (state) => state.warnShow
   );
+
   const { mutate: confirm, isLoading } = useConfirmSale();
+
+  const setIsConfirmingLoading = useSaleTable(
+    (state) => state.setIsMultiConfirmLoading
+  );
+
   const handleClickConfirm = () => {
+    setIsConfirmingLoading(true);
     confirm(selectedSaleIdList, {
       onSuccess: () => {
         snackBar('승인이 완료되었습니다.', 'success');
@@ -75,6 +82,7 @@ const TableBodyList = () => {
         );
       },
       onSettled: () => {
+        setIsConfirmingLoading(false);
         setOpenApplyDialog(false);
       },
     });

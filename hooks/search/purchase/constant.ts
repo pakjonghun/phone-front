@@ -1,7 +1,6 @@
 import { PurchaseSort } from './type';
 
 export const PURCHASE_LIST = 'PURCHASE_LIST';
-export const PURCHASE_CONFIRM = 'PURCHASE_CONFIRM';
 
 export const canSortList: PurchaseSort[] = [
   'product',
