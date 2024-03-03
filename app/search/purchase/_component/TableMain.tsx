@@ -80,7 +80,9 @@ export default function PurchaseTableMain() {
             alignItems: 'center',
           }}
         >
-          {isLoading && <CircularProgress color="info" />}
+          {isLoading && (
+            <CircularProgress color="primary" />
+          )}
         </Box>
       </TableContainer>
     </Paper>

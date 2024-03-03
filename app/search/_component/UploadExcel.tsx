@@ -12,8 +12,11 @@ interface Props {
 
 const UploadExcel: FC<Props> = ({ sx = {} }) => {
   const snackbar = useSnackbar();
-  const { mutate: upload, isLoading } =
-    useUploadSaleExcel();
+  const {
+    mutate: upload,
+    isLoading,
+    isError,
+  } = useUploadSaleExcel();
 
   const inputRef = React.useRef<null | HTMLInputElement>(
     null
@@ -65,7 +68,7 @@ const UploadExcel: FC<Props> = ({ sx = {} }) => {
       onChange={onChangeInputFile}
       inputRef={inputRef}
       text="엑셀 업로드"
-      isPending={isLoading}
+      isPending={!isError && isLoading}
     />
   );
 };

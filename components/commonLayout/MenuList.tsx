@@ -31,7 +31,7 @@ const MenuList = () => {
               selected={pathname.includes(id)}
               sx={{ p: 0 }}
             >
-              <CustomLink href={id}>
+              <CustomLink href={`/${id}`}>
                 <ListItemIcon>
                   {!!icon && icon}
                 </ListItemIcon>
