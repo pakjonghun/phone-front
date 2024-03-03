@@ -1,7 +1,7 @@
 import { Skeleton } from '@mui/material';
 import React from 'react';
 
-const CradSkeleton = () => {
+const CardSkeleton = () => {
   return (
     <Skeleton
       variant="rounded"
@@ -11,4 +11,4 @@ const CradSkeleton = () => {
   );
 };
 
-export default CradSkeleton;
+export default CardSkeleton;

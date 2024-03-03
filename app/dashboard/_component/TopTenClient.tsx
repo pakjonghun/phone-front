@@ -7,14 +7,22 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Typography } from '@mui/material';
-import { Aggregate, RecentSale } from '@/model/dashboard';
+import { Aggregate } from '@/model/dashboard';
+import {
+  getCurrencyToKRW,
+  getWithCommaNumber,
+} from '../util';
 
 function createData(
   name: string,
   date: number,
   client: number
 ) {
-  return { name, date, client };
+  return {
+    name,
+    date: getWithCommaNumber(date),
+    client: getCurrencyToKRW(client),
+  };
 }
 
 const header = ['거래처', '건수', '누적가격'];
@@ -29,7 +37,7 @@ export default function TopTenClient({
   data,
 }: Props) {
   const rows = data.map((item) =>
-    createData(item._id, item.accPrice, item.accPrice)
+    createData(item._id, item.count, item.accPrice)
   );
 
   return (

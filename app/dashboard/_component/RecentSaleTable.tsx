@@ -8,16 +8,17 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Typography } from '@mui/material';
 import { RecentSale } from '@/model/dashboard';
+import { getCurrencyToKRW } from '../util';
 
 function createData(
   name: string,
   date: string,
   client: number
 ) {
-  return { name, date, client };
+  return { name, date, client: getCurrencyToKRW(client) };
 }
 
-const header = ['상품', '날짜', '판매가'];
+const header = ['상품', '거래처', '판매가'];
 
 interface Props {
   title: string;
@@ -29,7 +30,7 @@ export default function RecentSaleTable({
   data,
 }: Props) {
   const rows = data.map((item) =>
-    createData(item.product, item.outDate, item.outPrice)
+    createData(item.product, item.outClient, item.outPrice)
   );
 
   return (

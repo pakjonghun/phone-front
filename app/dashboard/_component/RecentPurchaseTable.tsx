@@ -8,13 +8,14 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Typography } from '@mui/material';
 import { RecentPurchase } from '@/model/dashboard';
+import { getCurrencyToKRW } from '../util';
 
 function createData(
   name: string,
   date: string,
   client: number
 ) {
-  return { name, date, client };
+  return { name, date, client: getCurrencyToKRW(client) };
 }
 
 const header = ['상품', '거래처', '매입가'];

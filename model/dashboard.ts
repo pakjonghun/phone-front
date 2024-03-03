@@ -7,8 +7,12 @@ export type Aggregate = {
   accPrice: number;
 };
 
-export type RecentSale = Omit<Sale, 'product'> & {
+export type RecentSale = Omit<
+  Sale,
+  'product' | 'outClient'
+> & {
   product: string;
+  outClient: string;
 };
 
 export type RecentPurchase = Omit<
