@@ -80,3 +80,13 @@ export const useDropAccount = () => {
     mutationFn: dropAccount,
   });
 };
+
+const resetData = async () => {
+  return client.delete('/reset').then((res) => res.data);
+};
+
+export const useResetAllData = () => {
+  return useMutation<CommonMutation, CommonError, void>({
+    mutationFn: resetData,
+  });
+};

@@ -5,15 +5,19 @@ import { Person } from '@mui/icons-material';
 import {
   Box,
   Button,
+  CircularProgress,
   Grid,
   Paper,
   Skeleton,
+  Stack,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
 import SignUpDialog from './_component/SignUpDialog';
 import {
   useDropAccount,
+  useResetAllData,
   useUserList,
 } from '@/hooks/user/useUserData';
 import UserCard from './_component/UserCard';
@@ -25,6 +29,8 @@ import AlertDialog from '@/components/dialog/AlertDialog';
 import { useUserId } from '@/lib/store/user/userId';
 import { useQueryClient } from 'react-query';
 import { USER_LIST } from '@/hooks/user/constant';
+import { SALE_LIST } from '@/hooks/search/sale/constant';
+import { PURCHASE_LIST } from '@/hooks/search/purchase/constant';
 
 const Admin = () => {
   const snackbar = useSnackbar();
@@ -52,6 +58,8 @@ const Admin = () => {
 
   const showForm = useUserAlert((state) => state.formShow);
   const [openSignUp, setOpenSignUp] = useState(false);
+  const [openDeleteAlert, setOpenDeleteAlert] =
+    useState(false);
   const { mutate: dropAccount } = useDropAccount();
   const queryClient = useQueryClient();
   const handleDropAccount = () => {
@@ -73,6 +81,27 @@ const Admin = () => {
     });
   };
 
+  const { mutate: reset, isLoading: isResetting } =
+    useResetAllData();
+  const handleDeleteData = () => {
+    reset(undefined, {
+      onSuccess: () => {
+        snackbar('초기화가 완료되었습니다.');
+        queryClient.invalidateQueries([
+          SALE_LIST,
+          PURCHASE_LIST,
+        ]);
+      },
+      onError: (error) => {
+        const errorMessage = error.response.data?.message;
+        snackbar(errorMessage ?? '초기화가 실패했습니다.');
+      },
+      onSettled: () => {
+        setOpenDeleteAlert(false);
+      },
+    });
+  };
+
   return (
     <Box
       sx={{
@@ -82,6 +111,47 @@ const Admin = () => {
         width: '100%',
       }}
     >
+      <AlertDialog
+        title="데이터 리셋"
+        message={
+          <>
+            <Typography
+              variant="caption"
+              sx={{
+                display: 'block',
+                width: '300px',
+                fontSize: '14px',
+              }}
+            >
+              정말로 모든 데이터를 삭제하겠습니까?
+            </Typography>
+            <Typography
+              variant="caption"
+              sx={{
+                display: 'block',
+                width: '300px',
+                fontSize: '14px',
+              }}
+            >
+              삭제된 계정은 복구가 불가능합니다.
+            </Typography>
+            <Typography
+              variant="caption"
+              sx={{
+                display: 'block',
+                width: '300px',
+                fontSize: '14px',
+              }}
+            >
+              판매, 매입 데이터가 모두 삭제됩니다.
+            </Typography>
+          </>
+        }
+        variant="error"
+        onClickApply={handleDeleteData}
+        open={openDeleteAlert}
+        setOpen={setOpenDeleteAlert}
+      />
       <AlertDialog
         title="계정삭제"
         message={
@@ -130,14 +200,33 @@ const Admin = () => {
         }}
       >
         <Typography variant="h4">관리자 관리</Typography>
-        <Button
-          startIcon={<Person />}
-          sx={{ ml: 'auto' }}
-          onClick={() => setOpenSignUp(true)}
-          variant="contained"
-        >
-          회원생성
-        </Button>
+        <Stack direction="row" gap={2}>
+          <Button
+            startIcon={<Person />}
+            sx={{ ml: 'auto' }}
+            onClick={() => setOpenSignUp(true)}
+            variant="contained"
+          >
+            회원생성
+          </Button>
+          <Tooltip title="계정을 제외한 모든 데이터가 삭제됩니다.">
+            <Button
+              startIcon={
+                isResetting ? (
+                  <CircularProgress size={18} />
+                ) : (
+                  <Person />
+                )
+              }
+              sx={{ ml: 'auto' }}
+              onClick={() => setOpenDeleteAlert(true)}
+              variant="contained"
+              color="error"
+            >
+              모든 데이터 리셋
+            </Button>
+          </Tooltip>
+        </Stack>
       </Header>
       <Paper>
         <Grid container rowSpacing={1} columnSpacing={1}>
