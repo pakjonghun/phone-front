@@ -180,7 +180,7 @@ const TableBodyList = () => {
                     {row.product._id}
                   </TableCell>
                   <TableCell align="left">
-                    {purchaseRank.at(row.rank)}
+                    {purchaseRank.at(row.rank - 1)}
                   </TableCell>
                   <TableCell align="left">
                     {row.distanceLog || '-'}
