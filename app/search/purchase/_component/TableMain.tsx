@@ -5,7 +5,10 @@ import TableContainer from '@mui/material/TableContainer';
 import Paper from '@mui/material/Paper';
 import { usePurchaseQueryStore } from '@/lib/store/purchase/purchaseList';
 import { usePurchaseList } from '@/hooks/search/purchase/usePurchaseData';
-import { CircularProgress } from '@mui/material';
+import {
+  CircularProgress,
+  Typography,
+} from '@mui/material';
 import useInfinity from '@/hooks/common/useInfinity';
 import EnhancedTableHead from './TableHeader';
 import EnhancedTableToolbar from './ToolBar';
@@ -20,7 +23,7 @@ export default function PurchaseTableMain() {
   const length = usePurchaseQueryStore(
     (state) => state.length
   );
-  const { data, hasNextPage, fetchNextPage, isLoading } =
+  const { data, hasNextPage, fetchNextPage, isFetching } =
     usePurchaseList({
       keyword,
       sort,
@@ -32,7 +35,7 @@ export default function PurchaseTableMain() {
   ) => {
     if (
       hasNextPage &&
-      !isLoading &&
+      !isFetching &&
       entry[0].isIntersecting
     ) {
       fetchNextPage();
@@ -80,7 +83,7 @@ export default function PurchaseTableMain() {
             alignItems: 'center',
           }}
         >
-          {isLoading && (
+          {isFetching && (
             <CircularProgress color="primary" />
           )}
         </Box>

@@ -149,7 +149,7 @@ const TableBodyList = () => {
             >
               {isCellLoading ? (
                 <TableCell padding="none" colSpan={8}>
-                  <Skeleton height={60} />
+                  <Skeleton sx={{ mx: 2 }} height={60} />
                 </TableCell>
               ) : (
                 <>

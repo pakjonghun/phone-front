@@ -20,7 +20,7 @@ export default function SaleTableMain() {
   );
   const sort = useSaleQueryStore((state) => state.sort);
   const length = useSaleQueryStore((state) => state.length);
-  const { data, hasNextPage, fetchNextPage, isLoading } =
+  const { data, hasNextPage, fetchNextPage, isFetching } =
     useSaleList({
       keyword,
       sort,
@@ -32,7 +32,7 @@ export default function SaleTableMain() {
   ) => {
     if (
       hasNextPage &&
-      !isLoading &&
+      !isFetching &&
       entry[0].isIntersecting
     ) {
       fetchNextPage();
@@ -80,7 +80,7 @@ export default function SaleTableMain() {
             alignItems: 'center',
           }}
         >
-          {isLoading && (
+          {isFetching && (
             <CircularProgress color="primary" />
           )}
         </Box>

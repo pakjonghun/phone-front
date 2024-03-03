@@ -15,7 +15,10 @@ import {
 } from '@mui/material';
 import { useSnackbar } from '@/context/SnackBarProvicer';
 import { useQueryClient } from 'react-query';
-import { SALE_LIST } from '@/hooks/search/sale/constant';
+import {
+  SALE_CONFIRM,
+  SALE_LIST,
+} from '@/hooks/search/sale/constant';
 import {
   useApplySale,
   useConfirmSale,
@@ -46,7 +49,6 @@ export default function EnhancedTableToolbar(
   const { mutate: download, isLoading: isDownloading } =
     useDownloadSale();
 
-  const { isLoading } = useConfirmSale();
   const setOpenApplyDialog = useSaleAlert(
     (state) => state.setWarnShow
   );
@@ -106,6 +108,10 @@ export default function EnhancedTableToolbar(
   const hasSelectedItem = useSaleTable((state) =>
     state.hasSelectedItem()
   );
+
+  const isLoading = queryClient.getQueryState([
+    SALE_CONFIRM,
+  ]);
 
   return (
     <Toolbar

@@ -5,7 +5,10 @@ import dayjs from 'dayjs';
 import { CommonError } from '@/api/type';
 import { client } from '@/api/client';
 import { useMutation } from 'react-query';
-import { PURCHASE_LIST } from './constant';
+import {
+  PURCHASE_CONFIRM,
+  PURCHASE_LIST,
+} from './constant';
 import { Purchase } from '@/model/purchase';
 
 const uploadPurchaseExcel = (excelFile: FormData) => {
@@ -59,6 +62,7 @@ const confirmPurchase = async (
 export const useConfirmPurchase = () => {
   return useMutation<CommonMutation, CommonError, string[]>(
     {
+      mutationKey: [PURCHASE_CONFIRM],
       mutationFn: confirmPurchase,
     }
   );

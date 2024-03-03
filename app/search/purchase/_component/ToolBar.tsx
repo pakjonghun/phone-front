@@ -15,7 +15,10 @@ import {
 } from '@mui/material';
 import { useSnackbar } from '@/context/SnackBarProvicer';
 import { useQueryClient } from 'react-query';
-import { PURCHASE_LIST } from '@/hooks/search/purchase/constant';
+import {
+  PURCHASE_CONFIRM,
+  PURCHASE_LIST,
+} from '@/hooks/search/purchase/constant';
 import {
   useApplyPurchase,
   useConfirmPurchase,
@@ -46,7 +49,6 @@ export default function EnhancedTableToolbar(
   const { mutate: download, isLoading: isDownloading } =
     useDownloadPurchase();
 
-  const { isLoading } = useConfirmPurchase();
   const setOpenApplyDialog = usePurchaseAlert(
     (state) => state.setWarnShow
   );
@@ -105,6 +107,10 @@ export default function EnhancedTableToolbar(
 
   const hasSelectedItem = usePurchaseTable((state) =>
     state.hasSelectedItem()
+  );
+
+  const isLoading = queryClient.getQueryState(
+    PURCHASE_CONFIRM
   );
 
   return (

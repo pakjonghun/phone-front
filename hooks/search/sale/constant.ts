@@ -1,6 +1,7 @@
 import { SaleSort } from './type';
 
 export const SALE_LIST = 'SALE_LIST';
+export const SALE_CONFIRM = 'SALE_CONFIRM';
 
 export const canSortList: SaleSort[] = [
   'product',
