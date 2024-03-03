@@ -8,7 +8,7 @@ export const serverMe = async () => {
     return;
   }
   return client(
-    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/user/me`, {
+    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}user/me`, {
       headers: {
         Cookie: cookie,
       },
