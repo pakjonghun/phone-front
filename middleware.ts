@@ -14,6 +14,14 @@ export async function middleware(req: NextRequest) {
     if (!userInfo) {
       return NextResponse.redirect(new URL('/', req.url));
     }
+
+    if (req.nextUrl.pathname.includes('admin')) {
+      if (userInfo.role !== 'ADMIN') {
+        return NextResponse.redirect(
+          new URL('/dashboard', req.url)
+        );
+      }
+    }
   }
 }
 
