@@ -1,7 +1,7 @@
 import { client } from '@/util';
 import { cookies } from 'next/headers';
 
-export const serverMe = () => {
+export const serverMe = async () => {
   const cookie = cookies().get('userInfo')?.value;
   if (!cookie) {
     return;
