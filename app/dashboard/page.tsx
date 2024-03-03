@@ -45,11 +45,15 @@ const Dashboard = () => {
             <CardSkeleton />
           ) : (
             <TopCard
-              title="제품"
-              note="누적 판매수 높은 제품"
-              data={data?.topThreeProduct ?? []}
-              suffixFunc={({ _id, count }) =>
-                `${_id}(${getWithCommaNumber(count)}건)`
+              title="총 매출"
+              note="누적 판매수/판매금액"
+              data={data?.totalSale ? [data.totalSale] : []}
+              suffixFunc={({ count, accPrice }) =>
+                `누적판매 : ${getWithCommaNumber(
+                  count
+                )}건 / 누적 매출 : ${getCurrencyToKRW(
+                  accPrice
+                )}`
               }
             />
           )}
@@ -73,15 +77,11 @@ const Dashboard = () => {
             <CardSkeleton />
           ) : (
             <TopCard
-              title="총 매출"
-              note="누적 판매수/판매금액"
-              data={data?.totalSale ? [data.totalSale] : []}
-              suffixFunc={({ count, accPrice }) =>
-                `누적판매 : ${getWithCommaNumber(
-                  count
-                )}건 / 누적 매출 : ${getCurrencyToKRW(
-                  accPrice
-                )}`
+              title="제품"
+              note="누적 판매수 높은 제품"
+              data={data?.topThreeProduct ?? []}
+              suffixFunc={({ _id, count }) =>
+                `${_id}(${getWithCommaNumber(count)}건)`
               }
             />
           )}
