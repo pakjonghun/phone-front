@@ -77,7 +77,7 @@ const marginQueryStoreApi: StateCreator<
     set(
       (state) => {
         const isMulti = get().sortType === 'multi';
-
+        console.log(isMulti);
         if (isMulti) {
           const existSortIndex = state.sort.findIndex(
             ([sortKey]) => sortKey === inputSortKey

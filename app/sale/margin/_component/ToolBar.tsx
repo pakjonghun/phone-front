@@ -25,6 +25,7 @@ import { useSaleAlert } from '@/lib/store/sale/saleAlert';
 import { useSaleTable } from '@/lib/store/sale/saleTable';
 import SelectedIndicator from './SelectedIndicator';
 import { useMarginTable } from '@/lib/store/sale/marginTable';
+import { useMarginQueryStore } from '@/lib/store/sale/marginList';
 
 interface EnhancedTableToolbarProps {
   searchDataCount: number;
@@ -35,7 +36,7 @@ export default function EnhancedTableToolbar(
 ) {
   const { searchDataCount } = props;
 
-  const selectedSaleList = useMarginTable(
+  const selectedMarginList = useMarginTable(
     (state) => state.selectedMarginList
   );
 
@@ -56,7 +57,7 @@ export default function EnhancedTableToolbar(
 
   const handleClickDownload = () => {
     download(
-      selectedSaleList.map((item) => item._id),
+      selectedMarginList.map((item) => item._id),
       {
         onSuccess: () => {
           snackBar('다운로드가 완료되었습니다.', 'success');
@@ -91,14 +92,14 @@ export default function EnhancedTableToolbar(
     });
   };
 
-  const sortType = useSaleQueryStore(
+  const sortType = useMarginQueryStore(
     (state) => state.sortType
   );
-  const toggleSortType = useSaleQueryStore(
+  const toggleSortType = useMarginQueryStore(
     (state) => state.toggleSortType
   );
 
-  const confirmedInclude = selectedSaleList.some(
+  const confirmedInclude = selectedMarginList.some(
     (item) => item.isConfirmed
   );
 

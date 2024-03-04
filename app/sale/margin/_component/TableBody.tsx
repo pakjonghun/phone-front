@@ -119,8 +119,6 @@ const TableBodyList = () => {
     data?.pages.flatMap((item) => item.data) ??
     Array.from({ length: 14 });
 
-  console.log(data);
-
   const handleClickRow = (saleItem: Margin) => {
     if (role === Role.STAFF) return;
     const isIdInclude = selectedIdList.find(
@@ -217,11 +215,13 @@ const TableBodyList = () => {
                     {getWithCommaNumber(row.margin)}
                   </TableCell>
                   <TableCell align="left">
-                    {row.marginRate < 0
-                      ? Math.ceil(row.marginRate * 100) /
-                        100
-                      : Math.floor(row.marginRate * 100) /
-                        100}
+                    {`${
+                      row.marginRate < 0
+                        ? Math.ceil(row.marginRate * 100) /
+                          100
+                        : Math.floor(row.marginRate * 100) /
+                          100
+                    }%`}
                   </TableCell>
                   <TableCell
                     align="center"
