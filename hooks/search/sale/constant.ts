@@ -1,6 +1,7 @@
 import { SaleSort } from './type';
 
 export const SALE_LIST = 'SALE_LIST';
+export const MARGIN_LIST = 'MARGIN_LIST';
 
 export const canSortList: SaleSort[] = [
   'product',

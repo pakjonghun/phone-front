@@ -16,3 +16,24 @@ export type RequestSaleList = {
   sort: SaleSortItem[];
   length: number;
 };
+
+export type MarginSort =
+  | 'product'
+  | 'isConfirmed'
+  | 'inPrice'
+  | 'outPrice'
+  | 'margin'
+  | 'marginRate';
+
+export type MarginSortItem = [
+  MarginSort,
+  Order | undefined
+];
+
+export type RequestMarginList = {
+  keyword: string;
+  sort: MarginSortItem[];
+  length: number;
+  startDate?: string;
+  endDate?: string;
+};

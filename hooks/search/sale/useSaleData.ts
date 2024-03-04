@@ -5,11 +5,12 @@ import {
 } from '@/api/type';
 import { client } from '@/api/client';
 import { useMutation } from 'react-query';
-import { SALE_LIST } from './constant';
+import { MARGIN_LIST, SALE_LIST } from './constant';
 import { useInfiniteQuery } from 'react-query';
-import { RequestSaleList } from './type';
+import { RequestMarginList, RequestSaleList } from './type';
 import { Sale } from '@/model/sale';
 import dayjs from 'dayjs';
+import { Margin } from '@/model/margin';
 
 const uploadSaleExcel = (excelFile: FormData) => {
   return client
@@ -40,6 +41,28 @@ export const useSaleList = (query: RequestSaleList) => {
     queryKey: [SALE_LIST, { ...query }],
     queryFn: ({ pageParam = 1 }) =>
       saleList({ ...query, page: pageParam }),
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.hasNext ? allPages.length + 1 : null;
+    },
+  });
+};
+
+const marginList = async (
+  query: RequestMarginList & { page: number }
+) => {
+  return client('/margin', { params: query }).then<
+    ListData<Margin>
+  >((res) => res.data);
+};
+
+export const useMarginList = (query: RequestMarginList) => {
+  return useInfiniteQuery<
+    ListData<Margin>,
+    RequestSaleList
+  >({
+    queryKey: [MARGIN_LIST, { ...query }],
+    queryFn: ({ pageParam = 1 }) =>
+      marginList({ ...query, page: pageParam }),
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.hasNext ? allPages.length + 1 : null;
     },

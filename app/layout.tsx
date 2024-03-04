@@ -5,7 +5,7 @@ import { CssBaseline } from '@mui/material';
 import SnackBarProvider from '@/context/SnackBarProvicer';
 import ReactQueryClientProvider from '@/context/ReactQueryClientProvider';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
-import CommonLayout from '@/components/commonLayout/CommonLayout';
+import MuiDateProvider from '@/context/MuiDateProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -33,7 +33,9 @@ export default function RootLayout({
           <MuiThemeProvider>
             <SnackBarProvider>
               <ReactQueryClientProvider>
-                {children}
+                <MuiDateProvider>
+                  {children}
+                </MuiDateProvider>
               </ReactQueryClientProvider>
             </SnackBarProvider>
           </MuiThemeProvider>

@@ -1,9 +1,16 @@
 'use client';
 
-import { Box, Stack, Tab, Tabs } from '@mui/material';
+import {
+  Box,
+  Stack,
+  Tab,
+  Tabs,
+  Typography,
+} from '@mui/material';
 import React, { FC } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import CommonLayout from '@/components/commonLayout/CommonLayout';
+import UploadExcel from './_component/UploadExcel';
 
 interface Props {
   children?: React.ReactNode;
@@ -18,6 +25,18 @@ const Search: FC<Props> = ({ children }) => {
 
   return (
     <CommonLayout>
+      <Box
+        sx={{
+          my: 4,
+          ml: 'auto',
+          textAlign: 'right',
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
+        <Typography variant="h4">판매 검색</Typography>
+        <UploadExcel sx={{ ml: 'auto' }} />
+      </Box>
       <Stack
         direction="row"
         sx={{
@@ -28,17 +47,17 @@ const Search: FC<Props> = ({ children }) => {
       >
         <Tabs value={pathname}>
           <Tab
-            value={'/search'}
-            label="판매"
-            {...a11yProps('/search')}
-            onClick={() => route.push('/search')}
+            value={'/sale'}
+            label="최고/최저가 비교"
+            {...a11yProps('/sale')}
+            onClick={() => route.push('/sale')}
           />
 
           <Tab
-            value={'/search/purchase'}
-            label="매입"
-            {...a11yProps('/search/purchase')}
-            onClick={() => route.push('/search/purchase')}
+            value={'/sale/margin'}
+            label="마진율 비교"
+            {...a11yProps('/sale/margin')}
+            onClick={() => route.push('/sale/margin')}
           />
         </Tabs>
       </Stack>
