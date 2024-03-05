@@ -18,6 +18,7 @@ import { useQueryClient } from 'react-query';
 import { MARGIN_LIST } from '@/hooks/search/sale/constant';
 import {
   useApplySale,
+  useDownloadMargin,
   useDownloadSale,
 } from '@/hooks/search/sale/useSaleData';
 import { useSaleAlert } from '@/lib/store/sale/saleAlert';
@@ -43,7 +44,7 @@ export default function EnhancedTableToolbar(
   );
 
   const { mutate: download, isLoading: isDownloading } =
-    useDownloadSale();
+    useDownloadMargin();
 
   const setOpenApplyDialog = useSaleAlert(
     (state) => state.setWarnShow

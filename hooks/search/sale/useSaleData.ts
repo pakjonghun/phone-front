@@ -118,3 +118,29 @@ export const useDownloadSale = () => {
     mutationFn: downloadSale,
   });
 };
+
+const downloadMargin = async (saleIdList: string[]) => {
+  client('/sale/margin/download', {
+    params: { idList: saleIdList },
+    responseType: 'blob',
+  }).then((res) => {
+    const url = window.URL.createObjectURL(
+      new Blob([res.data])
+    );
+    const link = document.createElement('a');
+    link.href = url;
+    const fileName =
+      dayjs().format('YYYYMMDDHHmmss') + '판매.xlsx';
+    link.setAttribute('download', fileName);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.URL.revokeObjectURL(url);
+  });
+};
+
+export const useDownloadMargin = () => {
+  return useMutation<void, CommonError, string[]>({
+    mutationFn: downloadMargin,
+  });
+};
