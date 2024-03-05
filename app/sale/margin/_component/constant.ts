@@ -25,17 +25,18 @@ export const headCells: readonly HeadCell[] = [
     label: '판매처',
     sort: true,
   },
-  {
-    id: 'inPrice',
-    numeric: false,
-    disablePadding: false,
-    label: '매입가',
-  },
+
   {
     id: 'outPrice',
     numeric: true,
     disablePadding: false,
     label: '판매가',
+  },
+  {
+    id: 'inPrice',
+    numeric: false,
+    disablePadding: false,
+    label: '매입가',
   },
   {
     id: 'margin',

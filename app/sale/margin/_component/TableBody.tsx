@@ -205,11 +205,12 @@ const TableBodyList = () => {
                   <TableCell align="left">
                     {row.outClient}
                   </TableCell>
-                  <TableCell align="left">
-                    {getCurrencyToKRW(row.inPrice)}
-                  </TableCell>
+
                   <TableCell align="left">
                     {getCurrencyToKRW(row.outPrice)}
+                  </TableCell>
+                  <TableCell align="left">
+                    {getCurrencyToKRW(row.inPrice)}
                   </TableCell>
                   <TableCell align="left">
                     {getWithCommaNumber(row.margin)}
