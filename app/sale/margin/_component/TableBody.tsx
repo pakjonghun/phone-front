@@ -203,6 +203,9 @@ const TableBodyList = () => {
                     {row.product}
                   </TableCell>
                   <TableCell align="left">
+                    {row.outClient}
+                  </TableCell>
+                  <TableCell align="left">
                     {getCurrencyToKRW(row.inPrice)}
                   </TableCell>
                   <TableCell align="left">

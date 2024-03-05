@@ -23,7 +23,8 @@ export type MarginSort =
   | 'inPrice'
   | 'outPrice'
   | 'margin'
-  | 'marginRate';
+  | 'marginRate'
+  | 'outClient';
 
 export type MarginSortItem = [
   MarginSort,

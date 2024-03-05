@@ -6,4 +6,5 @@ export type Margin = {
   outPrice: number;
   margin: number;
   marginRate: number;
+  outClient: string;
 };

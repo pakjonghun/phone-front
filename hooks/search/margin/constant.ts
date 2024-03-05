@@ -10,6 +10,7 @@ export const canSortList: MarginSort[] = [
   'margin',
   'marginRate',
   'outPrice',
+  'outClient',
 ];
 
 export const sortEngToHangle: Record<MarginSort, string> = {
@@ -19,4 +20,5 @@ export const sortEngToHangle: Record<MarginSort, string> = {
   margin: '마진',
   marginRate: '마진율',
   outPrice: '판매가',
+  outClient: '판매처',
 };

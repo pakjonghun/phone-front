@@ -19,8 +19,6 @@ const SortList = () => {
     (state) => state.resetSort
   );
 
-  console.log('sortList : ', sortList);
-
   return (
     <Box
       sx={{

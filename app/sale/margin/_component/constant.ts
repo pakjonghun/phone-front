@@ -1,7 +1,4 @@
-import {
-  MarginSort,
-  SaleSort,
-} from '@/hooks/search/sale/type';
+import { MarginSort } from '@/hooks/search/sale/type';
 
 export interface HeadCell {
   disablePadding: boolean;
@@ -20,6 +17,13 @@ export const headCells: readonly HeadCell[] = [
     label: '펫네임',
     sort: true,
     width: 200,
+  },
+  {
+    id: 'outClient',
+    numeric: false,
+    disablePadding: false,
+    label: '판매처',
+    sort: true,
   },
   {
     id: 'inPrice',
