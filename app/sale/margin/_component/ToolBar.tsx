@@ -15,14 +15,12 @@ import {
 } from '@mui/material';
 import { useSnackbar } from '@/context/SnackBarProvicer';
 import { useQueryClient } from 'react-query';
-import { SALE_LIST } from '@/hooks/search/sale/constant';
+import { MARGIN_LIST } from '@/hooks/search/sale/constant';
 import {
   useApplySale,
   useDownloadSale,
 } from '@/hooks/search/sale/useSaleData';
-import { useSaleQueryStore } from '@/lib/store/sale/saleList';
 import { useSaleAlert } from '@/lib/store/sale/saleAlert';
-import { useSaleTable } from '@/lib/store/sale/saleTable';
 import SelectedIndicator from './SelectedIndicator';
 import { useMarginTable } from '@/lib/store/sale/marginTable';
 import { useMarginQueryStore } from '@/lib/store/sale/marginList';
@@ -79,7 +77,7 @@ export default function EnhancedTableToolbar(
     refresh(undefined, {
       onSuccess: () => {
         snackBar('갱신이 완료되었습니다.', 'success');
-        queryClient.invalidateQueries([SALE_LIST]);
+        queryClient.invalidateQueries([MARGIN_LIST]);
         setSelectedSaleList([]);
       },
       onError: (error) => {
@@ -103,11 +101,11 @@ export default function EnhancedTableToolbar(
     (item) => item.isConfirmed
   );
 
-  const hasSelectedItem = useSaleTable((state) =>
+  const hasSelectedItem = useMarginTable((state) =>
     state.hasSelectedItem()
   );
 
-  const isMultiSalePurchaseLoading = useSaleTable(
+  const isMultiSalePurchaseLoading = useMarginTable(
     (state) => state.isMultiConfirmLoading
   );
 

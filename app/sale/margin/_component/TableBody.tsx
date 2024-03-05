@@ -17,7 +17,6 @@ import {
 import { useAuthStore } from '@/lib/store/auth/auth';
 import AlertDialog from '@/components/dialog/AlertDialog';
 import { useQueryClient } from 'react-query';
-import { SALE_LIST } from '@/hooks/search/sale/constant';
 import { useSaleAlert } from '@/lib/store/sale/saleAlert';
 import { useSnackbar } from '@/context/SnackBarProvicer';
 import { useSaleTable } from '@/lib/store/sale/saleTable';
@@ -30,6 +29,7 @@ import { useMarginQueryStore } from '@/lib/store/sale/marginList';
 import dayjs from 'dayjs';
 import { Margin } from '@/model/margin';
 import { useMarginTable } from '@/lib/store/sale/marginTable';
+import { MARGIN_LIST } from '@/hooks/search/margin/constant';
 
 const TableBodyList = () => {
   const selectedIdList = useMarginTable(
@@ -48,9 +48,6 @@ const TableBodyList = () => {
 
   const keyword = useMarginQueryStore(
     (state) => state.keyword
-  );
-  const setKeyword = useMarginQueryStore(
-    (state) => state.setKeyword
   );
 
   const delayText = useDebounce({ text: keyword });
@@ -98,7 +95,7 @@ const TableBodyList = () => {
     confirm(selectedSaleIdList, {
       onSuccess: () => {
         snackBar('승인이 완료되었습니다.', 'success');
-        queryClient.invalidateQueries([SALE_LIST]);
+        queryClient.invalidateQueries([MARGIN_LIST]);
         setSelectedIdList([]);
       },
       onError: (error) => {
