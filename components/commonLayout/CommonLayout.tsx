@@ -1,33 +1,23 @@
 'use client';
 import * as React from 'react';
-import MenuList from './MenuList';
-import { usePathname, useRouter } from 'next/navigation';
 import { AppBar } from '@mui/material';
-import { useSnackbar } from '@/context/SnackBarProvicer';
-import {
-  logout,
-  useMyInfo,
-} from '@/hooks/auth/useAuthData';
+import { useMyInfo } from '@/hooks/auth/useAuthData';
 import { useAuthStore } from '@/lib/store/auth/auth';
 import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
-import ListItemButton from '@mui/material/ListItemButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { ExitToApp } from '@mui/icons-material';
+import CommonDrawer from './_components/CommonDrawer';
 
 export const drawerWidth = 240;
 
 interface Props {
-  window?: () => Window;
   children: React.ReactNode;
 }
 
-export default function CommonLayout(props: Props) {
-  const { window, children } = props;
+export default function CommonLayout({ children }: Props) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
 
@@ -46,8 +36,6 @@ export default function CommonLayout(props: Props) {
     }
   };
 
-  const userRole = useAuthStore((state) => state.role);
-  const userId = useAuthStore((state) => state.id);
   const setUserInfo = useAuthStore(
     (state) => state.setUser
   );
@@ -58,58 +46,6 @@ export default function CommonLayout(props: Props) {
       setUserInfo(data);
     }
   }, [data, isFetching, setUserInfo]);
-
-  const router = useRouter();
-  const snackBar = useSnackbar();
-
-  const handleLogout = async () => {
-    await logout();
-    router.replace('/login');
-    setUserInfo({ role: null, id: null });
-    snackBar('안녕히 가세요.', 'success');
-  };
-
-  const drawer = (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100%',
-      }}
-    >
-      <Toolbar />
-      <Divider />
-      <MenuList />
-      <Box sx={{ mt: 'auto', pb: 4, mb: 1 }}>
-        <Divider />
-        <Typography
-          sx={{ mt: 2, ml: 2 }}
-        >{`권한 : ${userRole}`}</Typography>
-        <Typography
-          sx={{ ml: 2 }}
-        >{`아이디 : ${userId}`}</Typography>
-        <ListItemButton
-          onClick={handleLogout}
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-            gap: 1,
-            p: 2,
-          }}
-        >
-          로그아웃
-          <ExitToApp />
-        </ListItemButton>
-      </Box>
-    </Box>
-  );
-
-  // Remove this const when copying and pasting into your project.
-  const container =
-    window !== undefined
-      ? () => window().document.body
-      : undefined;
 
   return (
     <Box
@@ -149,7 +85,6 @@ export default function CommonLayout(props: Props) {
         aria-label="mailbox folders"
       >
         <Drawer
-          container={container}
           variant="temporary"
           open={mobileOpen}
           onTransitionEnd={handleDrawerTransitionEnd}
@@ -165,7 +100,7 @@ export default function CommonLayout(props: Props) {
             },
           }}
         >
-          {drawer}
+          <CommonDrawer />
         </Drawer>
         <Drawer
           variant="permanent"
@@ -178,7 +113,7 @@ export default function CommonLayout(props: Props) {
           }}
           open
         >
-          {drawer}
+          <CommonDrawer />
         </Drawer>
       </Box>
       <Box
