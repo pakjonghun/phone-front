@@ -6,7 +6,7 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 
 export const menuList: MenuItem[] = [
   {
-    id: '',
+    id: 'dashboard',
     name: '대시보드',
     icon: <DashboardIcon />,
   },

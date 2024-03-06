@@ -13,5 +13,6 @@ export const useDashboardData = () => {
   return useQuery<Dashboard, void>({
     queryKey: [DASHBOARD_DATA],
     queryFn: dashboardData,
+    suspense: true,
   });
 };
