@@ -13,7 +13,7 @@ import CommonLayout from '@/components/commonLayout/CommonLayout';
 import UploadExcel from './_component/UploadExcel';
 
 interface Props {
-  children?: React.ReactNode;
+  children: React.ReactNode;
 }
 
 type Tab = 0 | 1;
