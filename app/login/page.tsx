@@ -19,7 +19,7 @@ type LoginUser = Omit<User, 'role'>;
 
 const Login = () => {
   const snackbar = useSnackbar();
-  const { mutate: login, isLoading } = useLogin();
+  const { mutate: login, isPending } = useLogin();
   const router = useRouter();
   const setUser = useAuthStore((state) => state.setUser);
 
@@ -90,7 +90,7 @@ const Login = () => {
           error={!!errors.password}
           helperText={errors.password?.message}
         />
-        <SubmitButton isLoading={isLoading} text="로그인" />
+        <SubmitButton isLoading={isPending} text="로그인" />
       </Stack>
     </Form>
   );

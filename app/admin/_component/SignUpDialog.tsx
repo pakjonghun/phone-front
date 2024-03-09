@@ -26,7 +26,7 @@ const SignUpDialog: FC<Props> = ({
   openSignUp,
   onClose,
 }) => {
-  const { mutate, isLoading } = useSignUp();
+  const { mutate, isPending } = useSignUp();
   const snackbar = useSnackbar();
 
   const {
@@ -106,7 +106,7 @@ const SignUpDialog: FC<Props> = ({
             <MenuItem value="STAFF">일반</MenuItem>
           </Select>
           <SubmitButton
-            isLoading={isLoading}
+            isLoading={isPending}
             text="회원가입"
           />
         </Form>
