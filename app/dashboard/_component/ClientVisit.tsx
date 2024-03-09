@@ -130,11 +130,13 @@ export default function ClientVisitTable({
   return (
     <Paper sx={{ pt: 3, height: '100%' }}>
       <FormDialog
+        title="비고 편집"
         content={
           <form onSubmit={handleSubmit(handleClickEdit)}>
             <DialogContent>
               <TextField
                 {...register('note')}
+                autoFocus
                 placeholder="변경할 비고를 입력하세요."
                 fullWidth
               />
@@ -167,7 +169,6 @@ export default function ClientVisitTable({
         }
         open={isOpen && !!selectedClient}
         setOpen={setIsOpen}
-        title="title"
       />
       <Typography ml={3} mb={3} variant="h5">
         {title}
