@@ -1,4 +1,3 @@
-import { useMutation, useQuery } from 'react-query';
 import { USER_LIST } from './constant';
 import { User } from '@/model/user';
 import { client } from '@/api/client';
@@ -7,6 +6,10 @@ import {
   ChangeRoleRequest,
 } from './type';
 import { CommonError, CommonMutation } from '@/api/type';
+import {
+  useMutation,
+  useQuery,
+} from '@tanstack/react-query';
 
 const userList = async () => {
   return client.get('/user').then((res) => res.data);

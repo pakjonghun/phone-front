@@ -14,17 +14,17 @@ import {
   Tooltip,
 } from '@mui/material';
 import { useSnackbar } from '@/context/SnackBarProvicer';
-import { useQueryClient } from 'react-query';
+
 import { SALE_LIST } from '@/hooks/search/sale/constant';
 import {
   useApplySale,
-  useConfirmSale,
   useDownloadSale,
 } from '@/hooks/search/sale/useSaleData';
 import { useSaleQueryStore } from '@/lib/store/sale/saleList';
 import { useSaleAlert } from '@/lib/store/sale/saleAlert';
 import { useSaleTable } from '@/lib/store/sale/saleTable';
 import SelectedIndicator from './SelectedIndicator';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface EnhancedTableToolbarProps {
   searchDataCount: number;
@@ -43,13 +43,13 @@ export default function EnhancedTableToolbar(
     (state) => state.setSelectedSaleList
   );
 
-  const { mutate: download, isLoading: isDownloading } =
+  const { mutate: download, isPending: isDownloading } =
     useDownloadSale();
 
   const setOpenApplyDialog = useSaleAlert(
     (state) => state.setWarnShow
   );
-  const { mutate: refresh, isLoading: isRefreshing } =
+  const { mutate: refresh, isPending: isRefreshing } =
     useApplySale();
 
   const snackBar = useSnackbar();
@@ -78,7 +78,9 @@ export default function EnhancedTableToolbar(
     refresh(undefined, {
       onSuccess: () => {
         snackBar('갱신이 완료되었습니다.', 'success');
-        queryClient.invalidateQueries([SALE_LIST]);
+        queryClient.invalidateQueries({
+          queryKey: [SALE_LIST],
+        });
         setSelectedSaleList([]);
       },
       onError: (error) => {

@@ -55,18 +55,3 @@ export const headCells: readonly HeadCell[] = [
     label: '관리자 승인',
   },
 ];
-
-export const purchaseRank = [
-  'A+',
-  'A',
-  'A-',
-  'B+',
-  'B',
-  'B-',
-  'C+',
-  'C',
-  'C-',
-  'D+',
-  'D',
-  'D-',
-];

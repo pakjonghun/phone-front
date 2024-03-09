@@ -14,7 +14,7 @@ import {
   Tooltip,
 } from '@mui/material';
 import { useSnackbar } from '@/context/SnackBarProvicer';
-import { useQueryClient } from 'react-query';
+
 import { MARGIN_LIST } from '@/hooks/search/sale/constant';
 import {
   useApplySale,
@@ -25,6 +25,7 @@ import { useSaleAlert } from '@/lib/store/sale/saleAlert';
 import SelectedIndicator from './SelectedIndicator';
 import { useMarginTable } from '@/lib/store/sale/marginTable';
 import { useMarginQueryStore } from '@/lib/store/sale/marginList';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface EnhancedTableToolbarProps {
   searchDataCount: number;
@@ -43,13 +44,13 @@ export default function EnhancedTableToolbar(
     (state) => state.setSelectedMarginList
   );
 
-  const { mutate: download, isLoading: isDownloading } =
+  const { mutate: download, isPending: isDownloading } =
     useDownloadMargin();
 
   const setOpenApplyDialog = useSaleAlert(
     (state) => state.setWarnShow
   );
-  const { mutate: refresh, isLoading: isRefreshing } =
+  const { mutate: refresh, isPending: isRefreshing } =
     useApplySale();
 
   const snackBar = useSnackbar();
@@ -78,7 +79,9 @@ export default function EnhancedTableToolbar(
     refresh(undefined, {
       onSuccess: () => {
         snackBar('갱신이 완료되었습니다.', 'success');
-        queryClient.invalidateQueries([MARGIN_LIST]);
+        queryClient.invalidateQueries({
+          queryKey: [MARGIN_LIST],
+        });
         setSelectedSaleList([]);
       },
       onError: (error) => {

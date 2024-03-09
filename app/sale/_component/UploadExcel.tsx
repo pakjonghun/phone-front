@@ -3,8 +3,8 @@ import { useSnackbar } from '@/context/SnackBarProvicer';
 import { SALE_LIST } from '@/hooks/search/sale/constant';
 import { useUploadSaleExcel } from '@/hooks/search/sale/useSaleData';
 import { SxProps } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 import React, { FC } from 'react';
-import { useQueryClient } from 'react-query';
 
 interface Props {
   sx?: SxProps;
@@ -14,7 +14,7 @@ const UploadExcel: FC<Props> = ({ sx = {} }) => {
   const snackbar = useSnackbar();
   const {
     mutate: upload,
-    isLoading,
+    isPending,
     isError,
   } = useUploadSaleExcel();
 
@@ -39,7 +39,9 @@ const UploadExcel: FC<Props> = ({ sx = {} }) => {
           '판매 엑셀파일 업로드가 완료되었습니다.',
           'success'
         );
-        queryClient.invalidateQueries([SALE_LIST]);
+        queryClient.invalidateQueries({
+          queryKey: [SALE_LIST],
+        });
       },
 
       onError: (error) => {
@@ -68,7 +70,7 @@ const UploadExcel: FC<Props> = ({ sx = {} }) => {
       onChange={onChangeInputFile}
       inputRef={inputRef}
       text="엑셀 업로드"
-      isPending={!isError && isLoading}
+      isPending={!isError && isPending}
     />
   );
 };

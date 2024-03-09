@@ -1,7 +1,10 @@
 import { client } from '@/api/client';
 import { CommonError, CommonMutation } from '@/api/type';
 import { User } from '@/model/user';
-import { useMutation, useQuery } from 'react-query';
+import {
+  useMutation,
+  useQuery,
+} from '@tanstack/react-query';
 import { ResponseMyInfo } from './type';
 
 const signUp = (body: User) => {
@@ -43,7 +46,6 @@ export const useMyInfo = () => {
     queryKey: ['myInfo'],
     queryFn: myInfo,
     staleTime: 0,
-    cacheTime: 0,
     retry: false,
   });
 };

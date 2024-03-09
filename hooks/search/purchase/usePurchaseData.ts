@@ -1,12 +1,16 @@
 import { CommonMutation, ListData } from '@/api/type';
-import { useInfiniteQuery } from 'react-query';
+
 import { RequestPurchaseList } from './type';
 import dayjs from 'dayjs';
 import { CommonError } from '@/api/type';
 import { client } from '@/api/client';
-import { useMutation } from 'react-query';
 import { PURCHASE_LIST } from './constant';
 import { Purchase } from '@/model/purchase';
+import { AxiosError } from 'axios';
+import {
+  useInfiniteQuery,
+  useMutation,
+} from '@tanstack/react-query';
 
 const uploadPurchaseExcel = (excelFile: FormData) => {
   return client
@@ -35,13 +39,11 @@ const purchaseList = async (
 export const usePurchaseList = (
   query: RequestPurchaseList
 ) => {
-  return useInfiniteQuery<
-    ListData<Purchase>,
-    RequestPurchaseList
-  >({
+  return useInfiniteQuery<ListData<Purchase>, AxiosError>({
     queryKey: [PURCHASE_LIST, { ...query }],
     queryFn: ({ pageParam = 1 }) =>
-      purchaseList({ ...query, page: pageParam }),
+      purchaseList({ ...query, page: pageParam as number }),
+    initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.hasNext ? allPages.length + 1 : null;
     },
@@ -69,9 +71,9 @@ const applyPurchase = () => {
 };
 
 export const useApplyPurchase = () => {
-  return useMutation<CommonMutation, CommonError, void>(
-    applyPurchase
-  );
+  return useMutation<CommonMutation, CommonError, void>({
+    mutationFn: applyPurchase,
+  });
 };
 
 const downloadPurchase = async (

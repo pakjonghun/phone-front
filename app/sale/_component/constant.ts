@@ -56,17 +56,31 @@ export const headCells: readonly HeadCell[] = [
   },
 ];
 
-export const saleRank = [
-  'A+',
-  'A',
-  'A-',
-  'B+',
-  'B',
-  'B-',
-  'C+',
-  'C',
-  'C-',
-  'D+',
-  'D',
-  'D-',
-];
+export type Rank =
+  | 'A+'
+  | 'A-'
+  | 'A'
+  | 'B+'
+  | 'B-'
+  | 'B'
+  | 'C+'
+  | 'C-'
+  | 'C'
+  | 'D'
+  | 'D+'
+  | 'D-';
+
+export const rankReverse: Record<number, Rank> = {
+  [0]: 'A+',
+  [1]: 'A',
+  [2]: 'A-',
+  [3]: 'B+',
+  [4]: 'B',
+  [5]: 'B-',
+  [6]: 'C+',
+  [7]: 'C',
+  [8]: 'C-',
+  [9]: 'D+',
+  [10]: 'D',
+  [11]: 'D-',
+};

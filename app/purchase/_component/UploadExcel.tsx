@@ -2,10 +2,9 @@ import UploadFileButton from '@/components/button/UploadButton';
 import { useSnackbar } from '@/context/SnackBarProvicer';
 import { PURCHASE_LIST } from '@/hooks/search/purchase/constant';
 import { useUploadPurchaseExcel } from '@/hooks/search/purchase/usePurchaseData';
-import { useUploadSaleExcel } from '@/hooks/search/sale/useSaleData';
 import { SxProps } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 import React, { FC } from 'react';
-import { useQueryClient } from 'react-query';
 
 interface Props {
   sx?: SxProps;
@@ -15,7 +14,7 @@ const UploadExcel: FC<Props> = ({ sx = {} }) => {
   const snackbar = useSnackbar();
   const {
     mutate: upload,
-    isLoading,
+    isPending,
     isError,
   } = useUploadPurchaseExcel();
 
@@ -40,7 +39,9 @@ const UploadExcel: FC<Props> = ({ sx = {} }) => {
           '매입 엑셀파일 업로드가 완료되었습니다.',
           'success'
         );
-        queryClient.invalidateQueries([PURCHASE_LIST]);
+        queryClient.invalidateQueries({
+          queryKey: [PURCHASE_LIST],
+        });
       },
       onError: (error) => {
         const errorMessage = error.response.data.message;
@@ -68,7 +69,7 @@ const UploadExcel: FC<Props> = ({ sx = {} }) => {
       onChange={onChangeInputFile}
       inputRef={inputRef}
       text="엑셀 업로드"
-      isPending={!isError && isLoading}
+      isPending={!isError && isPending}
     />
   );
 };

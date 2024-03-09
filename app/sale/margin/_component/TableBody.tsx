@@ -16,7 +16,6 @@ import {
 } from '@mui/material';
 import { useAuthStore } from '@/lib/store/auth/auth';
 import AlertDialog from '@/components/dialog/AlertDialog';
-import { useQueryClient } from 'react-query';
 import { useSaleAlert } from '@/lib/store/sale/saleAlert';
 import { useSnackbar } from '@/context/SnackBarProvicer';
 import { useSaleTable } from '@/lib/store/sale/saleTable';
@@ -30,6 +29,7 @@ import dayjs from 'dayjs';
 import { Margin } from '@/model/margin';
 import { useMarginTable } from '@/lib/store/sale/marginTable';
 import { MARGIN_LIST } from '@/hooks/search/margin/constant';
+import { useQueryClient } from '@tanstack/react-query';
 
 const TableBodyList = () => {
   const selectedIdList = useMarginTable(
@@ -75,6 +75,8 @@ const TableBodyList = () => {
       : undefined,
   });
 
+  console.log('data : ', data);
+
   const selectedSaleIdList = selectedIdList.map(
     (sale) => sale._id
   );
@@ -84,7 +86,7 @@ const TableBodyList = () => {
     (state) => state.warnShow
   );
 
-  const { mutate: confirm, isLoading } = useConfirmSale();
+  const { mutate: confirm, isPending } = useConfirmSale();
 
   const setIsConfirmingLoading = useSaleTable(
     (state) => state.setIsMultiConfirmLoading
@@ -95,7 +97,9 @@ const TableBodyList = () => {
     confirm(selectedSaleIdList, {
       onSuccess: () => {
         snackBar('승인이 완료되었습니다.', 'success');
-        queryClient.invalidateQueries([MARGIN_LIST]);
+        queryClient.invalidateQueries({
+          queryKey: [MARGIN_LIST],
+        });
         setSelectedIdList([]);
       },
       onError: (error) => {
@@ -254,7 +258,7 @@ const TableBodyList = () => {
                               selectedIdList.find(
                                 (saleItem) =>
                                   saleItem._id == row._id
-                              ) && isLoading ? (
+                              ) && isPending ? (
                                 <CircularProgress
                                   size={18}
                                   sx={{

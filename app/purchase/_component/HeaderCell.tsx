@@ -9,6 +9,8 @@ import { HeadCell } from './constant';
 import { usePurchaseQueryStore } from '@/lib/store/purchase/purchaseList';
 import { PurchaseSort } from '@/hooks/search/purchase/type';
 import HeadSortIcon from './HeadSortIcon';
+import { useQueryClient } from '@tanstack/react-query';
+import { PURCHASE_LIST } from '@/hooks/search/purchase/constant';
 
 interface Props {
   headCell: HeadCell;
@@ -22,6 +24,7 @@ const HeaderCell: FC<Props> = ({ headCell }) => {
   const sortItem = usePurchaseQueryStore((state) =>
     state.getSort(headCell.id)
   );
+
   const orderValue = sortItem?.[1];
   const handleClickHeader = (headerId: PurchaseSort) => {
     setSortList([headerId, orderValue === 1 ? -1 : 1]);

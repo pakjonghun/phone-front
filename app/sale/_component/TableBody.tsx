@@ -15,11 +15,10 @@ import {
   TableBody,
   Typography,
 } from '@mui/material';
-import { saleRank } from './constant';
+import { rankReverse } from './constant';
 import { useAuthStore } from '@/lib/store/auth/auth';
 import { Sale } from '@/model/sale';
 import AlertDialog from '@/components/dialog/AlertDialog';
-import { useQueryClient } from 'react-query';
 import { SALE_LIST } from '@/hooks/search/sale/constant';
 import { useSaleAlert } from '@/lib/store/sale/saleAlert';
 import { useSnackbar } from '@/context/SnackBarProvicer';
@@ -28,6 +27,7 @@ import {
   getCurrencyToKRW,
   getWithCommaNumber,
 } from '@/util/util';
+import { useQueryClient } from '@tanstack/react-query';
 
 const TableBodyList = () => {
   const selectedIdList = useSaleTable(
@@ -49,7 +49,7 @@ const TableBodyList = () => {
 
   const sort = useSaleQueryStore((state) => state.sort);
   const length = useSaleQueryStore((state) => state.length);
-  const { data, isLoading: isCellLoading } = useSaleList({
+  const { data, isPending: isCellLoading } = useSaleList({
     keyword,
     sort,
     length: length,
@@ -64,7 +64,7 @@ const TableBodyList = () => {
     (state) => state.warnShow
   );
 
-  const { mutate: confirm, isLoading } = useConfirmSale();
+  const { mutate: confirm, isPending } = useConfirmSale();
 
   const setIsConfirmingLoading = useSaleTable(
     (state) => state.setIsMultiConfirmLoading
@@ -75,7 +75,9 @@ const TableBodyList = () => {
     confirm(selectedSaleIdList, {
       onSuccess: () => {
         snackBar('승인이 완료되었습니다.', 'success');
-        queryClient.invalidateQueries([SALE_LIST]);
+        queryClient.invalidateQueries({
+          queryKey: [SALE_LIST],
+        });
         setSelectedIdList([]);
       },
       onError: (error) => {
@@ -183,7 +185,7 @@ const TableBodyList = () => {
                     {row.product._id}
                   </TableCell>
                   <TableCell align="left">
-                    {saleRank.at(row.rank - 1)}
+                    {rankReverse[row.rank]}
                   </TableCell>
                   <TableCell align="left">
                     {row.distanceLog || '-'}
@@ -233,7 +235,7 @@ const TableBodyList = () => {
                               selectedIdList.find(
                                 (saleItem) =>
                                   saleItem._id == row._id
-                              ) && isLoading ? (
+                              ) && isPending ? (
                                 <CircularProgress
                                   size={18}
                                   sx={{

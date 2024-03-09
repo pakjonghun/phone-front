@@ -23,10 +23,11 @@ import { FC, MouseEvent, ReactNode, useState } from 'react';
 import { useChangeRole } from '@/hooks/user/useUserData';
 import { Role, User } from '@/model/user';
 import { useSnackbar } from '@/context/SnackBarProvicer';
-import { useQueryClient } from 'react-query';
+
 import { USER_LIST } from '@/hooks/user/constant';
 import { useUserAlert } from '@/lib/store/user/userAlert';
 import { useUserId } from '@/lib/store/user/userId';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface Props {
   user: Omit<User, 'password'>;
@@ -56,7 +57,9 @@ const UserCard: FC<Props> = ({ user }) => {
       {
         onSuccess: () => {
           snackbar('권한 변경이 성공했습니다.', 'success');
-          queryClient.invalidateQueries([USER_LIST]);
+          queryClient.invalidateQueries({
+            queryKey: [USER_LIST],
+          });
         },
         onError: (error) => {
           const errorMessage = error.response.data.message;

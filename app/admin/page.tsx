@@ -28,10 +28,10 @@ import { useSnackbar } from '@/context/SnackBarProvicer';
 import ChangePasswordDialog from './_component/ChangePasswordDialog';
 import AlertDialog from '@/components/dialog/AlertDialog';
 import { useUserId } from '@/lib/store/user/userId';
-import { useQueryClient } from 'react-query';
 import { USER_LIST } from '@/hooks/user/constant';
 import { SALE_LIST } from '@/hooks/search/sale/constant';
 import { PURCHASE_LIST } from '@/hooks/search/purchase/constant';
+import { useQueryClient } from '@tanstack/react-query';
 
 const Admin = () => {
   const snackbar = useSnackbar();
@@ -67,7 +67,9 @@ const Admin = () => {
     dropAccount(selectedUserId, {
       onSuccess: () => {
         snackbar('계정 삭제가 완료되었습니다.');
-        queryClient.invalidateQueries([USER_LIST]);
+        queryClient.invalidateQueries({
+          queryKey: [USER_LIST],
+        });
       },
       onError: (error) => {
         const errorMessage = error.response.data?.message;
@@ -82,16 +84,15 @@ const Admin = () => {
     });
   };
 
-  const { mutate: reset, isLoading: isResetting } =
+  const { mutate: reset, isPending: isResetting } =
     useResetAllData();
   const handleDeleteData = () => {
     reset(undefined, {
       onSuccess: () => {
         snackbar('초기화가 완료되었습니다.');
-        queryClient.invalidateQueries([
-          SALE_LIST,
-          PURCHASE_LIST,
-        ]);
+        queryClient.invalidateQueries({
+          queryKey: [SALE_LIST, PURCHASE_LIST],
+        });
       },
       onError: (error) => {
         const errorMessage = error.response.data?.message;

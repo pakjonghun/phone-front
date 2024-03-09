@@ -4,13 +4,17 @@ import {
   ListData,
 } from '@/api/type';
 import { client } from '@/api/client';
-import { useMutation } from 'react-query';
 import { MARGIN_LIST, SALE_LIST } from './constant';
-import { useInfiniteQuery } from 'react-query';
 import { RequestMarginList, RequestSaleList } from './type';
 import { Sale } from '@/model/sale';
 import dayjs from 'dayjs';
 import { Margin } from '@/model/margin';
+import {
+  useInfiniteQuery,
+  useMutation,
+} from '@tanstack/react-query';
+import { AxiosError } from 'axios';
+import { LastPage } from '@mui/icons-material';
 
 const uploadSaleExcel = (excelFile: FormData) => {
   return client
@@ -37,10 +41,11 @@ const saleList = async (
 };
 
 export const useSaleList = (query: RequestSaleList) => {
-  return useInfiniteQuery<ListData<Sale>, RequestSaleList>({
+  return useInfiniteQuery<ListData<Sale>, AxiosError>({
     queryKey: [SALE_LIST, { ...query }],
     queryFn: ({ pageParam = 1 }) =>
-      saleList({ ...query, page: pageParam }),
+      saleList({ ...query, page: pageParam as number }),
+    initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.hasNext ? allPages.length + 1 : null;
     },
@@ -50,21 +55,19 @@ export const useSaleList = (query: RequestSaleList) => {
 const marginList = async (
   query: RequestMarginList & { page: number }
 ) => {
-  return client('/margin', { params: query }).then<
-    ListData<Margin>
-  >((res) => res.data);
+  return client('/margin', { params: query }).then(
+    (res) => res.data
+  );
 };
 
 export const useMarginList = (query: RequestMarginList) => {
-  return useInfiniteQuery<
-    ListData<Margin>,
-    RequestSaleList
-  >({
+  return useInfiniteQuery<ListData<Margin>, AxiosError>({
+    queryFn: ({ pageParam }) =>
+      marginList({ ...query, page: pageParam as number }),
+    initialPageParam: 1,
     queryKey: [MARGIN_LIST, { ...query }],
-    queryFn: ({ pageParam = 1 }) =>
-      marginList({ ...query, page: pageParam }),
-    getNextPageParam: (lastPage, allPages) => {
-      return lastPage.hasNext ? allPages.length + 1 : null;
+    getNextPageParam: (LastPage, allPages) => {
+      return LastPage.hasNext ? allPages.length + 1 : null;
     },
   });
 };
@@ -88,9 +91,9 @@ const applySale = () => {
 };
 
 export const useApplySale = () => {
-  return useMutation<CommonMutation, CommonError, void>(
-    applySale
-  );
+  return useMutation<CommonMutation, CommonError, void>({
+    mutationFn: applySale,
+  });
 };
 
 const downloadSale = async (saleIdList: string[]) => {

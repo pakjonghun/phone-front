@@ -14,17 +14,17 @@ import {
   Tooltip,
 } from '@mui/material';
 import { useSnackbar } from '@/context/SnackBarProvicer';
-import { useQueryClient } from 'react-query';
+
 import { PURCHASE_LIST } from '@/hooks/search/purchase/constant';
 import {
   useApplyPurchase,
-  useConfirmPurchase,
   useDownloadPurchase,
 } from '@/hooks/search/purchase/usePurchaseData';
 import { usePurchaseQueryStore } from '@/lib/store/purchase/purchaseList';
 import { usePurchaseAlert } from '@/lib/store/purchase/purchaseAlert';
 import { usePurchaseTable } from '@/lib/store/purchase/purchaseTable';
 import SelectedIndicator from './SelectedIndicator';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface EnhancedTableToolbarProps {
   searchDataCount: number;
@@ -43,13 +43,13 @@ export default function EnhancedTableToolbar(
     (state) => state.setSelectedPurchaseList
   );
 
-  const { mutate: download, isLoading: isDownloading } =
+  const { mutate: download, isPending: isDownloading } =
     useDownloadPurchase();
 
   const setOpenApplyDialog = usePurchaseAlert(
     (state) => state.setWarnShow
   );
-  const { mutate: refresh, isLoading: isRefreshing } =
+  const { mutate: refresh, isPending: isRefreshing } =
     useApplyPurchase();
 
   const snackBar = useSnackbar();
@@ -78,7 +78,9 @@ export default function EnhancedTableToolbar(
     refresh(undefined, {
       onSuccess: () => {
         snackBar('갱신이 완료되었습니다.', 'success');
-        queryClient.invalidateQueries([PURCHASE_LIST]);
+        queryClient.invalidateQueries({
+          queryKey: [PURCHASE_LIST],
+        });
         setSelectedPurchaseList([]);
       },
       onError: (error) => {

@@ -15,11 +15,10 @@ import {
   TableBody,
   Typography,
 } from '@mui/material';
-import { purchaseRank } from './constant';
 import { useAuthStore } from '@/lib/store/auth/auth';
 import { Purchase } from '@/model/purchase';
 import AlertDialog from '@/components/dialog/AlertDialog';
-import { useQueryClient } from 'react-query';
+
 import { PURCHASE_LIST } from '@/hooks/search/purchase/constant';
 import { usePurchaseAlert } from '@/lib/store/purchase/purchaseAlert';
 import { useSnackbar } from '@/context/SnackBarProvicer';
@@ -28,6 +27,8 @@ import {
   getCurrencyToKRW,
   getWithCommaNumber,
 } from '@/util/util';
+import { rankReverse } from '@/app/sale/_component/constant';
+import { useQueryClient } from '@tanstack/react-query';
 
 const TableBodyList = () => {
   const selectedIdList = usePurchaseTable(
@@ -51,7 +52,7 @@ const TableBodyList = () => {
   const length = usePurchaseQueryStore(
     (state) => state.length
   );
-  const { data, isLoading: isCellLoading } =
+  const { data, isPending: isCellLoading } =
     usePurchaseList({
       keyword,
       sort,
@@ -70,7 +71,7 @@ const TableBodyList = () => {
   const setMultiPurchaseConfirmLoading = usePurchaseTable(
     (state) => state.setIsMultiConfirmingLoading
   );
-  const { mutate: confirm, isLoading } =
+  const { mutate: confirm, isPending } =
     useConfirmPurchase();
 
   const handleClickConfirm = () => {
@@ -78,7 +79,9 @@ const TableBodyList = () => {
     confirm(selectedPurchaseIdList, {
       onSuccess: () => {
         snackBar('승인이 완료되었습니다.', 'success');
-        queryClient.invalidateQueries([PURCHASE_LIST]);
+        queryClient.invalidateQueries({
+          queryKey: [PURCHASE_LIST],
+        });
         setSelectedIdList([]);
       },
       onError: (error) => {
@@ -95,9 +98,10 @@ const TableBodyList = () => {
     });
   };
 
-  const flatPurchaseData =
-    data?.pages.flatMap((item) => item.data) ??
-    Array.from({ length: 14 });
+  const emptyData = Array.from({ length: 14 });
+  const flatPurchaseData = data?.pages.flatMap(
+    (item) => item.data
+  );
 
   const handleClickRow = (purchaseItem: Purchase) => {
     if (role === Role.STAFF) return;
@@ -138,128 +142,142 @@ const TableBodyList = () => {
         }
       />
       <>
-        {flatPurchaseData?.map((row, index) => {
-          const isItemSelected = selectedIdList.some(
-            (item) => item._id === row?._id
-          );
-
-          const labelId = `enhanced-table-checkbox-${index}`;
-          const rowKey = row?._id ?? index;
-
-          return (
-            <TableRow
-              hover
-              onClick={() => {
-                handleClickRow(row);
-              }}
-              role="checkbox"
-              aria-checked={isItemSelected}
-              tabIndex={-1}
-              key={rowKey}
-              selected={isItemSelected}
-            >
-              {isCellLoading ? (
+        {isCellLoading ? (
+          <>
+            {emptyData.map((item, index) => (
+              <TableRow
+                hover
+                role="checkbox"
+                tabIndex={-1}
+                key={index}
+              >
                 <TableCell padding="none" colSpan={8}>
                   <Skeleton sx={{ mx: 2 }} height={60} />
                 </TableCell>
-              ) : (
-                <>
-                  {role !== Role.STAFF && (
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        color="primary"
-                        checked={isItemSelected}
-                        inputProps={{
-                          'aria-labelledby': labelId,
-                        }}
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          handleClickRow(row);
-                        }}
-                      />
-                    </TableCell>
-                  )}
+              </TableRow>
+            ))}
+          </>
+        ) : (
+          <>
+            {flatPurchaseData?.map((row, index) => {
+              const isItemSelected = selectedIdList.some(
+                (item) => item._id === row?._id
+              );
 
-                  <TableCell align="left">
-                    {row.product._id}
-                  </TableCell>
-                  <TableCell align="left">
-                    {purchaseRank.at(row.rank - 1)}
-                  </TableCell>
-                  <TableCell align="left">
-                    {row.distanceLog || '-'}
-                  </TableCell>
-                  <TableCell align="left">
-                    {getCurrencyToKRW(
-                      row.product.recentHighPurchasePrice
+              const labelId = `enhanced-table-checkbox-${index}`;
+
+              return (
+                <TableRow
+                  hover
+                  onClick={() => {
+                    handleClickRow(row);
+                  }}
+                  role="checkbox"
+                  aria-checked={isItemSelected}
+                  tabIndex={-1}
+                  key={row._id}
+                  selected={isItemSelected}
+                >
+                  <>
+                    {role !== Role.STAFF && (
+                      <TableCell padding="checkbox">
+                        <div>{index}</div>
+                        <Checkbox
+                          color="primary"
+                          checked={isItemSelected}
+                          inputProps={{
+                            'aria-labelledby': labelId,
+                          }}
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            handleClickRow(row);
+                          }}
+                        />
+                      </TableCell>
                     )}
-                  </TableCell>
-                  <TableCell align="left">
-                    {getCurrencyToKRW(
-                      row.product.recentLowPurchasePrice
-                    )}
-                  </TableCell>
-                  <TableCell align="left">
-                    {getWithCommaNumber(
-                      row.product.belowAveragePurchaseCount
-                    )}
-                  </TableCell>
-                  <TableCell
-                    align="center"
-                    component="th"
-                    id={labelId}
-                    scope="row"
-                    padding="none"
-                  >
-                    {row.isConfirmed ? (
-                      <Button
-                        sx={{ width: 90 }}
-                        disabled
-                        variant="outlined"
-                      >
-                        승인완료
-                      </Button>
-                    ) : (
-                      <>
-                        {role !== Role.STAFF ? (
-                          <Button
-                            sx={{ width: 90 }}
-                            onClick={(event) => {
-                              event.stopPropagation();
-                              setSelectedIdList([row]);
-                              setOpenApplyDialog(true);
-                            }}
-                            variant="contained"
-                            startIcon={
-                              selectedIdList.find(
-                                (purchaseItem) =>
-                                  purchaseItem._id ==
-                                  row._id
-                              ) && isLoading ? (
-                                <CircularProgress
-                                  size={18}
-                                  sx={{
-                                    color: 'white',
-                                  }}
-                                />
-                              ) : (
-                                <></>
-                              )
-                            }
-                          >
-                            승인
-                          </Button>
-                        ) : (
-                          '승인대기'
-                        )}
-                      </>
-                    )}
-                  </TableCell>
-                </>
-              )}
-            </TableRow>
-          );
-        })}
+
+                    <TableCell align="left">
+                      {row.product._id}
+                    </TableCell>
+                    <TableCell align="left">
+                      {rankReverse[row.rank]}
+                    </TableCell>
+                    <TableCell align="left">
+                      {row.distanceLog || '-'}
+                    </TableCell>
+                    <TableCell align="left">
+                      {getCurrencyToKRW(
+                        row.product.recentHighPurchasePrice
+                      )}
+                    </TableCell>
+                    <TableCell align="left">
+                      {getCurrencyToKRW(
+                        row.product.recentLowPurchasePrice
+                      )}
+                    </TableCell>
+                    <TableCell align="left">
+                      {getWithCommaNumber(
+                        row.product
+                          .belowAveragePurchaseCount
+                      )}
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      component="th"
+                      id={labelId}
+                      scope="row"
+                      padding="none"
+                    >
+                      {row.isConfirmed ? (
+                        <Button
+                          sx={{ width: 90 }}
+                          disabled
+                          variant="outlined"
+                        >
+                          승인완료
+                        </Button>
+                      ) : (
+                        <>
+                          {role !== Role.STAFF ? (
+                            <Button
+                              sx={{ width: 90 }}
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                setSelectedIdList([row]);
+                                setOpenApplyDialog(true);
+                              }}
+                              variant="contained"
+                              startIcon={
+                                selectedIdList.find(
+                                  (purchaseItem) =>
+                                    purchaseItem._id ==
+                                    row._id
+                                ) && isPending ? (
+                                  <CircularProgress
+                                    size={18}
+                                    sx={{
+                                      color: 'white',
+                                    }}
+                                  />
+                                ) : (
+                                  <></>
+                                )
+                              }
+                            >
+                              승인
+                            </Button>
+                          ) : (
+                            '승인대기'
+                          )}
+                        </>
+                      )}
+                    </TableCell>
+                  </>
+                </TableRow>
+              );
+            })}
+          </>
+        )}
       </>
     </TableBody>
   );
