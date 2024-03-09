@@ -5,7 +5,7 @@ import React from 'react';
 import TopCard from '../_component/TopCard';
 import {
   getCurrencyToKRW,
-  getWithCommaNumber,
+  getTwoRoundedNumber,
 } from '@/util/util';
 
 const TotalSale = () => {
@@ -14,12 +14,16 @@ const TotalSale = () => {
   return (
     <TopCard
       title="총 매출"
-      note="누적 판매수/판매금액"
+      note=""
       data={data?.totalSale ? [data.totalSale] : []}
-      suffixFunc={({ count, accPrice }) =>
-        `누적판매 : ${getWithCommaNumber(
-          count
-        )}건 / 누적 매출 : ${getCurrencyToKRW(accPrice)}`
+      suffixFunc={({ accPrice, accMargin, marginRate }) =>
+        `누적매출 : ${getCurrencyToKRW(
+          accPrice
+        )}, 누적 마진 : ${getCurrencyToKRW(
+          accMargin
+        )}, 마진율 : ${
+          getTwoRoundedNumber(marginRate) * 100
+        }%`
       }
     />
   );

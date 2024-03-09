@@ -1,6 +1,6 @@
 export type Client = {
-  inPrice: number;
-  inCount: number;
-  outPrice: number;
-  outCount: number;
+  _id: string;
+  lastInDate: string;
+  lastOutDate: string;
+  note: string;
 };

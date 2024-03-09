@@ -28,18 +28,18 @@ export default function RootLayout({
         }}
         className={inter.className}
       >
-        <AppRouterCacheProvider>
-          <CssBaseline />
-          <MuiThemeProvider>
-            <SnackBarProvider>
-              <ReactQueryClientProvider>
+        <ReactQueryClientProvider>
+          <AppRouterCacheProvider>
+            <CssBaseline />
+            <MuiThemeProvider>
+              <SnackBarProvider>
                 <MuiDateProvider>
                   {children}
                 </MuiDateProvider>
-              </ReactQueryClientProvider>
-            </SnackBarProvider>
-          </MuiThemeProvider>
-        </AppRouterCacheProvider>
+              </SnackBarProvider>
+            </MuiThemeProvider>
+          </AppRouterCacheProvider>
+        </ReactQueryClientProvider>
       </body>
     </html>
   );

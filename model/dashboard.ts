@@ -1,34 +1,25 @@
-import { Purchase } from './purchase';
-import { Sale } from './sale';
+import { Client } from './client';
 
 export type Aggregate = {
   _id: string;
   count: number;
   accPrice: number;
+  accMargin: number;
+  marginRate: number;
 };
 
-export type RecentSale = Omit<
-  Sale,
-  'product' | 'outClient'
-> & {
-  product: string;
-  outClient: string;
-};
-
-export type RecentPurchase = Omit<
-  Purchase,
-  'product' | 'inClient'
-> & {
-  product: string;
-  inClient: string;
+export type TopTenItem = {
+  name: string;
+  count: number;
+  accPrice: number;
+  accMargin: number;
+  marginRate: number;
 };
 
 export type Dashboard = {
-  topThreeProduct: Aggregate[];
-  topThreeClient: Aggregate[];
+  topTenProduct: TopTenItem[];
+  topTenClient: TopTenItem[];
   totalSale: Aggregate;
-  recentTenSale: RecentSale[];
-  recentTenPurchase: RecentPurchase[];
-  topTenClientSale: Aggregate[];
-  topTenClientPurchase: Aggregate[];
+  notVisitedOutClient: Client[];
+  notVisitedInClient: Client[];
 };

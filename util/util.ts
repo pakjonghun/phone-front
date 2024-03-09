@@ -40,3 +40,10 @@ export function getWithCommaNumber(number: number) {
     useGrouping: true,
   }).format(_number);
 }
+
+export function getTwoRoundedNumber(number: number) {
+  const initNumber = number * 100;
+  return number < 0
+    ? Math.ceil(initNumber) / 100
+    : Math.floor(initNumber) / 100;
+}

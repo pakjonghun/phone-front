@@ -1,18 +1,19 @@
 'use client';
 
 import React from 'react';
-import RecentSaleTable from '../_component/RecentSaleTable';
 import { useDashboardData } from '@/hooks/dashboard/useDashboard';
+import ClientVisitTable from '../_component/\bClientVisit';
 
-const ClientPurchase = () => {
+const ClientSale = () => {
   const { data } = useDashboardData();
 
   return (
-    <RecentSaleTable
-      data={data?.recentTenSale ?? []}
-      title="최근 판매"
+    <ClientVisitTable
+      tableType="purchase"
+      data={data?.notVisitedInClient ?? []}
+      title="구매가 저조한 거래처"
     />
   );
 };
 
-export default ClientPurchase;
+export default ClientSale;

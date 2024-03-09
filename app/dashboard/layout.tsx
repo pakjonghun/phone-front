@@ -1,16 +1,12 @@
 'use client';
 
 import { Box, Grid, Typography } from '@mui/material';
-
 import { FC, ReactNode } from 'react';
 import CommonLayout from '@/components/commonLayout/CommonLayout';
 
 interface Props {
-  children: ReactNode;
   clientPurchase: ReactNode;
   clientSale: ReactNode;
-  productSale: ReactNode;
-  productPurchase: ReactNode;
   totalSale: ReactNode;
   topClient: ReactNode;
   topProduct: ReactNode;
@@ -19,8 +15,6 @@ interface Props {
 const Dashboard: FC<Props> = ({
   clientPurchase,
   clientSale,
-  productPurchase,
-  productSale,
   totalSale,
   topClient,
   topProduct,
@@ -33,6 +27,7 @@ const Dashboard: FC<Props> = ({
           display: 'flex',
           flexDirection: 'column',
           width: '100%',
+          pageBreakAfter: 4,
         }}
       >
         <Typography sx={{ mb: 4 }} variant="h4">
@@ -41,31 +36,27 @@ const Dashboard: FC<Props> = ({
         <Grid
           sx={{
             alignItems: 'stretch',
+            pb: 5,
           }}
           container
           rowSpacing={3}
           columnSpacing={2}
         >
-          <Grid item xs={12} sm={6} lg={4}>
+          <Grid item xs={12}>
             {totalSale}
           </Grid>
-          <Grid item xs={12} sm={6} lg={4}>
+
+          <Grid item xs={12} lg={6}>
             {topClient}
           </Grid>
-          <Grid item xs={12} sm={12} lg={4}>
-            {topProduct}
-          </Grid>
           <Grid item xs={12} lg={6}>
-            {clientPurchase}
+            {topProduct}
           </Grid>
           <Grid item xs={12} lg={6}>
             {clientSale}
           </Grid>
           <Grid item xs={12} lg={6}>
-            {productPurchase}
-          </Grid>
-          <Grid item xs={12} lg={6}>
-            {productSale}
+            {clientPurchase}
           </Grid>
         </Grid>
       </Box>

@@ -181,7 +181,6 @@ const TableBodyList = () => {
                   <>
                     {role !== Role.STAFF && (
                       <TableCell padding="checkbox">
-                        <div>{index}</div>
                         <Checkbox
                           color="primary"
                           checked={isItemSelected}

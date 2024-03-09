@@ -1,6 +1,7 @@
+'use client';
+
 import { Aggregate } from '@/model/dashboard';
 import {
-  Avatar,
   Card,
   CardContent,
   Stack,
@@ -36,18 +37,17 @@ const TopCard: FC<Props> = ({
           gap={2}
           mt={2}
         >
-          {data.map(({ _id, count, accPrice }, index) => (
+          {data.map((item, index) => (
             <Stack
-              key={_id}
+              key={`${index}_${Object.keys(item).join(
+                ' '
+              )}`}
               direction="row"
               alignItems="center"
               gap={1}
             >
-              <Avatar sx={{ width: 24, height: 24 }}>
-                {index + 1}
-              </Avatar>
               <Typography variant="body1">
-                {suffixFunc({ _id, count, accPrice })}
+                {suffixFunc(item)}
               </Typography>
             </Stack>
           ))}
