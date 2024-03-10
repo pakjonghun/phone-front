@@ -18,6 +18,7 @@ export const sortEngToHangle: Record<SaleSort, string> = {
   belowAverageCount: '평균이하 판매가',
   distanceLog: '차감내역',
   isConfirmed: '승인',
+  outClient: '판매처',
   rank: '등급',
   recentHighSalePrice: '최고가',
   recentLowPrice: '최저가',
