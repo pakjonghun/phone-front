@@ -42,7 +42,7 @@ export function getWithCommaNumber(number: number) {
 }
 
 export function getTwoRoundedNumber(number: number) {
-  const initNumber = number * 100;
+  const initNumber = number * 10;
 
   const result =
     number < 0
