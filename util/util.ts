@@ -43,7 +43,10 @@ export function getWithCommaNumber(number: number) {
 
 export function getTwoRoundedNumber(number: number) {
   const initNumber = number * 100;
-  return number < 0
-    ? Math.ceil(initNumber) / 100
-    : Math.floor(initNumber) / 100;
+
+  const result =
+    number < 0
+      ? Math.ceil(initNumber) / 10
+      : Math.floor(initNumber) / 10;
+  return result;
 }

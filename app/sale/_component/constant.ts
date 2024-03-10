@@ -19,11 +19,18 @@ export const headCells: readonly HeadCell[] = [
     width: 200,
   },
   {
+    id: 'outClient',
+    numeric: false,
+    disablePadding: false,
+    label: '판매처',
+  },
+  {
     id: 'rank',
     numeric: false,
     disablePadding: false,
     label: '등급',
   },
+
   {
     id: 'distanceLog',
     numeric: true,

@@ -185,8 +185,12 @@ const TableBodyList = () => {
                     {row.product._id}
                   </TableCell>
                   <TableCell align="left">
+                    {row.outClient as unknown as string}
+                  </TableCell>
+                  <TableCell align="left">
                     {rankReverse[row.rank]}
                   </TableCell>
+
                   <TableCell align="left">
                     {row.distanceLog || '-'}
                   </TableCell>

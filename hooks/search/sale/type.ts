@@ -7,7 +7,8 @@ export type SaleSort =
   | 'isConfirmed'
   | 'rank'
   | 'recentHighSalePrice'
-  | 'recentLowPrice';
+  | 'recentLowPrice'
+  | 'outClient';
 
 export type SaleSortItem = [SaleSort, Order | undefined];
 

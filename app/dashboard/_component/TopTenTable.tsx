@@ -4,7 +4,6 @@ import * as React from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
@@ -25,11 +24,11 @@ function createData({
     name,
     accMargin: getCurrencyToKRW(accMargin),
     accPrice: getCurrencyToKRW(accPrice),
-    marginRate: `${getTwoRoundedNumber(marginRate) * 100}%`,
+    marginRate: `${getTwoRoundedNumber(marginRate)}%`,
   };
 }
 
-const header = ['이름', '매출', '마진', '마진율'];
+const header = ['이름', '누적 매출', '누적 마진', '마진율'];
 
 interface Props {
   title: string;
@@ -41,7 +40,6 @@ export default function TopTenTable({
   data,
 }: Props) {
   const rows = data.map((item) => createData(item));
-
   return (
     <Paper sx={{ pt: 3, height: '100%' }}>
       <Typography ml={3} mb={3} variant="h5">
