@@ -21,9 +21,7 @@ const TotalSale = () => {
           accPrice
         )}, 누적 마진 : ${getCurrencyToKRW(
           accMargin
-        )}, 마진율 : ${
-          getTwoRoundedNumber(marginRate) * 100
-        }%`
+        )}, 마진율 : ${getTwoRoundedNumber(marginRate)}%`
       }
     />
   );
