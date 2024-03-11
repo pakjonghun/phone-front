@@ -7,6 +7,8 @@ import { useLogin } from '@/hooks/auth/useAuthData';
 import { useAuthStore } from '@/lib/store/auth/auth';
 import { User } from '@/model/user';
 import {
+  FormGroup,
+  InputLabel,
   Stack,
   TextField,
   Typography,
@@ -62,34 +64,39 @@ const Login = () => {
         로그인
       </Typography>
       <Stack direction="column" gap={2}>
-        <TextField
-          {...register('id', {
-            required: '아이디를 입력하세요',
-            minLength: {
-              value: 2,
-              message: '아이디는 2글자 이상을 입력하세요.',
-            },
-          })}
-          label="아이디"
-          variant="outlined"
-          error={!!errors.id}
-          helperText={errors.id?.message}
-        />
-        <TextField
-          {...register('password', {
-            required: '비밀번호를 입력하세요',
-            minLength: {
-              value: 8,
-              message:
-                '비밀번호는 8글자 이상을 입력하세요.',
-            },
-          })}
-          label="비밀번호"
-          variant="outlined"
-          type="password"
-          error={!!errors.password}
-          helperText={errors.password?.message}
-        />
+        <FormGroup>
+          <InputLabel>아이디</InputLabel>
+          <TextField
+            {...register('id', {
+              required: '아이디를 입력하세요',
+              minLength: {
+                value: 2,
+                message:
+                  '아이디는 2글자 이상을 입력하세요.',
+              },
+            })}
+            variant="outlined"
+            error={!!errors.id}
+            helperText={errors.id?.message}
+          />
+        </FormGroup>
+        <FormGroup>
+          <InputLabel>비밀번호</InputLabel>
+          <TextField
+            {...register('password', {
+              required: '비밀번호를 입력하세요',
+              minLength: {
+                value: 8,
+                message:
+                  '비밀번호는 8글자 이상을 입력하세요.',
+              },
+            })}
+            variant="outlined"
+            type="password"
+            error={!!errors.password}
+            helperText={errors.password?.message}
+          />
+        </FormGroup>
         <SubmitButton isLoading={isPending} text="로그인" />
       </Stack>
     </Form>

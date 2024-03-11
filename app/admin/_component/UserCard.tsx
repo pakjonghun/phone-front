@@ -177,6 +177,7 @@ const UserCard: FC<Props> = ({ user }) => {
         <FormControl fullWidth>
           <InputLabel id={user.id}>권한</InputLabel>
           <Select
+            label="권한"
             value={selectedRole}
             onChange={(event) => {
               const value = event.target.value as Role;
