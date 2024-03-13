@@ -20,6 +20,7 @@ export type Dashboard = {
   topTenProduct: TopTenItem[];
   topTenClient: TopTenItem[];
   totalSale: Aggregate;
+  todaySale: Aggregate;
   notVisitedOutClient: Client[];
   notVisitedInClient: Client[];
 };

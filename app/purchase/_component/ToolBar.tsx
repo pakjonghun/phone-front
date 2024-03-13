@@ -189,18 +189,20 @@ export default function EnhancedTableToolbar(
           title={
             !hasSelectedItem
               ? '선택된 데이터가 없습니다.'
-              : confirmedInclude
-              ? '승인할수 없는 데이터가 선택되어 있습니다.'
               : ''
+            // : confirmedInclude
+            // ? '승인할수 없는 데이터가 선택되어 있습니다.'
+            // : ''
           }
         >
           <Button
             onClick={() => {
               const message = !hasSelectedItem
                 ? '선택된 데이터가 없습니다.'
-                : confirmedInclude
-                ? '승인할수 없는 데이터가 선택되어 있습니다.'
                 : '';
+              // : confirmedInclude
+              // ? '승인할수 없는 데이터가 선택되어 있습니다.'
+              // : '';
 
               if (message) {
                 snackBar(message, 'warning');

@@ -5,6 +5,7 @@ import { FC, ReactNode } from 'react';
 import CommonLayout from '@/components/commonLayout/CommonLayout';
 
 interface Props {
+  todaySale: ReactNode;
   clientPurchase: ReactNode;
   clientSale: ReactNode;
   totalSale: ReactNode;
@@ -18,6 +19,7 @@ const Dashboard: FC<Props> = ({
   totalSale,
   topClient,
   topProduct,
+  todaySale,
 }) => {
   return (
     <CommonLayout>
@@ -42,8 +44,11 @@ const Dashboard: FC<Props> = ({
           rowSpacing={3}
           columnSpacing={2}
         >
-          <Grid item xs={12}>
+          <Grid item xs={6}>
             {totalSale}
+          </Grid>
+          <Grid item xs={6}>
+            {todaySale}
           </Grid>
 
           <Grid item xs={12} lg={6}>

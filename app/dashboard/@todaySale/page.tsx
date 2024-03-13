@@ -13,13 +13,13 @@ const TotalSale = () => {
 
   return (
     <TopCard
-      title="최근 한달 총 매출"
+      title="오늘 총 매출"
       note=""
-      data={data?.totalSale ? [data.totalSale] : []}
+      data={data?.todaySale ? [data.todaySale] : []}
       suffixFunc={({ accPrice, accMargin, marginRate }) =>
-        `누적매출 : ${getCurrencyToKRW(
+        `매출 : ${getCurrencyToKRW(
           accPrice
-        )}, 누적 마진 : ${getCurrencyToKRW(
+        )}, 마진 : ${getCurrencyToKRW(
           accMargin
         )}, 마진율 : ${getTwoRoundedNumber(marginRate)}%`
       }
