@@ -4,17 +4,15 @@ import {
   ListData,
 } from '@/api/type';
 import { client } from '@/api/client';
-import { MARGIN_LIST, SALE_LIST } from './constant';
-import { RequestMarginList, RequestSaleList } from './type';
+import { SALE_LIST } from './constant';
+import { RequestSaleList } from './type';
 import { Sale } from '@/model/sale';
 import dayjs from 'dayjs';
-import { Margin } from '@/model/margin';
 import {
   useInfiniteQuery,
   useMutation,
 } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { LastPage } from '@mui/icons-material';
 
 const uploadSaleExcel = (excelFile: FormData) => {
   return client
@@ -52,50 +50,6 @@ export const useSaleList = (query: RequestSaleList) => {
   });
 };
 
-const marginList = async (
-  query: RequestMarginList & { page: number }
-) => {
-  return client('/margin', { params: query }).then(
-    (res) => res.data
-  );
-};
-
-export const useMarginList = (query: RequestMarginList) => {
-  return useInfiniteQuery<ListData<Margin>, AxiosError>({
-    queryFn: ({ pageParam }) =>
-      marginList({ ...query, page: pageParam as number }),
-    initialPageParam: 1,
-    queryKey: [MARGIN_LIST, { ...query }],
-    getNextPageParam: (LastPage, allPages) => {
-      return LastPage.hasNext ? allPages.length + 1 : null;
-    },
-  });
-};
-
-const confirmSale = async (saleIdList: string[]) => {
-  return client
-    .put('/sale', { idList: saleIdList })
-    .then((res) => res.data);
-};
-
-export const useConfirmSale = () => {
-  return useMutation<CommonMutation, CommonError, string[]>(
-    {
-      mutationFn: confirmSale,
-    }
-  );
-};
-
-const applySale = () => {
-  return client('/sale/apply').then((res) => res.data);
-};
-
-export const useApplySale = () => {
-  return useMutation<CommonMutation, CommonError, void>({
-    mutationFn: applySale,
-  });
-};
-
 const downloadSale = async (saleIdList: string[]) => {
   client('/sale/download', {
     params: { idList: saleIdList },
@@ -119,31 +73,5 @@ const downloadSale = async (saleIdList: string[]) => {
 export const useDownloadSale = () => {
   return useMutation<void, CommonError, string[]>({
     mutationFn: downloadSale,
-  });
-};
-
-const downloadMargin = async (saleIdList: string[]) => {
-  client('/sale/margin/download', {
-    params: { idList: saleIdList },
-    responseType: 'blob',
-  }).then((res) => {
-    const url = window.URL.createObjectURL(
-      new Blob([res.data])
-    );
-    const link = document.createElement('a');
-    link.href = url;
-    const fileName =
-      dayjs().format('YYYYMMDDHHmmss') + '판매.xlsx';
-    link.setAttribute('download', fileName);
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    window.URL.revokeObjectURL(url);
-  });
-};
-
-export const useDownloadMargin = () => {
-  return useMutation<void, CommonError, string[]>({
-    mutationFn: downloadMargin,
   });
 };

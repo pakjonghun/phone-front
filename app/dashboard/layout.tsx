@@ -1,25 +1,25 @@
-'use client';
-
 import { Box, Grid, Typography } from '@mui/material';
 import { FC, ReactNode } from 'react';
 import CommonLayout from '@/components/commonLayout/CommonLayout';
 
 interface Props {
+  visitClient: ReactNode;
+  monthProduct: ReactNode;
+  todayProduct: ReactNode;
+  monthSale: ReactNode;
   todaySale: ReactNode;
-  clientPurchase: ReactNode;
-  clientSale: ReactNode;
-  totalSale: ReactNode;
-  topClient: ReactNode;
-  topProduct: ReactNode;
+  monthClient: ReactNode;
+  todayClient: ReactNode;
 }
 
 const Dashboard: FC<Props> = ({
-  clientPurchase,
-  clientSale,
-  totalSale,
-  topClient,
-  topProduct,
+  visitClient,
+  monthSale,
   todaySale,
+  monthProduct,
+  todayProduct,
+  monthClient,
+  todayClient,
 }) => {
   return (
     <CommonLayout>
@@ -44,7 +44,31 @@ const Dashboard: FC<Props> = ({
           rowSpacing={3}
           columnSpacing={2}
         >
-          <Grid item xs={6}>
+          <Grid item xs={12} sm={6}>
+            {monthSale}
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            {todaySale}
+          </Grid>
+
+          <Grid item xs={12} lg={6}>
+            {monthProduct}
+          </Grid>
+
+          <Grid item xs={12} lg={6}>
+            {todayProduct}
+          </Grid>
+          <Grid item xs={12} lg={6}>
+            {monthClient}
+          </Grid>
+
+          <Grid item xs={12} lg={6}>
+            {todayClient}
+          </Grid>
+          <Grid item xs={12}>
+            {visitClient}
+          </Grid>
+          {/* <Grid item xs={6}>
             {totalSale}
           </Grid>
           <Grid item xs={6}>
@@ -62,7 +86,7 @@ const Dashboard: FC<Props> = ({
           </Grid>
           <Grid item xs={12} lg={6}>
             {clientPurchase}
-          </Grid>
+          </Grid> */}
         </Grid>
       </Box>
     </CommonLayout>

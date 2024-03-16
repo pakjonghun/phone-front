@@ -4,30 +4,15 @@ import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import Checkbox from '@mui/material/Checkbox';
 import { useSaleQueryStore } from '@/lib/store/sale/saleList';
-import {
-  useConfirmSale,
-  useSaleList,
-} from '@/hooks/search/sale/useSaleData';
-import {
-  Button,
-  CircularProgress,
-  Skeleton,
-  TableBody,
-  Typography,
-} from '@mui/material';
-import { rankReverse } from './constant';
+import { useSaleList } from '@/hooks/search/sale/useSaleData';
+import { Skeleton, TableBody } from '@mui/material';
 import { useAuthStore } from '@/lib/store/auth/auth';
 import { Sale } from '@/model/sale';
-import AlertDialog from '@/components/dialog/AlertDialog';
-import { SALE_LIST } from '@/hooks/search/sale/constant';
-import { useSaleAlert } from '@/lib/store/sale/saleAlert';
-import { useSnackbar } from '@/context/SnackBarProvicer';
 import { useSaleTable } from '@/lib/store/sale/saleTable';
 import {
   getCurrencyToKRW,
-  getWithCommaNumber,
+  getDateFormat,
 } from '@/util/util';
-import { useQueryClient } from '@tanstack/react-query';
 
 const TableBodyList = () => {
   const selectedIdList = useSaleTable(
@@ -35,11 +20,6 @@ const TableBodyList = () => {
   );
   const setSelectedIdList = useSaleTable(
     (state) => state.setSelectedSaleList
-  );
-
-  const snackBar = useSnackbar();
-  const setOpenApplyDialog = useSaleAlert(
-    (state) => state.setWarnShow
   );
 
   const role = useAuthStore((state) => state.role);
@@ -54,45 +34,6 @@ const TableBodyList = () => {
     sort,
     length: length,
   });
-
-  const selectedSaleIdList = selectedIdList.map(
-    (sale) => sale._id
-  );
-  const queryClient = useQueryClient();
-
-  const openApplyDialog = useSaleAlert(
-    (state) => state.warnShow
-  );
-
-  const { mutate: confirm, isPending } = useConfirmSale();
-
-  const setIsConfirmingLoading = useSaleTable(
-    (state) => state.setIsMultiConfirmLoading
-  );
-
-  const handleClickConfirm = () => {
-    setIsConfirmingLoading(true);
-    confirm(selectedSaleIdList, {
-      onSuccess: () => {
-        snackBar('승인이 완료되었습니다.', 'success');
-        queryClient.invalidateQueries({
-          queryKey: [SALE_LIST],
-        });
-        setSelectedIdList([]);
-      },
-      onError: (error) => {
-        const errorMessage = error?.response?.data?.message;
-        snackBar(
-          errorMessage ?? '승인이 실패했습니다.',
-          'error'
-        );
-      },
-      onSettled: () => {
-        setIsConfirmingLoading(false);
-        setOpenApplyDialog(false);
-      },
-    });
-  };
 
   const flatSaleData =
     data?.pages.flatMap((item) => item.data) ??
@@ -116,26 +57,6 @@ const TableBodyList = () => {
 
   return (
     <TableBody>
-      <AlertDialog
-        onClickApply={handleClickConfirm}
-        open={openApplyDialog}
-        setOpen={setOpenApplyDialog}
-        variant="confirm"
-        title="승인"
-        message={
-          <Typography
-            variant="caption"
-            sx={{
-              display: 'block',
-              width: '300px',
-              fontSize: '14px',
-            }}
-          >
-            정말 승인하겠습니까?
-            <br /> 승인후 되돌릴수 없습니다.
-          </Typography>
-        }
-      />
       <>
         {flatSaleData?.map((row, index) => {
           const rowKey = row?._id ?? index;
@@ -160,7 +81,7 @@ const TableBodyList = () => {
               selected={isItemSelected}
             >
               {isCellLoading || !row ? (
-                <TableCell padding="none" colSpan={8}>
+                <TableCell padding="none" colSpan={13}>
                   <Skeleton sx={{ mx: 2 }} height={60} />
                 </TableCell>
               ) : (
@@ -182,82 +103,41 @@ const TableBodyList = () => {
                   )}
 
                   <TableCell align="left">
-                    {row.product._id}
+                    {getDateFormat(row.inDate)}
                   </TableCell>
                   <TableCell align="left">
-                    {row.outClient as unknown as string}
+                    {row.inClient}
                   </TableCell>
                   <TableCell align="left">
-                    {rankReverse[row.rank]}
+                    {getDateFormat(row.outDate)}
                   </TableCell>
 
                   <TableCell align="left">
-                    {row.distanceLog || '-'}
+                    {row.outClient}
                   </TableCell>
                   <TableCell align="left">
-                    {getCurrencyToKRW(
-                      row.product.recentHighSalePrice
-                    )}
+                    {row.product}
                   </TableCell>
                   <TableCell align="left">
-                    {getCurrencyToKRW(
-                      row.product.recentLowPrice
-                    )}
+                    {row._id}
                   </TableCell>
                   <TableCell align="left">
-                    {getWithCommaNumber(
-                      row.product.belowAverageCount
-                    )}
+                    {row.imei}
                   </TableCell>
-                  <TableCell
-                    align="center"
-                    component="th"
-                    id={labelId}
-                    scope="row"
-                    padding="none"
-                  >
-                    {row.isConfirmed ? (
-                      <Button
-                        sx={{ width: 90 }}
-                        disabled
-                        variant="outlined"
-                      >
-                        승인완료
-                      </Button>
-                    ) : (
-                      <>
-                        {role !== Role.STAFF ? (
-                          <Button
-                            sx={{ width: 90 }}
-                            onClick={(event) => {
-                              event.stopPropagation();
-                              setSelectedIdList([row]);
-                              setOpenApplyDialog(true);
-                            }}
-                            variant="contained"
-                            startIcon={
-                              selectedIdList.find(
-                                (saleItem) =>
-                                  saleItem._id == row._id
-                              ) && isPending ? (
-                                <CircularProgress
-                                  size={18}
-                                  sx={{
-                                    color: 'white',
-                                  }}
-                                />
-                              ) : (
-                                <></>
-                              )
-                            }
-                          >
-                            승인
-                          </Button>
-                        ) : (
-                          '승인대기'
-                        )}
-                      </>
-                    )}
+                  <TableCell align="left">
+                    {getCurrencyToKRW(row.inPrice)}
+                  </TableCell>
+                  <TableCell align="left">
+                    {getCurrencyToKRW(row.outPrice)}
+                  </TableCell>
+                  <TableCell align="left">
+                    {getCurrencyToKRW(row.margin)}
+                  </TableCell>
+                  <TableCell align="left">
+                    {row.marginRate}
+                  </TableCell>
+                  <TableCell align="left">
+                    {row.note}
                   </TableCell>
                 </>
               )}

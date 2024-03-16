@@ -8,7 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Typography } from '@mui/material';
-import { TopTenItem } from '@/model/dashboard';
+import { TopRecord } from '@/model/dashboard';
 import {
   getCurrencyToKRW,
   getTwoRoundedNumber,
@@ -18,34 +18,34 @@ function createData({
   name,
   accMargin,
   accPrice,
-  marginRate,
-}: TopTenItem) {
+  accMarginRate,
+}: TopRecord) {
   return {
     name,
     accMargin: getCurrencyToKRW(accMargin),
     accPrice: getCurrencyToKRW(accPrice),
-    marginRate: `${getTwoRoundedNumber(marginRate)}%`,
+    marginRate: `${getTwoRoundedNumber(accMarginRate)}%`,
   };
 }
 
-const header = ['이름', '누적 매출', '누적 마진', '마진율'];
+const header = ['이름', '매출', '수익', '수익율'];
 
 interface Props {
   title: string;
-  data: TopTenItem[];
+  data?: TopRecord[];
 }
 
 export default function TopTenTable({
   title,
   data,
 }: Props) {
-  const rows = data.map((item) => createData(item));
+  const rows = data?.map((item) => createData(item)) ?? [];
   return (
     <Paper sx={{ pt: 3, height: '100%' }}>
       <Typography ml={3} mb={3} variant="h5">
         {title}
       </Typography>
-      <Table aria-label="simple table">
+      <Table aria-label="record table">
         <TableHead>
           <TableRow>
             {header.map((head) => (

@@ -1,7 +1,6 @@
 import { Box } from '@mui/material';
 import React from 'react';
 import SearchKeyword from './SearchKeyword';
-import SortList from './SortList';
 
 const SearchFilter = () => {
   return (
@@ -22,7 +21,6 @@ const SearchFilter = () => {
     >
       <Box sx={{ width: '100%' }}>
         <SearchKeyword />
-        <SortList />
       </Box>
     </Box>
   );

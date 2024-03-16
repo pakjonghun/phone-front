@@ -1,8 +1,8 @@
-import { SaleSort } from '@/hooks/search/sale/type';
+import { Sale } from '@/model/sale';
 
 export interface HeadCell {
   disablePadding: boolean;
-  id: SaleSort;
+  id: keyof Sale;
   label: string;
   numeric: boolean;
   sort?: boolean;
@@ -10,6 +10,38 @@ export interface HeadCell {
 }
 
 export const headCells: readonly HeadCell[] = [
+  {
+    id: 'inDate',
+    numeric: false,
+    disablePadding: false,
+    label: '매입일',
+    sort: true,
+    width: 200,
+  },
+  {
+    id: 'inClient',
+    numeric: false,
+    disablePadding: false,
+    label: '매입처',
+    sort: true,
+    width: 200,
+  },
+  {
+    id: 'outDate',
+    numeric: false,
+    disablePadding: false,
+    label: '판매일',
+    sort: true,
+    width: 200,
+  },
+  {
+    id: 'outClient',
+    numeric: false,
+    disablePadding: false,
+    label: '판매처',
+    sort: true,
+    width: 200,
+  },
   {
     id: 'product',
     numeric: false,
@@ -19,48 +51,59 @@ export const headCells: readonly HeadCell[] = [
     width: 200,
   },
   {
-    id: 'outClient',
+    id: '_id',
     numeric: false,
     disablePadding: false,
-    label: '판매처',
+    label: '일련번호',
   },
   {
-    id: 'rank',
+    id: 'imei',
     numeric: false,
     disablePadding: false,
-    label: '등급',
+    label: 'IMEI',
   },
 
   {
-    id: 'distanceLog',
+    id: 'inPrice',
     numeric: true,
     disablePadding: false,
-    label: '차감내역',
+    label: '실매입가',
+    sort: true,
   },
   {
-    id: 'recentHighSalePrice',
+    id: 'outPrice',
     numeric: true,
     disablePadding: false,
-    label: '최근 고가 판매가',
+    label: '실판매가',
+    sort: true,
   },
   {
-    id: 'recentLowPrice',
+    id: 'margin',
     numeric: true,
     disablePadding: false,
-    label: '최근 저가 판매가',
+    label: '손익',
+    sort: true,
   },
   {
-    id: 'belowAverageCount',
+    id: 'marginRate',
     numeric: true,
     disablePadding: false,
-    label: '평균 이하 판매수',
+    label: '수익율',
+    sort: true,
   },
   {
-    id: 'isConfirmed',
+    id: 'note',
+    width: 300,
     numeric: false,
     disablePadding: true,
-    label: '관리자 승인',
+    label: '특이사항',
   },
+  // {
+  //   id: 'rank',
+  //   numeric: false,
+  //   disablePadding: true,
+  //   label: '등급',
+  // },
 ];
 
 export type Rank =

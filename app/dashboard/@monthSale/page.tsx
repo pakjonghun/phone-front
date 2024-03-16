@@ -2,7 +2,7 @@
 
 import PercentIcon from '@mui/icons-material/Percent';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
-import { useGetTodaySale } from '@/hooks/dashboard/useDashboard';
+import { useGetMonthSale } from '@/hooks/dashboard/useDashboard';
 import CardSkeleton from '../_component/CardSkeleton';
 import {
   Card,
@@ -17,7 +17,7 @@ import {
 } from '@/util/util';
 
 const ClientSale = () => {
-  const { data, isLoading } = useGetTodaySale();
+  const { data, isLoading } = useGetMonthSale();
 
   if (isLoading) {
     return <CardSkeleton />;
@@ -28,7 +28,7 @@ const ClientSale = () => {
       <CardHeader
         title={
           <Typography variant="h5" component="h5">
-            오늘 누적 매출
+            월 누적 매출
           </Typography>
         }
       />

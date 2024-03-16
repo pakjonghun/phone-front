@@ -1,14 +1,7 @@
+import { Sale } from '@/model/sale';
 import { Order } from './../../../api/type';
 
-export type SaleSort =
-  | 'product'
-  | 'belowAverageCount'
-  | 'distanceLog'
-  | 'isConfirmed'
-  | 'rank'
-  | 'recentHighSalePrice'
-  | 'recentLowPrice'
-  | 'outClient';
+export type SaleSort = keyof Omit<Sale, '_id'>;
 
 export type SaleSortItem = [SaleSort, Order | undefined];
 

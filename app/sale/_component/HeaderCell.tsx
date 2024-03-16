@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import {
   Button,
   TableCell,
-  TableHead,
+  Typography,
 } from '@mui/material';
 
 import { HeadCell } from './constant';
@@ -34,20 +34,39 @@ const HeaderCell: FC<Props> = ({ headCell }) => {
       padding={headCell.disablePadding ? 'none' : 'normal'}
       sx={{ width: `${headCell.width ?? 50}px` }}
     >
-      <Button
-        color="inherit"
-        variant="text"
-        sx={{
-          whiteSpace: 'nowrap',
-          display: 'flex',
-          alignItems: 'center',
-          gap: 1,
-        }}
-        onClick={() => handleClickHeader(headCell.id)}
-      >
-        {headCell.label}
-        <HeadSortIcon orderValue={orderValue} />
-      </Button>
+      {headCell.sort ? (
+        <Button
+          color="inherit"
+          variant="text"
+          sx={{
+            whiteSpace: 'nowrap',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1,
+          }}
+          onClick={() =>
+            handleClickHeader(
+              headCell.id as unknown as SaleSort
+            )
+          }
+        >
+          {headCell.label}
+          <HeadSortIcon orderValue={orderValue} />
+        </Button>
+      ) : (
+        <Typography
+          variant="button"
+          color="inherit"
+          sx={{
+            whiteSpace: 'nowrap',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1,
+          }}
+        >
+          {headCell.label}
+        </Typography>
+      )}
     </TableCell>
   );
 };

@@ -11,7 +11,13 @@ interface Props {
   children: ReactNode;
 }
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+    },
+  },
+});
 
 const ReactQueryClientProvider: FC<Props> = ({
   children,

@@ -2,10 +2,12 @@
 
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { Header } from '@/components/common';
-import { Person } from '@mui/icons-material';
+import { Iso, Person } from '@mui/icons-material';
 import {
   Box,
   Button,
+  Card,
+  CardContent,
   CircularProgress,
   Grid,
   Paper,
@@ -29,15 +31,66 @@ import ChangePasswordDialog from './_component/ChangePasswordDialog';
 import AlertDialog from '@/components/dialog/AlertDialog';
 import { useUserId } from '@/lib/store/user/userId';
 import { USER_LIST } from '@/hooks/user/constant';
-import { SALE_LIST } from '@/hooks/search/sale/constant';
-import { PURCHASE_LIST } from '@/hooks/search/purchase/constant';
 import { useQueryClient } from '@tanstack/react-query';
+import { SALE_LIST } from '@/hooks/search/sale/constant';
+import {
+  useDeleteRecord,
+  useGetUploadRecordList,
+} from '@/hooks/auth/useAuthData';
+import { getTimeFormat } from '@/util/util';
+import { UPLOAD_LIST } from '@/hooks/auth/constant';
+import { DASHBOARD_DATA } from '@/hooks/dashboard/constant';
 
 const Admin = () => {
+  const invalidateKeys = [
+    SALE_LIST,
+    UPLOAD_LIST,
+    DASHBOARD_DATA,
+  ];
   const snackbar = useSnackbar();
   const { data: userList, isLoading } = useUserList();
+  const {
+    data: uploadList,
+    isLoading: isUploadListLoading,
+  } = useGetUploadRecordList();
 
-  const userData = userList ?? Array.from({ length: 10 });
+  const [selectRecordDate, setSelectRecordDate] =
+    useState<null | { _id: string; updatedAt: Date }>(null);
+
+  const { mutate: deleteRecord } = useDeleteRecord();
+
+  const handleCloseRecordDialog = () => {
+    setSelectRecordDate(null);
+  };
+
+  const handleDeleteRecord = () => {
+    if (!selectRecordDate) return;
+
+    deleteRecord(
+      {
+        uploadId: selectRecordDate._id,
+      },
+      {
+        onSuccess: () => {
+          snackbar('업로드 기록 삭제성공', 'success');
+          setSelectRecordDate(null);
+          invalidateKeys.forEach((key) => {
+            queryClient.invalidateQueries({
+              queryKey: [key],
+            });
+          });
+        },
+        onError: () => {
+          snackbar('업로드 기록 삭제성공', 'success');
+          setSelectRecordDate(null);
+        },
+      }
+    );
+  };
+
+  const userData = userList ?? Array.from({ length: 3 });
+  const recordDate =
+    uploadList ?? Array.from({ length: 3 });
 
   const setShowDropAlert = useUserAlert(
     (state) => state.setWarnShow
@@ -90,8 +143,11 @@ const Admin = () => {
     reset(undefined, {
       onSuccess: () => {
         snackbar('초기화가 완료되었습니다.');
-        queryClient.invalidateQueries({
-          queryKey: [SALE_LIST, PURCHASE_LIST],
+
+        invalidateKeys.forEach((key) => {
+          queryClient.invalidateQueries({
+            queryKey: [key],
+          });
         });
       },
       onError: (error) => {
@@ -155,6 +211,38 @@ const Admin = () => {
         setOpen={setOpenDeleteAlert}
       />
       <AlertDialog
+        title="업로드 기록 삭제"
+        message={
+          <>
+            <Typography
+              variant="caption"
+              sx={{
+                display: 'block',
+                width: '300px',
+                fontSize: '14px',
+              }}
+            >
+              정말 해당 날짜에 업로드 된 기록을
+              삭제하겠습니까?
+            </Typography>
+            <Typography
+              variant="caption"
+              sx={{
+                display: 'block',
+                width: '300px',
+                fontSize: '14px',
+              }}
+            >
+              삭제된 기록은 복구가 불가능합니다.
+            </Typography>
+          </>
+        }
+        variant="error"
+        onClickApply={handleDeleteRecord}
+        open={!!selectRecordDate}
+        setOpen={handleCloseRecordDialog}
+      />
+      <AlertDialog
         title="계정삭제"
         message={
           <>
@@ -201,7 +289,7 @@ const Admin = () => {
           mb: 4,
         }}
       >
-        <Typography variant="h4">관리자 관리</Typography>
+        <Typography variant="h4">관리자</Typography>
         <Stack direction="row" gap={2}>
           <Button
             startIcon={<Person />}
@@ -231,7 +319,15 @@ const Admin = () => {
         </Stack>
       </Header>
       <Paper>
-        <Grid container rowSpacing={1} columnSpacing={1}>
+        <Typography variant="h5" sx={{ my: 3, mx: 2 }}>
+          계정관리
+        </Typography>
+        <Grid
+          container
+          sx={{ p: 2 }}
+          rowSpacing={1}
+          columnSpacing={1}
+        >
           {userData?.map((user, index) => {
             return (
               <Grid
@@ -256,6 +352,64 @@ const Admin = () => {
               </Grid>
             );
           })}
+        </Grid>
+      </Paper>
+      <Paper sx={{ mt: 4 }}>
+        <Typography variant="h5" sx={{ my: 3, mx: 2 }}>
+          업로드 관리
+        </Typography>
+        <Grid container sx={{ p: 2 }}>
+          {!recordDate?.length && (
+            <>오늘 업로드 된 기록이 없습니다.</>
+          )}
+          {recordDate?.map((item, index) => (
+            <Grid
+              key={item?._id ?? `${index}_upload`}
+              item
+              xs={100}
+              md={6}
+              lg={4}
+              xl={3}
+            >
+              <>
+                {isUploadListLoading ? (
+                  <Skeleton
+                    sx={{ mx: 2, my: 1.2 }}
+                    height={240}
+                    variant="rounded"
+                  />
+                ) : (
+                  <Card>
+                    <CardContent>
+                      <Stack
+                        direction="row"
+                        alignItems="center"
+                        justifyContent="space-between"
+                        gap={3}
+                        sx={{ mt: 1 }}
+                      >
+                        <Typography>
+                          {`${getTimeFormat(
+                            item.updatedAt
+                          )}에 업로드`}
+                        </Typography>
+                        <Button
+                          onClick={() =>
+                            setSelectRecordDate(item)
+                          }
+                          size="small"
+                          variant="contained"
+                          color="error"
+                        >
+                          삭제
+                        </Button>
+                      </Stack>
+                    </CardContent>
+                  </Card>
+                )}
+              </>
+            </Grid>
+          ))}
         </Grid>
       </Paper>
     </Box>

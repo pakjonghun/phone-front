@@ -1,26 +1,21 @@
 import { Client } from './client';
 
-export type Aggregate = {
-  _id: string;
-  count: number;
-  accPrice: number;
-  accMargin: number;
-  marginRate: number;
+export type TopRecord = TotalSale & {
+  name: string;
 };
 
-export type TopTenItem = {
-  name: string;
-  count: number;
+export type TotalSale = {
   accPrice: number;
   accMargin: number;
-  marginRate: number;
+  accMarginRate: number;
 };
 
 export type Dashboard = {
-  topTenProduct: TopTenItem[];
-  topTenClient: TopTenItem[];
-  totalSale: Aggregate;
-  todaySale: Aggregate;
+  monthSale: TotalSale[];
+  todaySale: TotalSale[];
+  monthTopProduct: any[];
+  monthTopClient: any[];
+  todayTopProduct: any[];
+  todayTopClient: any[];
   notVisitedOutClient: Client[];
-  notVisitedInClient: Client[];
 };

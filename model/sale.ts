@@ -1,16 +1,15 @@
-import { Client } from './client';
-import { Product } from './product';
-
 export type Sale = {
-  _id: string;
-  outDate: string;
   inDate: string;
-  isConfirmed: boolean;
-  rank: number;
-  distanceLog: string | null;
-  inClient: Client;
-  outClient: Client;
-  product: Product;
+  inClient: string;
+  outDate: string;
+  outClient: string;
+  product: string;
+  _id: string;
+  imei: string;
   inPrice: number;
   outPrice: number;
+  margin: number;
+  marginRate: number;
+  note: string;
+  rank: string;
 };

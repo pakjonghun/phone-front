@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 export const client = (fetch: Promise<Response>) => {
   return fetch
     .then(async (res) => {
@@ -50,4 +52,12 @@ export function getTwoRoundedNumber(number: number) {
       : Math.floor(initNumber) / 10;
 
   return isNaN(result) ? 0 : result;
+}
+
+export function getDateFormat(date: string) {
+  return dayjs(date).format('YYYY년 MM월 DD일');
+}
+
+export function getTimeFormat(date: Date) {
+  return dayjs(date).format('HH시 mm분 ss초');
 }
