@@ -2,7 +2,7 @@
 
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { Header } from '@/components/common';
-import { Iso, Person } from '@mui/icons-material';
+import { Person } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -37,7 +37,7 @@ import {
   useDeleteRecord,
   useGetUploadRecordList,
 } from '@/hooks/auth/useAuthData';
-import { getTimeFormat } from '@/util/util';
+import { getDateFormat, getTimeFormat } from '@/util/util';
 import { UPLOAD_LIST } from '@/hooks/auth/constant';
 import { DASHBOARD_DATA } from '@/hooks/dashboard/constant';
 
@@ -160,6 +160,14 @@ const Admin = () => {
     });
   };
 
+  const lastUploadIndex = uploadList
+    ? uploadList.length - 1
+    : 0;
+
+  const lastUploadItem = uploadList
+    ? uploadList[lastUploadIndex]
+    : null;
+
   return (
     <Box
       sx={{
@@ -222,8 +230,12 @@ const Admin = () => {
                 fontSize: '14px',
               }}
             >
-              정말 해당 날짜에 업로드 된 기록을
-              삭제하겠습니까?
+              {selectRecordDate
+                ? `${getTimeFormat(
+                    selectRecordDate!.updatedAt
+                  )} 에 업로드 된 데이터를
+              삭제하겠습니까?`
+                : ''}
             </Typography>
             <Typography
               variant="caption"
@@ -355,10 +367,26 @@ const Admin = () => {
         </Grid>
       </Paper>
       <Paper sx={{ mt: 4 }}>
-        <Typography variant="h5" sx={{ my: 3, mx: 2 }}>
-          업로드 관리
-        </Typography>
-        <Grid container sx={{ p: 2 }}>
+        <Stack direction="row" alignItems="center">
+          <Typography variant="h5" sx={{ my: 3, mx: 2 }}>
+            판매 업로드 관리
+          </Typography>
+          <Tooltip title="마지막으로 업로드한 시점으로 되돌립니다.">
+            <Button
+              disabled={!uploadList?.length}
+              onClick={() =>
+                setSelectRecordDate(lastUploadItem)
+              }
+              size="small"
+              variant="contained"
+              color="error"
+              startIcon={<RestartAltIcon />}
+            >
+              되돌리기
+            </Button>
+          </Tooltip>
+        </Stack>
+        <Grid container gap={2} sx={{ p: 2 }}>
           {!recordDate?.length && (
             <>오늘 업로드 된 기록이 없습니다.</>
           )}
@@ -393,7 +421,7 @@ const Admin = () => {
                             item.updatedAt
                           )}에 업로드`}
                         </Typography>
-                        <Button
+                        {/* <Button
                           onClick={() =>
                             setSelectRecordDate(item)
                           }
@@ -402,7 +430,7 @@ const Admin = () => {
                           color="error"
                         >
                           삭제
-                        </Button>
+                        </Button> */}
                       </Stack>
                     </CardContent>
                   </Card>
