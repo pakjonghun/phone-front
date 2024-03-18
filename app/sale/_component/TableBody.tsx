@@ -50,13 +50,17 @@ const TableBodyList = () => {
 
   const handleClickRow = (saleItem: Sale) => {
     if (role === Role.STAFF) return;
-    const isIdInclude = selectedIdList.find(
-      (item) => item._id === saleItem._id
+    const isInclude = selectedIdList.find(
+      (item) =>
+        `${item.imei}_${item.outDate}` ===
+        `${saleItem.imei}_${saleItem.outDate}`
     );
-    if (isIdInclude) {
+    if (isInclude) {
       setSelectedIdList(
         selectedIdList.filter(
-          (item) => item._id !== saleItem._id
+          (item) =>
+            `${item.imei}_${item.outDate}` !==
+            `${saleItem.imei}_${saleItem.outDate}`
         )
       );
     } else {
@@ -71,7 +75,9 @@ const TableBodyList = () => {
           const rowKey = row?._id ?? index;
           const isItemSelected = row
             ? selectedIdList.some(
-                (item) => item._id === row?._id
+                (item) =>
+                  `${item.imei}_${item.outDate}` ===
+                  `${row.imei}_${row.outDate}`
               )
             : false;
 
