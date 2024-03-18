@@ -62,7 +62,9 @@ const ClientSale = () => {
                 총매출
               </Typography>
               <Typography>
-                {data ? getCurrencyToKRW(data.accPrice) : 0}
+                {data
+                  ? getCurrencyToKRW(data.accOutPrice)
+                  : 0}
               </Typography>
             </Stack>
           </Stack>

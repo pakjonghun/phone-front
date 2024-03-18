@@ -5,7 +5,7 @@ export type TopRecord = TotalSale & {
 };
 
 export type TotalSale = {
-  accPrice: number;
+  accOutPrice: number;
   accMargin: number;
   accMarginRate: number;
 };

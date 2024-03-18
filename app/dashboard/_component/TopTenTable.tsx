@@ -40,6 +40,7 @@ export default function TopTenTable({
   data,
 }: Props) {
   const rows = data?.map((item) => createData(item)) ?? [];
+  console.log(rows);
   return (
     <Paper sx={{ pt: 3, height: '100%' }}>
       <Typography ml={3} mb={3} variant="h5">
