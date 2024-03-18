@@ -17,13 +17,13 @@ import {
 function createData({
   name,
   accMargin,
-  accPrice,
+  accOutPrice,
   accMarginRate,
 }: TopRecord) {
   return {
     name,
     accMargin: getCurrencyToKRW(accMargin),
-    accPrice: getCurrencyToKRW(accPrice),
+    accPrice: getCurrencyToKRW(accOutPrice),
     marginRate: `${getTwoRoundedNumber(accMarginRate)}%`,
   };
 }
