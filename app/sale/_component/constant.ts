@@ -51,12 +51,6 @@ export const headCells: readonly HeadCell[] = [
     width: 200,
   },
   {
-    id: '_id',
-    numeric: false,
-    disablePadding: false,
-    label: '일련번호',
-  },
-  {
     id: 'imei',
     numeric: false,
     disablePadding: false,

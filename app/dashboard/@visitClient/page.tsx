@@ -6,7 +6,6 @@ import ClientVisitTable from '../_component/ClientVisit';
 
 const MonthProduct = () => {
   const { data, isLoading } = useGetVisitClient();
-  console.log(data);
 
   if (isLoading) {
     return <TableSkeleton />;

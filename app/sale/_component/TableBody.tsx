@@ -119,9 +119,6 @@ const TableBodyList = () => {
                     {row.product}
                   </TableCell>
                   <TableCell align="left">
-                    {row._id}
-                  </TableCell>
-                  <TableCell align="left">
                     {row.imei}
                   </TableCell>
                   <TableCell align="left">

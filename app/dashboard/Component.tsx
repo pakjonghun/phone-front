@@ -6,7 +6,6 @@ interface Props {
 }
 
 const A: FC<Props> = ({ a }) => {
-  console.log(a.length);
   return (
     <Box
       sx={{

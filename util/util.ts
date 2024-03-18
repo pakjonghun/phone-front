@@ -50,7 +50,6 @@ export function getTwoRoundedNumber(number: number) {
     number < 0
       ? Math.ceil(initNumber) / 10
       : Math.floor(initNumber) / 10;
-  console.log(number, initNumber, result);
   return isNaN(result) ? 0 : result;
 }
 
