@@ -15,6 +15,8 @@ type SaleQueryAction = {
   setSort: (sortItem: SaleSortItem) => void;
   resetSort: (sortKey: SaleSort) => void;
   toggleSortType: () => void;
+  setStartDate: (date: Date | null) => void;
+  setEndDate: (date: Date | null) => void;
 };
 
 type SortType = 'single' | 'multi';
@@ -29,6 +31,8 @@ export const initSaleQuery: RequestSaleList &
   keyword: '',
   length: LENGTH,
   sort: [],
+  startDate: null,
+  endDate: null,
 };
 
 type SaleQueryStoreType = RequestSaleList &
@@ -46,7 +50,14 @@ const saleQueryStoreApi: StateCreator<
     );
     return targetHeader;
   },
-
+  setStartDate: (date) =>
+    set((state) => {
+      state.startDate = date;
+    }),
+  setEndDate: (date) =>
+    set((state) => {
+      state.endDate = date;
+    }),
   setQuery: (query: RequestSaleList) =>
     set(query, false, 'setQuery'),
   setKeyword: (keyword) =>

@@ -17,6 +17,12 @@ const SearchKeyword = () => {
     (state) => state.setSelectedSaleList
   );
 
+  const startDate = useSaleQueryStore(
+    (state) => state.startDate
+  );
+  const endDate = useSaleQueryStore(
+    (state) => state.endDate
+  );
   useEffect(() => {
     setSelectedIdList([]);
   }, [keyword]);
@@ -29,6 +35,8 @@ const SearchKeyword = () => {
     length,
     sort,
     keyword: delayText,
+    startDate,
+    endDate,
   });
 
   return (

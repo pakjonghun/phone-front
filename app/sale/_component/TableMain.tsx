@@ -20,11 +20,20 @@ export default function SaleTableMain() {
   );
   const sort = useSaleQueryStore((state) => state.sort);
   const length = useSaleQueryStore((state) => state.length);
+  const startDate = useSaleQueryStore(
+    (state) => state.startDate
+  );
+
+  const endDate = useSaleQueryStore(
+    (state) => state.endDate
+  );
   const { data, hasNextPage, fetchNextPage, isFetching } =
     useSaleList({
       keyword,
       sort,
       length: length,
+      startDate,
+      endDate,
     });
 
   const callback: IntersectionObserverCallback = (

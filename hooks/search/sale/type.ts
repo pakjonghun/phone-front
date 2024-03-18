@@ -9,6 +9,8 @@ export type RequestSaleList = {
   keyword: string;
   sort: SaleSortItem[];
   length: number;
+  startDate: Date | null;
+  endDate: Date | null;
 };
 
 export type MarginSort =
@@ -29,6 +31,4 @@ export type RequestMarginList = {
   keyword: string;
   sort: MarginSortItem[];
   length: number;
-  startDate?: string;
-  endDate?: string;
 };

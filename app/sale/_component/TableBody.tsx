@@ -29,10 +29,19 @@ const TableBodyList = () => {
 
   const sort = useSaleQueryStore((state) => state.sort);
   const length = useSaleQueryStore((state) => state.length);
+  const startDate = useSaleQueryStore(
+    (state) => state.startDate
+  );
+  const endDate = useSaleQueryStore(
+    (state) => state.endDate
+  );
+
   const { data, isPending: isCellLoading } = useSaleList({
     keyword,
     sort,
     length: length,
+    startDate,
+    endDate,
   });
 
   const flatSaleData =
