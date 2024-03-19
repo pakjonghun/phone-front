@@ -5,18 +5,10 @@ import { useSaleQueryStore } from '@/lib/store/sale/saleList';
 import dayjs from 'dayjs';
 
 const SearchFilter = () => {
-  const startDate = useSaleQueryStore(
-    (state) => state.startDate
-  );
-  const setStartDate = useSaleQueryStore(
-    (state) => state.setStartDate
-  );
-  const endDate = useSaleQueryStore(
-    (state) => state.endDate
-  );
-  const setEndDate = useSaleQueryStore(
-    (state) => state.setEndDate
-  );
+  const startDate = useSaleQueryStore((state) => state.startDate);
+  const setStartDate = useSaleQueryStore((state) => state.setStartDate);
+  const endDate = useSaleQueryStore((state) => state.endDate);
+  const setEndDate = useSaleQueryStore((state) => state.setEndDate);
 
   const getDisableStart = (date: Date) => {
     if (endDate) {
@@ -50,18 +42,17 @@ const SearchFilter = () => {
         borderRadius: '10px',
       }}
     >
-      <Stack
-        direction="row"
-        justifyContent="space-between"
-        sx={{ width: '100%' }}
-      >
+      <Stack direction="row" justifyContent="space-between" sx={{ width: '100%' }}>
         <SearchKeyword />
         <Stack direction="row" gap={2} alignItems="center">
           <DatePicker
             shouldDisableDate={getDisableStart}
-            value={startDate}
+            value={startDate as unknown as Date}
             onChange={(d) => {
-              setStartDate(d);
+              if (d) {
+                const s = dayjs(d).startOf('date');
+                setStartDate(s);
+              }
             }}
             format="YY년 MM월 DD일"
             label="시작날짜"
@@ -69,8 +60,13 @@ const SearchFilter = () => {
           ~
           <DatePicker
             shouldDisableDate={getDisableEnd}
-            value={endDate}
-            onChange={setEndDate}
+            value={endDate as unknown as Date}
+            onChange={(d) => {
+              if (d) {
+                const e = dayjs(d).endOf('date');
+                setEndDate(e);
+              }
+            }}
             format="YY년 MM월 DD일"
             label="종료날짜"
           />

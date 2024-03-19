@@ -1,9 +1,6 @@
 import { LENGTH } from '@/api/constant';
-import {
-  RequestSaleList,
-  SaleSort,
-  SaleSortItem,
-} from '@/hooks/search/sale/type';
+import { RequestSaleList, SaleSort, SaleSortItem } from '@/hooks/search/sale/type';
+import { Dayjs } from 'dayjs';
 import { StateCreator, create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
@@ -15,8 +12,8 @@ type SaleQueryAction = {
   setSort: (sortItem: SaleSortItem) => void;
   resetSort: (sortKey: SaleSort) => void;
   toggleSortType: () => void;
-  setStartDate: (date: Date | null) => void;
-  setEndDate: (date: Date | null) => void;
+  setStartDate: (date: Dayjs | null) => void;
+  setEndDate: (date: Dayjs | null) => void;
 };
 
 type SortType = 'single' | 'multi';
@@ -25,8 +22,7 @@ type SaleQueryState = {
   sortType: SortType;
 };
 
-export const initSaleQuery: RequestSaleList &
-  SaleQueryState = {
+export const initSaleQuery: RequestSaleList & SaleQueryState = {
   sortType: 'single',
   keyword: '',
   length: LENGTH,
@@ -35,9 +31,7 @@ export const initSaleQuery: RequestSaleList &
   endDate: null,
 };
 
-type SaleQueryStoreType = RequestSaleList &
-  SaleQueryState &
-  SaleQueryAction;
+type SaleQueryStoreType = RequestSaleList & SaleQueryState & SaleQueryAction;
 
 const saleQueryStoreApi: StateCreator<
   SaleQueryStoreType,
@@ -45,9 +39,7 @@ const saleQueryStoreApi: StateCreator<
 > = (set, get) => ({
   ...initSaleQuery,
   getSort: (headerId) => {
-    const targetHeader = get().sort.find(
-      ([sortKey]) => sortKey == headerId
-    );
+    const targetHeader = get().sort.find(([sortKey]) => sortKey == headerId);
     return targetHeader;
   },
   setStartDate: (date) =>
@@ -58,8 +50,7 @@ const saleQueryStoreApi: StateCreator<
     set((state) => {
       state.endDate = date;
     }),
-  setQuery: (query: RequestSaleList) =>
-    set(query, false, 'setQuery'),
+  setQuery: (query: RequestSaleList) => set(query, false, 'setQuery'),
   setKeyword: (keyword) =>
     set(
       (state) => {
@@ -74,14 +65,9 @@ const saleQueryStoreApi: StateCreator<
         const isMulti = get().sortType === 'multi';
 
         if (isMulti) {
-          const existSortIndex = state.sort.findIndex(
-            ([sortKey]) => sortKey === inputSortKey
-          );
+          const existSortIndex = state.sort.findIndex(([sortKey]) => sortKey === inputSortKey);
           if (existSortIndex !== -1) {
-            state.sort[existSortIndex] = [
-              inputSortKey,
-              inputOrder,
-            ];
+            state.sort[existSortIndex] = [inputSortKey, inputOrder];
           } else {
             state.sort.push([inputSortKey, inputOrder]);
           }
@@ -97,9 +83,7 @@ const saleQueryStoreApi: StateCreator<
       (state) => {
         const isMulti = get().sortType == 'multi';
         if (isMulti) {
-          state.sort = state.sort.filter(
-            ([sortKey]) => sortKey !== inputSortKey
-          );
+          state.sort = state.sort.filter(([sortKey]) => sortKey !== inputSortKey);
         } else {
           state.sort = [];
         }
@@ -110,8 +94,7 @@ const saleQueryStoreApi: StateCreator<
   toggleSortType: () =>
     set(
       (state) => {
-        state.sortType =
-          state.sortType == 'single' ? 'multi' : 'single';
+        state.sortType = state.sortType == 'single' ? 'multi' : 'single';
         state.sort = [];
       },
       false,
@@ -119,7 +102,4 @@ const saleQueryStoreApi: StateCreator<
     ),
 });
 
-export const useSaleQueryStore =
-  create<SaleQueryStoreType>()(
-    immer(devtools(saleQueryStoreApi))
-  );
+export const useSaleQueryStore = create<SaleQueryStoreType>()(immer(devtools(saleQueryStoreApi)));

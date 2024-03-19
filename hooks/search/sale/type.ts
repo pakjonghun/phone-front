@@ -1,5 +1,6 @@
 import { Sale } from '@/model/sale';
 import { Order } from './../../../api/type';
+import { Dayjs } from 'dayjs';
 
 export type SaleSort = keyof Omit<Sale, '_id'>;
 
@@ -9,8 +10,8 @@ export type RequestSaleList = {
   keyword: string;
   sort: SaleSortItem[];
   length: number;
-  startDate: Date | null;
-  endDate: Date | null;
+  startDate: Dayjs | null;
+  endDate: Dayjs | null;
 };
 
 export type MarginSort =
@@ -22,10 +23,7 @@ export type MarginSort =
   | 'marginRate'
   | 'outClient';
 
-export type MarginSortItem = [
-  MarginSort,
-  Order | undefined
-];
+export type MarginSortItem = [MarginSort, Order | undefined];
 
 export type RequestMarginList = {
   keyword: string;
