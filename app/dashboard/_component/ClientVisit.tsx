@@ -23,23 +23,13 @@ import FormDialog from '@/components/dialog/FormDialog';
 import { useEditDashboardNote } from '@/hooks/dashboard/useDashboard';
 import { useSnackbar } from '@/context/SnackBarProvicer';
 import { useQueryClient } from '@tanstack/react-query';
-import {
-  DASHBOARD_DATA,
-  VISIT_CLIENT,
-} from '@/hooks/dashboard/constant';
+import { VISIT_CLIENT } from '@/hooks/dashboard/constant';
 import { useForm } from 'react-hook-form';
 
-function createSaleData({
-  _id,
-  lastOutDate,
-  note,
-}: Client) {
+function createSaleData({ _id, lastOutDate, note }: Client) {
   let duration = '판매기록 없음';
   if (lastOutDate) {
-    duration = `${dayjs().diff(
-      dayjs(lastOutDate),
-      'days'
-    )}일째 판매 안함`;
+    duration = `${dayjs().diff(dayjs(lastOutDate), 'days')}일째 판매 안함`;
   }
 
   return {
@@ -66,25 +56,19 @@ type EditForm = {
   note: string;
 };
 
-export default function ClientVisitTable({
-  title,
-  data = [],
-}: Props) {
-  const { register, handleSubmit, setValue } =
-    useForm<EditForm>({
-      defaultValues: {
-        note: '',
-      },
-    });
+export default function ClientVisitTable({ title, data = [] }: Props) {
+  const { register, handleSubmit, setValue } = useForm<EditForm>({
+    defaultValues: {
+      note: '',
+    },
+  });
   const rows = data.map((item) => createSaleData(item));
 
-  const [selectedClient, setSelectedClient] =
-    React.useState<null | DisplayClient>(null);
+  const [selectedClient, setSelectedClient] = React.useState<null | DisplayClient>(null);
   const [isOpen, setIsOpen] = React.useState(false);
   const queryClient = useQueryClient();
   const snack = useSnackbar();
-  const { mutate: editNote, isPending } =
-    useEditDashboardNote();
+  const { mutate: editNote, isPending } = useEditDashboardNote();
   const handleClickEdit = ({ note }: EditForm) => {
     if (!selectedClient) return;
     editNote(
@@ -120,27 +104,15 @@ export default function ClientVisitTable({
               />
             </DialogContent>
             <DialogActions>
-              <Button
-                variant="outlined"
-                onClick={() => setIsOpen(false)}
-              >
+              <Button variant="outlined" onClick={() => setIsOpen(false)}>
                 취소
               </Button>
               <Button
                 variant="contained"
                 type="submit"
-                startIcon={
-                  isPending ? (
-                    <CircularProgress
-                      color="inherit"
-                      size={14}
-                    />
-                  ) : (
-                    ''
-                  )
-                }
+                startIcon={isPending ? <CircularProgress color="inherit" size={14} /> : ''}
               >
-                편집
+                비고편집
               </Button>
             </DialogActions>
           </form>
@@ -175,10 +147,7 @@ export default function ClientVisitTable({
               <TableCell align="left">{row.name}</TableCell>
               <TableCell align="left" sx={{ width: '50%' }}>
                 <Stack direction="row">
-                  <Typography
-                    variant="body2"
-                    whiteSpace="collapse"
-                  >
+                  <Typography variant="body2" whiteSpace="collapse">
                     {row.note}
                   </Typography>
                   <Button
@@ -196,7 +165,7 @@ export default function ClientVisitTable({
                     variant="contained"
                     endIcon={<Edit />}
                   >
-                    편집
+                    비고작성
                   </Button>
                 </Stack>
               </TableCell>
