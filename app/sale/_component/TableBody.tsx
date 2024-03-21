@@ -5,36 +5,23 @@ import TableRow from '@mui/material/TableRow';
 import Checkbox from '@mui/material/Checkbox';
 import { useSaleQueryStore } from '@/lib/store/sale/saleList';
 import { useSaleList } from '@/hooks/search/sale/useSaleData';
-import { Skeleton, TableBody } from '@mui/material';
+import { Skeleton, TableBody, styled } from '@mui/material';
 import { useAuthStore } from '@/lib/store/auth/auth';
 import { Sale } from '@/model/sale';
 import { useSaleTable } from '@/lib/store/sale/saleTable';
-import {
-  getCurrencyToKRW,
-  getDateFormat,
-} from '@/util/util';
+import { getCurrencyToKRW, getDateFormat } from '@/util/util';
 
 const TableBodyList = () => {
-  const selectedIdList = useSaleTable(
-    (state) => state.selectedSaleList
-  );
-  const setSelectedIdList = useSaleTable(
-    (state) => state.setSelectedSaleList
-  );
+  const selectedIdList = useSaleTable((state) => state.selectedSaleList);
+  const setSelectedIdList = useSaleTable((state) => state.setSelectedSaleList);
 
   const role = useAuthStore((state) => state.role);
-  const keyword = useSaleQueryStore(
-    (state) => state.keyword
-  );
+  const keyword = useSaleQueryStore((state) => state.keyword);
 
   const sort = useSaleQueryStore((state) => state.sort);
   const length = useSaleQueryStore((state) => state.length);
-  const startDate = useSaleQueryStore(
-    (state) => state.startDate
-  );
-  const endDate = useSaleQueryStore(
-    (state) => state.endDate
-  );
+  const startDate = useSaleQueryStore((state) => state.startDate);
+  const endDate = useSaleQueryStore((state) => state.endDate);
 
   const { data, isPending: isCellLoading } = useSaleList({
     keyword,
@@ -44,23 +31,17 @@ const TableBodyList = () => {
     endDate,
   });
 
-  const flatSaleData =
-    data?.pages.flatMap((item) => item.data) ??
-    Array.from({ length: 14 });
+  const flatSaleData = data?.pages.flatMap((item) => item.data) ?? Array.from({ length: 14 });
 
   const handleClickRow = (saleItem: Sale) => {
     if (role === Role.STAFF) return;
     const isInclude = selectedIdList.find(
-      (item) =>
-        `${item.imei}_${item.outDate}` ===
-        `${saleItem.imei}_${saleItem.outDate}`
+      (item) => `${item.imei}_${item.outDate}` === `${saleItem.imei}_${saleItem.outDate}`
     );
     if (isInclude) {
       setSelectedIdList(
         selectedIdList.filter(
-          (item) =>
-            `${item.imei}_${item.outDate}` !==
-            `${saleItem.imei}_${saleItem.outDate}`
+          (item) => `${item.imei}_${item.outDate}` !== `${saleItem.imei}_${saleItem.outDate}`
         )
       );
     } else {
@@ -75,9 +56,7 @@ const TableBodyList = () => {
           const rowKey = row?._id ?? index;
           const isItemSelected = row
             ? selectedIdList.some(
-                (item) =>
-                  `${item.imei}_${item.outDate}` ===
-                  `${row.imei}_${row.outDate}`
+                (item) => `${item.imei}_${item.outDate}` === `${row.imei}_${row.outDate}`
               )
             : false;
 
@@ -96,13 +75,13 @@ const TableBodyList = () => {
               selected={isItemSelected}
             >
               {isCellLoading || !row ? (
-                <TableCell padding="none" colSpan={13}>
+                <NoWrapTableCell padding="none" colSpan={13}>
                   <Skeleton sx={{ mx: 2 }} height={60} />
-                </TableCell>
+                </NoWrapTableCell>
               ) : (
                 <>
                   {role !== Role.STAFF && (
-                    <TableCell padding="checkbox">
+                    <NoWrapTableCell padding="checkbox">
                       <Checkbox
                         color="primary"
                         checked={isItemSelected}
@@ -114,43 +93,20 @@ const TableBodyList = () => {
                           handleClickRow(row);
                         }}
                       />
-                    </TableCell>
+                    </NoWrapTableCell>
                   )}
 
-                  <TableCell align="left">
-                    {getDateFormat(row.inDate)}
-                  </TableCell>
-                  <TableCell align="left">
-                    {row.inClient}
-                  </TableCell>
-                  <TableCell align="left">
-                    {getDateFormat(row.outDate)}
-                  </TableCell>
-
-                  <TableCell align="left">
-                    {row.outClient}
-                  </TableCell>
-                  <TableCell align="left">
-                    {row.product}
-                  </TableCell>
-                  <TableCell align="left">
-                    {row.imei}
-                  </TableCell>
-                  <TableCell align="left">
-                    {getCurrencyToKRW(row.inPrice)}
-                  </TableCell>
-                  <TableCell align="left">
-                    {getCurrencyToKRW(row.outPrice)}
-                  </TableCell>
-                  <TableCell align="left">
-                    {getCurrencyToKRW(row.margin)}
-                  </TableCell>
-                  <TableCell align="left">
-                    {row.marginRate}
-                  </TableCell>
-                  <TableCell align="left">
-                    {row.note}
-                  </TableCell>
+                  <NoWrapTableCell align="left">{getDateFormat(row.inDate)}</NoWrapTableCell>
+                  <NoWrapTableCell align="left">{row.inClient}</NoWrapTableCell>
+                  <NoWrapTableCell align="left">{getDateFormat(row.outDate)}</NoWrapTableCell>
+                  <NoWrapTableCell align="left">{row.outClient}</NoWrapTableCell>
+                  <NoWrapTableCell align="left">{row.product}</NoWrapTableCell>
+                  <NoWrapTableCell align="left">{row.imei}</NoWrapTableCell>
+                  <NoWrapTableCell align="left">{getCurrencyToKRW(row.inPrice)}</NoWrapTableCell>
+                  <NoWrapTableCell align="left">{getCurrencyToKRW(row.outPrice)}</NoWrapTableCell>
+                  <NoWrapTableCell align="left">{getCurrencyToKRW(row.margin)}</NoWrapTableCell>
+                  <NoWrapTableCell align="left">{row.marginRate}</NoWrapTableCell>
+                  <NoWrapTableCell align="center">{row.note}</NoWrapTableCell>
                 </>
               )}
             </TableRow>
@@ -162,3 +118,7 @@ const TableBodyList = () => {
 };
 
 export default TableBodyList;
+
+const NoWrapTableCell = styled(TableCell)({
+  whiteSpace: 'nowrap',
+});

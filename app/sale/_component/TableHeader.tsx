@@ -10,36 +10,26 @@ import HeaderCell from './HeaderCell';
 import { useSaleTable } from '@/lib/store/sale/saleTable';
 
 interface EnhancedTableProps {
-  onSelectAllClick: (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => void;
+  onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
   rowCount: number;
 }
 
-export default function EnhancedTableHead(
-  props: EnhancedTableProps
-) {
+export default function EnhancedTableHead(props: EnhancedTableProps) {
   const { onSelectAllClick, rowCount } = props;
-  const selectSaleList = useSaleTable(
-    (state) => state.selectedSaleList
-  );
+  const selectSaleList = useSaleTable((state) => state.selectedSaleList);
   const numSelected = selectSaleList.length;
 
   const role = useAuthStore((state) => state.role);
 
   return (
     <TableHead>
-      <TableRow sx={{ height: '80px' }}>
+      <TableRow sx={{ height: '100px' }}>
         {role !== Role.STAFF && (
           <TableCell padding="checkbox">
             <Checkbox
               color="primary"
-              indeterminate={
-                numSelected > 0 && numSelected < rowCount
-              }
-              checked={
-                rowCount > 0 && numSelected === rowCount
-              }
+              indeterminate={numSelected > 0 && numSelected < rowCount}
+              checked={rowCount > 0 && numSelected === rowCount}
               onChange={onSelectAllClick}
               inputProps={{
                 'aria-label': 'select all desserts',

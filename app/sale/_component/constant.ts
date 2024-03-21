@@ -16,7 +16,7 @@ export const headCells: readonly HeadCell[] = [
     disablePadding: false,
     label: '매입일',
     sort: true,
-    width: 200,
+    width: 140,
   },
   {
     id: 'inClient',
@@ -24,7 +24,7 @@ export const headCells: readonly HeadCell[] = [
     disablePadding: false,
     label: '매입처',
     sort: true,
-    width: 200,
+    width: 140,
   },
   {
     id: 'outDate',
@@ -32,7 +32,7 @@ export const headCells: readonly HeadCell[] = [
     disablePadding: false,
     label: '판매일',
     sort: true,
-    width: 200,
+    width: 140,
   },
   {
     id: 'outClient',
@@ -40,7 +40,7 @@ export const headCells: readonly HeadCell[] = [
     disablePadding: false,
     label: '판매처',
     sort: true,
-    width: 200,
+    width: 140,
   },
   {
     id: 'product',
@@ -55,6 +55,7 @@ export const headCells: readonly HeadCell[] = [
     numeric: false,
     disablePadding: false,
     label: 'IMEI',
+    width: 150,
   },
 
   {
@@ -70,6 +71,7 @@ export const headCells: readonly HeadCell[] = [
     disablePadding: false,
     label: '실판매가',
     sort: true,
+    width: 140,
   },
   {
     id: 'margin',
@@ -77,6 +79,7 @@ export const headCells: readonly HeadCell[] = [
     disablePadding: false,
     label: '손익',
     sort: true,
+    width: 140,
   },
   {
     id: 'marginRate',
@@ -84,47 +87,13 @@ export const headCells: readonly HeadCell[] = [
     disablePadding: false,
     label: '수익율',
     sort: true,
+    width: 120,
   },
   {
     id: 'note',
-    width: 300,
     numeric: false,
     disablePadding: true,
     label: '특이사항',
+    width: 200,
   },
-  // {
-  //   id: 'rank',
-  //   numeric: false,
-  //   disablePadding: true,
-  //   label: '등급',
-  // },
 ];
-
-export type Rank =
-  | 'A+'
-  | 'A-'
-  | 'A'
-  | 'B+'
-  | 'B-'
-  | 'B'
-  | 'C+'
-  | 'C-'
-  | 'C'
-  | 'D'
-  | 'D+'
-  | 'D-';
-
-export const rankReverse: Record<number, Rank> = {
-  [0]: 'A+',
-  [1]: 'A',
-  [2]: 'A-',
-  [3]: 'B+',
-  [4]: 'B',
-  [5]: 'B-',
-  [6]: 'C+',
-  [7]: 'C',
-  [8]: 'C-',
-  [9]: 'D+',
-  [10]: 'D',
-  [11]: 'D-',
-};

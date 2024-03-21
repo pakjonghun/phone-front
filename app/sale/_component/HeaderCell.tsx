@@ -1,9 +1,5 @@
 import React, { FC } from 'react';
-import {
-  Button,
-  TableCell,
-  Typography,
-} from '@mui/material';
+import { Button, TableCell, Typography } from '@mui/material';
 
 import { HeadCell } from './constant';
 import { useSaleQueryStore } from '@/lib/store/sale/saleList';
@@ -15,13 +11,9 @@ interface Props {
 }
 
 const HeaderCell: FC<Props> = ({ headCell }) => {
-  const setSortList = useSaleQueryStore(
-    (state) => state.setSort
-  );
+  const setSortList = useSaleQueryStore((state) => state.setSort);
 
-  const sortItem = useSaleQueryStore((state) =>
-    state.getSort(headCell.id)
-  );
+  const sortItem = useSaleQueryStore((state) => state.getSort(headCell.id));
   const orderValue = sortItem?.[1];
   const handleClickHeader = (headerId: SaleSort) => {
     setSortList([headerId, orderValue === 1 ? -1 : 1]);
@@ -30,25 +22,22 @@ const HeaderCell: FC<Props> = ({ headCell }) => {
   return (
     <TableCell
       key={headCell.id}
-      align="left"
       padding={headCell.disablePadding ? 'none' : 'normal'}
-      sx={{ width: `${headCell.width ?? 50}px` }}
+      sx={{ minWidth: `${headCell.width ?? 50}px` }}
     >
       {headCell.sort ? (
         <Button
           color="inherit"
           variant="text"
           sx={{
+            justifyContent: 'flex-start',
+            width: '100%',
             whiteSpace: 'nowrap',
             display: 'flex',
             alignItems: 'center',
             gap: 1,
           }}
-          onClick={() =>
-            handleClickHeader(
-              headCell.id as unknown as SaleSort
-            )
-          }
+          onClick={() => handleClickHeader(headCell.id as unknown as SaleSort)}
         >
           {headCell.label}
           <HeadSortIcon orderValue={orderValue} />
@@ -58,8 +47,10 @@ const HeaderCell: FC<Props> = ({ headCell }) => {
           variant="button"
           color="inherit"
           sx={{
+            width: '100%',
             whiteSpace: 'nowrap',
             display: 'flex',
+            justifyContent: 'center',
             alignItems: 'center',
             gap: 1,
           }}
