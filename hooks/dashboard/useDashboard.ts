@@ -9,10 +9,7 @@ import {
   TODAY_SALE,
   VISIT_CLIENT,
 } from './constant';
-import {
-  useMutation,
-  useQuery,
-} from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { CommonMutation } from '@/api/type';
 import { AxiosError } from 'axios';
 import { RequestEditDashboard } from './type';
@@ -20,26 +17,25 @@ import { TopRecord, TotalSale } from '@/model/dashboard';
 import { Client } from '@/model/client';
 
 const getVisitClient = async () => {
-  return client
-    .get('/dashboard/visit-client')
-    .then((res) => {
-      return res.data;
-    });
+  return client.get('/dashboard/visit-client').then((res) => {
+    return res.data;
+  });
 };
 
 export const useGetVisitClient = () => {
-  return useQuery<Client[], void>({
+  return useQuery<
+    (Client & { accOutPrice: number; accMargin: number; marginRate: number })[],
+    void
+  >({
     queryKey: [VISIT_CLIENT, DASHBOARD_DATA],
     queryFn: getVisitClient,
   });
 };
 
 const getMonthClient = async () => {
-  return client
-    .get('/dashboard/month-client')
-    .then((res) => {
-      return res.data;
-    });
+  return client.get('/dashboard/month-client').then((res) => {
+    return res.data;
+  });
 };
 
 export const useGetMonthClient = () => {
@@ -50,11 +46,9 @@ export const useGetMonthClient = () => {
 };
 
 const getTodayClient = async () => {
-  return client
-    .get('/dashboard/today-client')
-    .then((res) => {
-      return res.data;
-    });
+  return client.get('/dashboard/today-client').then((res) => {
+    return res.data;
+  });
 };
 
 export const useGetTodayClient = () => {
@@ -65,11 +59,9 @@ export const useGetTodayClient = () => {
 };
 
 const getMonthProduct = async () => {
-  return client
-    .get('/dashboard/month-product')
-    .then((res) => {
-      return res.data;
-    });
+  return client.get('/dashboard/month-product').then((res) => {
+    return res.data;
+  });
 };
 
 export const useGetMonthProduct = () => {
@@ -80,11 +72,9 @@ export const useGetMonthProduct = () => {
 };
 
 const getTodayProduct = async () => {
-  return client
-    .get('/dashboard/today-product')
-    .then((res) => {
-      return res.data;
-    });
+  return client.get('/dashboard/today-product').then((res) => {
+    return res.data;
+  });
 };
 
 export const useGetTodayProduct = () => {
@@ -120,19 +110,12 @@ export const useGetTodaySale = () => {
   });
 };
 
-const editDashboardNote = async ({
-  note,
-  id,
-}: RequestEditDashboard) => {
-  return client
-    .put(`/dashboard/note/${id}`, { note })
-    .then((res) => res.data);
+const editDashboardNote = async ({ note, id }: RequestEditDashboard) => {
+  return client.put(`/dashboard/note/${id}`, { note }).then((res) => res.data);
 };
 
 export const useEditDashboardNote = () => {
-  return useMutation<
-    CommonMutation,
-    AxiosError,
-    RequestEditDashboard
-  >({ mutationFn: editDashboardNote });
+  return useMutation<CommonMutation, AxiosError, RequestEditDashboard>({
+    mutationFn: editDashboardNote,
+  });
 };
