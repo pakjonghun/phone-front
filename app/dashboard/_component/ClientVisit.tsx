@@ -46,7 +46,7 @@ function createSaleData({
     duration,
     accOutPrice: getCurrencyToKRW(accOutPrice),
     accMargin: getCurrencyToKRW(accMargin),
-    marginRate: `${accMargin}%`,
+    marginRate: `${marginRate}%`,
   };
 }
 
