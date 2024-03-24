@@ -25,8 +25,9 @@ import { useSnackbar } from '@/context/SnackBarProvicer';
 import { useQueryClient } from '@tanstack/react-query';
 import { VISIT_CLIENT } from '@/hooks/dashboard/constant';
 import { useForm } from 'react-hook-form';
+import { getCurrencyToKRW } from '@/util/util';
 
-function createSaleData({ _id, lastOutDate, note }: Client) {
+function createSaleData({ _id, lastOutDate, note, accPrice }: Client & { accPrice: number }) {
   let duration = '판매기록 없음';
   if (lastOutDate) {
     duration = `${dayjs().diff(dayjs(lastOutDate), 'days')}일째 판매 안함`;
@@ -36,10 +37,11 @@ function createSaleData({ _id, lastOutDate, note }: Client) {
     name: _id,
     note,
     duration,
+    accPrice: getCurrencyToKRW(accPrice),
   };
 }
 
-const header = ['날짜', '업체명', '비고'];
+const header = ['날짜', '업체명', '월매출', '비고'];
 
 type DisplayClient = {
   name: string;
@@ -49,7 +51,7 @@ type DisplayClient = {
 
 interface Props {
   title: string;
-  data?: Client[];
+  data?: (Client & { accPrice: number })[];
 }
 
 type EditForm = {
@@ -144,7 +146,9 @@ export default function ClientVisitTable({ title, data = [] }: Props) {
               <TableCell component="th" scope="row">
                 {row.duration}
               </TableCell>
+
               <TableCell align="left">{row.name}</TableCell>
+              <TableCell align="left">{row.accPrice}</TableCell>
               <TableCell align="left" sx={{ width: '50%' }}>
                 <Stack direction="row">
                   <Typography variant="body2" whiteSpace="collapse">
