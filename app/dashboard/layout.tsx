@@ -5,6 +5,7 @@ import { FC, ReactNode } from 'react';
 import CommonLayout from '@/components/commonLayout/CommonLayout';
 import { useGetUploadRecordList } from '@/hooks/auth/useAuthData';
 import dayjs from 'dayjs';
+import NavTabs from './_component/TabBar';
 
 interface Props {
   visitClient: ReactNode;
@@ -58,6 +59,10 @@ const Dashboard: FC<Props> = ({
           </Typography>
           <Typography sx={{ mr: 3, mb: 1 }}>{getLastDate()}</Typography>
         </Stack>
+        <Typography sx={{ mb: 4 }} variant="h4">
+          대시보드
+        </Typography>
+        <NavTabs />
         <Grid
           sx={{
             alignItems: 'stretch',
