@@ -15,6 +15,11 @@ export const menuList: MenuItem[] = [
     icon: <ShoppingCartIcon />,
   },
   {
+    id: 'purchase',
+    name: '매입관리',
+    icon: <ShoppingCartIcon />,
+  },
+  {
     id: 'admin',
     name: '관리자',
     icon: <SettingsIcon />,
