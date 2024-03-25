@@ -27,7 +27,7 @@ const purchaseList = async (query: RequestPurchaseList & { page: number }) => {
   return client('/purchase', { params: query }).then<ListData<Purchase>>((res) => res.data);
 };
 
-export const useSaleList = (query: RequestPurchaseList) => {
+export const usePurchaseList = (query: RequestPurchaseList) => {
   return useInfiniteQuery<ListData<Purchase>, AxiosError>({
     queryKey: [PURCHASE_LIST, { ...query }],
     queryFn: ({ pageParam = 1 }) => purchaseList({ ...query, page: pageParam as number }),

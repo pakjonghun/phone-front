@@ -7,7 +7,7 @@ import { headCells } from './constant';
 import { useAuthStore } from '@/lib/store/auth/auth';
 import { Role } from '@/model/user';
 import HeaderCell from './HeaderCell';
-import { useSaleTable } from '@/lib/store/sale/saleTable';
+import { usePurchaseTable } from '@/lib/store/purchase/purchaseTable';
 
 interface EnhancedTableProps {
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -16,8 +16,8 @@ interface EnhancedTableProps {
 
 export default function EnhancedTableHead(props: EnhancedTableProps) {
   const { onSelectAllClick, rowCount } = props;
-  const selectSaleList = useSaleTable((state) => state.selectedSaleList);
-  const numSelected = selectSaleList.length;
+  const selectPurchaseList = usePurchaseTable((state) => state.selectedPurchaseList);
+  const numSelected = selectPurchaseList.length;
 
   const role = useAuthStore((state) => state.role);
 

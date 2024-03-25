@@ -3,59 +3,41 @@ import * as React from 'react';
 import { alpha } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import {
-  CircularProgress,
-  IconButton,
-  Stack,
-  Tooltip,
-} from '@mui/material';
+import { CircularProgress, IconButton, Stack, Tooltip } from '@mui/material';
 import { useSnackbar } from '@/context/SnackBarProvicer';
-import { useDownloadSale } from '@/hooks/search/sale/useSaleData';
-import { useSaleTable } from '@/lib/store/sale/saleTable';
+import { useDownloadPurchase } from '@/hooks/search/purchase/usePurchase';
+import { usePurchaseTable } from '@/lib/store/purchase/purchaseTable';
 import SelectedIndicator from './SelectedIndicator';
 
 interface EnhancedTableToolbarProps {
   searchDataCount: number;
 }
 
-export default function EnhancedTableToolbar(
-  props: EnhancedTableToolbarProps
-) {
+export default function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   const { searchDataCount } = props;
 
-  const selectedSaleList = useSaleTable(
-    (state) => state.selectedSaleList
-  );
+  const selectedPurchaseList = usePurchaseTable((state) => state.selectedPurchaseList);
 
-  const { mutate: download, isPending: isDownloading } =
-    useDownloadSale();
+  const { mutate: download, isPending: isDownloading } = useDownloadPurchase();
 
   const snackBar = useSnackbar();
 
   const handleClickDownload = () => {
     download(
-      selectedSaleList.map(
-        (item) => `${item.imei}_${item.outDate}`
-      ),
+      selectedPurchaseList.map((item) => `${item.imei}_${item.inDate}`),
       {
         onSuccess: () => {
           snackBar('다운로드가 완료되었습니다.', 'success');
         },
         onError: (error) => {
-          const errorMessage =
-            error?.response?.data?.message;
-          snackBar(
-            errorMessage ?? '다운로드가 실패했습니다.',
-            'error'
-          );
+          const errorMessage = error?.response?.data?.message;
+          snackBar(errorMessage ?? '다운로드가 실패했습니다.', 'error');
         },
       }
     );
   };
 
-  const hasSelectedItem = useSaleTable((state) =>
-    state.hasSelectedItem()
-  );
+  const hasSelectedItem = usePurchaseTable((state) => state.hasSelectedItem());
 
   return (
     <Toolbar
@@ -66,10 +48,7 @@ export default function EnhancedTableToolbar(
         pr: { xs: 1, sm: 1 },
         ...(hasSelectedItem && {
           bgcolor: (theme) =>
-            alpha(
-              theme.palette.primary.main,
-              theme.palette.action.activatedOpacity
-            ),
+            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
         }),
       }}
     >
@@ -87,12 +66,7 @@ export default function EnhancedTableToolbar(
           </Tooltip>
         </Stack>
       ) : (
-        <Stack
-          alignItems="center"
-          direction="row"
-          justifyContent="space-between"
-          sx={{ mr: 3 }}
-        >
+        <Stack alignItems="center" direction="row" justifyContent="space-between" sx={{ mr: 3 }}>
           <Typography>판매 데이터</Typography>
           <Typography sx={{ whiteSpace: 'nowrap' }}>
             {`(검색 : ${searchDataCount ?? 0}개)`}

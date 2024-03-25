@@ -1,7 +1,7 @@
 import UploadFileButton from '@/components/button/UploadButton';
 import { useSnackbar } from '@/context/SnackBarProvicer';
+import { useUploadPurchaseExcel } from '@/hooks/search/purchase/usePurchase';
 import { SALE_LIST } from '@/hooks/search/sale/constant';
-import { useUploadSaleExcel } from '@/hooks/search/sale/useSaleData';
 import { SxProps } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import React, { FC } from 'react';
@@ -12,21 +12,13 @@ interface Props {
 
 const UploadExcel: FC<Props> = ({ sx = {} }) => {
   const snackbar = useSnackbar();
-  const {
-    mutate: upload,
-    isPending,
-    isError,
-  } = useUploadSaleExcel();
+  const { mutate: upload, isPending, isError } = useUploadPurchaseExcel();
 
-  const inputRef = React.useRef<null | HTMLInputElement>(
-    null
-  );
+  const inputRef = React.useRef<null | HTMLInputElement>(null);
 
   const queryClient = useQueryClient();
 
-  const onChangeInputFile = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const onChangeInputFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -35,10 +27,7 @@ const UploadExcel: FC<Props> = ({ sx = {} }) => {
 
     upload(formBody, {
       onSuccess: () => {
-        snackbar(
-          '판매 엑셀파일 업로드가 완료되었습니다.',
-          'success'
-        );
+        snackbar('매입 엑셀파일 업로드가 완료되었습니다.', 'success');
         queryClient.invalidateQueries({
           queryKey: [SALE_LIST],
         });
@@ -46,11 +35,7 @@ const UploadExcel: FC<Props> = ({ sx = {} }) => {
 
       onError: (error) => {
         const errorMessage = error.response.data.message;
-        snackbar(
-          errorMessage ??
-            '판매 엑셀파일 업로드가 실패 하였습니다.',
-          'error'
-        );
+        snackbar(errorMessage ?? '매입 엑셀파일 업로드가 실패 하였습니다.', 'error');
       },
       onSettled: () => {
         if (!inputRef.current) return;

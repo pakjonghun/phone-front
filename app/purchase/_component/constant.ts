@@ -1,8 +1,8 @@
-import { Sale } from '@/model/sale';
+import { Purchase } from '@/model/purchase';
 
 export interface HeadCell {
   disablePadding: boolean;
-  id: keyof Sale;
+  id: keyof Purchase;
   label: string;
   numeric: boolean;
   sort?: boolean;
@@ -26,22 +26,7 @@ export const headCells: readonly HeadCell[] = [
     sort: true,
     width: 140,
   },
-  {
-    id: 'outDate',
-    numeric: false,
-    disablePadding: false,
-    label: '판매일',
-    sort: true,
-    width: 140,
-  },
-  {
-    id: 'outClient',
-    numeric: false,
-    disablePadding: false,
-    label: '판매처',
-    sort: true,
-    width: 140,
-  },
+
   {
     id: 'product',
     numeric: false,
@@ -65,30 +50,7 @@ export const headCells: readonly HeadCell[] = [
     label: '실매입가',
     sort: true,
   },
-  {
-    id: 'outPrice',
-    numeric: true,
-    disablePadding: false,
-    label: '실판매가',
-    sort: true,
-    width: 140,
-  },
-  {
-    id: 'margin',
-    numeric: true,
-    disablePadding: false,
-    label: '손익',
-    sort: true,
-    width: 140,
-  },
-  {
-    id: 'marginRate',
-    numeric: true,
-    disablePadding: false,
-    label: '수익율',
-    sort: true,
-    width: 120,
-  },
+
   {
     id: 'note',
     numeric: false,
