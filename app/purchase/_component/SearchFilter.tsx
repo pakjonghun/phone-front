@@ -44,7 +44,7 @@ const SearchFilter = () => {
     >
       <Stack direction="row" justifyContent="space-between" sx={{ width: '100%' }}>
         <SearchKeyword />
-        <Stack direction="row" gap={2} alignItems="center">
+        <Stack direction="row" gap={2} alignItems="center" ml={5}>
           <DatePicker
             shouldDisableDate={getDisableStart}
             value={startDate as unknown as Date}

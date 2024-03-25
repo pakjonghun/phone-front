@@ -104,7 +104,9 @@ const TableBodyList = () => {
                   <NoWrapTableCell align="left">{row.imei}</NoWrapTableCell>
                   <NoWrapTableCell align="left">{getCurrencyToKRW(row.inPrice)}</NoWrapTableCell>
                   <NoWrapTableCell align="left">{getCurrencyToKRW(row.outPrice)}</NoWrapTableCell>
-                  <NoWrapTableCell align="left">{getCurrencyToKRW(row.margin)}</NoWrapTableCell>
+                  <NoWrapTableCell align="left">
+                    {getCurrencyToKRW(`${row.margin}%`)}
+                  </NoWrapTableCell>
                   <NoWrapTableCell align="left">{row.marginRate}</NoWrapTableCell>
                   <NoWrapTableCell align="center">{row.note}</NoWrapTableCell>
                 </>
