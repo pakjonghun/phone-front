@@ -1,7 +1,7 @@
 import { Box, Grid, Typography } from '@mui/material';
 import { FC, ReactNode } from 'react';
 import CommonLayout from '@/components/commonLayout/CommonLayout';
-import NavTabs from './_component/TabBar';
+import NavTabs from '@/components/TabBar';
 
 interface Props {
   visitClient: ReactNode;
@@ -36,7 +36,7 @@ const Dashboard: FC<Props> = ({
         <Typography sx={{ mb: 4 }} variant="h4">
           대시보드
         </Typography>
-        {/* <NavTabs /> */}
+        <NavTabs />
         <Grid
           sx={{
             alignItems: 'stretch',
