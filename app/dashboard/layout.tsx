@@ -1,6 +1,10 @@
-import { Box, Grid, Typography } from '@mui/material';
+'use client';
+
+import { Box, Grid, Stack, Typography } from '@mui/material';
 import { FC, ReactNode } from 'react';
 import CommonLayout from '@/components/commonLayout/CommonLayout';
+import { useGetUploadRecordList } from '@/hooks/auth/useAuthData';
+import dayjs from 'dayjs';
 
 interface Props {
   visitClient: ReactNode;
@@ -21,6 +25,9 @@ const Dashboard: FC<Props> = ({
   monthClient,
   todayClient,
 }) => {
+  const { data } = useGetUploadRecordList();
+  const recent = data?.[0].updatedAt;
+  const date = recent ? dayjs(recent).format('MM월 DD일 HH시 MM분') : '';
   return (
     <CommonLayout>
       <Box
@@ -32,9 +39,17 @@ const Dashboard: FC<Props> = ({
           pageBreakAfter: 4,
         }}
       >
-        <Typography sx={{ mb: 4 }} variant="h4">
-          대시보드
-        </Typography>
+        <Stack
+          component="header"
+          direction="row"
+          justifyContent="space-between"
+          alignItems="flex-end"
+        >
+          <Typography sx={{ mb: 4 }} variant="h4">
+            대시보드
+          </Typography>
+          <Typography sx={{ mr: 3, mb: 1 }}>{date}</Typography>
+        </Stack>
         <Grid
           sx={{
             alignItems: 'stretch',
