@@ -32,7 +32,7 @@ const Dashboard: FC<Props> = ({
 
     const lastLength = data.length;
     const recent = data[lastLength - 1].updatedAt;
-    const date = recent ? dayjs(recent).subtract(9, 'hour').format('MM월 DD일 HH시 MM분') : '';
+    const date = recent ? dayjs(recent).format('MM월 DD일 HH시 MM분') : '';
     return date;
   }
 
