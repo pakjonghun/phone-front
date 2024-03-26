@@ -26,8 +26,16 @@ const Dashboard: FC<Props> = ({
   todayClient,
 }) => {
   const { data } = useGetUploadRecordList();
-  const recent = data?.[0].updatedAt;
-  const date = recent ? dayjs(recent).format('MM월 DD일 HH시 MM분') : '';
+
+  function getLastDate() {
+    if (!data) return '';
+
+    const lastLength = data.length;
+    const recent = data[lastLength - 1].updatedAt;
+    const date = recent ? dayjs(recent).subtract(9, 'hour').format('MM월 DD일 HH시 MM분') : '';
+    return date;
+  }
+
   return (
     <CommonLayout>
       <Box
@@ -48,7 +56,7 @@ const Dashboard: FC<Props> = ({
           <Typography sx={{ mb: 4 }} variant="h4">
             대시보드
           </Typography>
-          <Typography sx={{ mr: 3, mb: 1 }}>{date}</Typography>
+          <Typography sx={{ mr: 3, mb: 1 }}>{getLastDate()}</Typography>
         </Stack>
         <Grid
           sx={{
