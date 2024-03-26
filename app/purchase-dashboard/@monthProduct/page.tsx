@@ -1,8 +1,8 @@
 'use client';
 
-import { useGetMonthProduct } from '@/hooks/dashboard/useDashboard';
 import TableSkeleton from '../_component/TableSkeleton';
 import TopTenTable from '../_component/TopTenTable';
+import { useGetMonthProduct } from '@/hooks/purchaseDashboard/usePurchaseDashboard';
 
 const MonthProduct = () => {
   const { data, isLoading } = useGetMonthProduct();

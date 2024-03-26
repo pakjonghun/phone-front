@@ -27,30 +27,20 @@ import { VISIT_CLIENT } from '@/hooks/dashboard/constant';
 import { useForm } from 'react-hook-form';
 import { getCurrencyToKRW } from '@/util/util';
 
-function createSaleData({
-  _id,
-  lastOutDate,
-  note,
-  accOutPrice,
-  accMargin,
-  marginRate,
-}: Client & { accOutPrice: number; accMargin: number; marginRate: number }) {
+function createSaleData({ _id, lastInDate, note }: Client & { lastInDate: string }) {
   let duration = '판매기록 없음';
-  if (lastOutDate) {
-    duration = `${dayjs().diff(dayjs(lastOutDate), 'days')}일째 판매 안함`;
+  if (lastInDate) {
+    duration = `${dayjs().diff(dayjs(lastInDate), 'days')}일째 구매 안함`;
   }
 
   return {
     name: _id,
     note,
     duration,
-    accOutPrice: getCurrencyToKRW(accOutPrice),
-    accMargin: getCurrencyToKRW(accMargin),
-    marginRate: `${marginRate}%`,
   };
 }
 
-const header = ['날짜', '업체명', '월매출', '월수익', '수익율', '비고'];
+const header = ['날짜', '업체명', '비고'];
 
 type DisplayClient = {
   name: string;
@@ -60,7 +50,7 @@ type DisplayClient = {
 
 interface Props {
   title: string;
-  data?: (Client & { accOutPrice: number; accMargin: number; marginRate: number })[];
+  data?: (Client & { lastInDate: string })[];
 }
 
 type EditForm = {
@@ -157,9 +147,6 @@ export default function ClientVisitTable({ title, data = [] }: Props) {
               </TableCell>
 
               <TableCell align="left">{row.name}</TableCell>
-              <TableCell align="left">{row.accOutPrice}</TableCell>
-              <TableCell align="left">{row.accMargin}</TableCell>
-              <TableCell align="left">{row.marginRate}</TableCell>
               <TableCell align="left" sx={{ width: '30%' }}>
                 <Stack direction="row">
                   <Typography variant="body2" whiteSpace="collapse">

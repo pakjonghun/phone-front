@@ -1,11 +1,10 @@
 'use client';
 
-import PercentIcon from '@mui/icons-material/Percent';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
-import { useGetMonthSale } from '@/hooks/dashboard/useDashboard';
 import CardSkeleton from '../_component/CardSkeleton';
 import { Card, CardContent, CardHeader, Stack, Typography } from '@mui/material';
-import { getCurrencyToKRW, getTwoRoundedNumber } from '@/util/util';
+import { getCurrencyToKRW } from '@/util/util';
+import { useGetMonthSale } from '@/hooks/purchaseDashboard/usePurchaseDashboard';
 
 const ClientSale = () => {
   const { data, isLoading } = useGetMonthSale();
@@ -18,7 +17,7 @@ const ClientSale = () => {
       <CardHeader
         title={
           <Typography variant="h5" component="h5">
-            월 누적 매출
+            월 누적 매입
           </Typography>
         }
       />
@@ -42,28 +41,18 @@ const ClientSale = () => {
             <MonetizationOnIcon />
             <Stack>
               <Typography variant="caption" sx={{ color: 'gray' }}>
-                총매출
+                총매입
               </Typography>
-              <Typography>{data ? getCurrencyToKRW(data.accOutPrice) : 0}</Typography>
+              <Typography>{data ? getCurrencyToKRW(data.accInPrice) : 0}</Typography>
             </Stack>
           </Stack>
           <Stack direction="row" gap={2} alignItems="center">
             <MonetizationOnIcon />
             <Stack>
               <Typography variant="caption" sx={{ color: 'gray' }}>
-                수익
+                총수량
               </Typography>
-              <Typography>{data ? getCurrencyToKRW(data.accMargin) : 0}</Typography>
-            </Stack>
-          </Stack>
-
-          <Stack direction="row" gap={2} alignItems="center">
-            <PercentIcon />
-            <Stack>
-              <Typography variant="caption" sx={{ color: 'gray' }}>
-                수익율
-              </Typography>
-              <Typography>{data ? getTwoRoundedNumber(data.accMarginRate) + '%' : 0}</Typography>
+              <Typography>{data ? data.count : 0}</Typography>
             </Stack>
           </Stack>
         </Stack>

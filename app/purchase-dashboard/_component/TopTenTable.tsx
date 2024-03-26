@@ -9,36 +9,25 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Typography } from '@mui/material';
 import { TopRecord } from '@/model/dashboard';
-import {
-  getCurrencyToKRW,
-  getTwoRoundedNumber,
-} from '@/util/util';
+import { getCurrencyToKRW, getTwoRoundedNumber } from '@/util/util';
+import { TopPurchase } from '@/hooks/purchaseDashboard/type';
 
-function createData({
-  name,
-  accMargin,
-  accOutPrice,
-  accMarginRate,
-}: TopRecord) {
+function createData({ name, count, accInPrice }: TopPurchase) {
   return {
     name,
-    accMargin: getCurrencyToKRW(accMargin),
-    accPrice: getCurrencyToKRW(accOutPrice),
-    marginRate: `${getTwoRoundedNumber(accMarginRate)}%`,
+    accInPrice: getCurrencyToKRW(accInPrice),
+    count,
   };
 }
 
-const header = ['이름', '매출', '수익', '수익율'];
+const header = ['이름', '매입가', '매입수량'];
 
 interface Props {
   title: string;
-  data?: TopRecord[];
+  data?: TopPurchase[];
 }
 
-export default function TopTenTable({
-  title,
-  data,
-}: Props) {
+export default function TopTenTable({ title, data }: Props) {
   const rows = data?.map((item) => createData(item)) ?? [];
   return (
     <Paper sx={{ pt: 3, height: '100%' }}>
@@ -66,15 +55,8 @@ export default function TopTenTable({
               <TableCell component="th" scope="row">
                 {row.name}
               </TableCell>
-              <TableCell align="left">
-                {row.accPrice}
-              </TableCell>
-              <TableCell align="left">
-                {row.accMargin}
-              </TableCell>
-              <TableCell align="left">
-                {row.marginRate}
-              </TableCell>
+              <TableCell align="left">{row.accInPrice}</TableCell>
+              <TableCell align="left">{row.count}</TableCell>
             </TableRow>
           ))}
         </TableBody>
