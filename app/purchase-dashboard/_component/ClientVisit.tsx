@@ -25,22 +25,30 @@ import { useSnackbar } from '@/context/SnackBarProvicer';
 import { useQueryClient } from '@tanstack/react-query';
 import { VISIT_CLIENT } from '@/hooks/dashboard/constant';
 import { useForm } from 'react-hook-form';
-import { getCurrencyToKRW } from '@/util/util';
+import { getCurrencyToKRW, getWithCommaNumber } from '@/util/util';
 
-function createSaleData({ _id, lastInDate, note }: Client & { lastInDate: string }) {
+function createSaleData({
+  _id,
+  lastInDate,
+  note,
+  accInPrice,
+  count,
+}: Client & { lastInDate: string; count: number; accInPrice: number }) {
   let duration = '판매기록 없음';
   if (lastInDate) {
-    duration = `${dayjs().diff(dayjs(lastInDate), 'days')}일째 구매 안함`;
+    duration = `${dayjs().diff(dayjs(lastInDate), 'days')}일째 매입 안함`;
   }
 
   return {
     name: _id,
     note,
     duration,
+    accInPrice,
+    count,
   };
 }
 
-const header = ['날짜', '업체명', '비고'];
+const header = ['날짜', '업체명', '누적 매입가', '누적 매입수량', '비고'];
 
 type DisplayClient = {
   name: string;
@@ -50,7 +58,7 @@ type DisplayClient = {
 
 interface Props {
   title: string;
-  data?: (Client & { lastInDate: string })[];
+  data?: (Client & { lastInDate: string; accInPrice: number; count: number })[];
 }
 
 type EditForm = {
@@ -147,6 +155,8 @@ export default function ClientVisitTable({ title, data = [] }: Props) {
               </TableCell>
 
               <TableCell align="left">{row.name}</TableCell>
+              <TableCell align="left">{getCurrencyToKRW(row.accInPrice)}</TableCell>
+              <TableCell align="left">{getWithCommaNumber(row.count)}</TableCell>
               <TableCell align="left" sx={{ width: '30%' }}>
                 <Stack direction="row">
                   <Typography variant="body2" whiteSpace="collapse">

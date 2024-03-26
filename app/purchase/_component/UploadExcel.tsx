@@ -1,5 +1,6 @@
 import UploadFileButton from '@/components/button/UploadButton';
 import { useSnackbar } from '@/context/SnackBarProvicer';
+import { PURCHASE_LIST } from '@/hooks/search/purchase/constant';
 import { useUploadPurchaseExcel } from '@/hooks/search/purchase/usePurchase';
 import { SALE_LIST } from '@/hooks/search/sale/constant';
 import { SxProps } from '@mui/material';
@@ -29,7 +30,7 @@ const UploadExcel: FC<Props> = ({ sx = {} }) => {
       onSuccess: () => {
         snackbar('매입 엑셀파일 업로드가 완료되었습니다.', 'success');
         queryClient.invalidateQueries({
-          queryKey: [SALE_LIST],
+          queryKey: [PURCHASE_LIST],
         });
       },
 

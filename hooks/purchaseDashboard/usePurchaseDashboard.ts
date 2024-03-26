@@ -15,7 +15,7 @@ import { AxiosError } from 'axios';
 import { RequestEditDashboard, TopPurchase } from './type';
 
 const getVisitClient = async () => {
-  return client.get('/dashboard/visit-client').then((res) => {
+  return client.get('/purchase/dashboard/visit-client').then((res) => {
     return res.data;
   });
 };

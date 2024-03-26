@@ -20,7 +20,7 @@ function createData({ name, count, accInPrice }: TopPurchase) {
   };
 }
 
-const header = ['이름', '매입가', '매입수량'];
+const header = ['이름', '누적 매입가', '누적 매입수량'];
 
 interface Props {
   title: string;
