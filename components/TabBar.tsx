@@ -6,6 +6,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { Divider } from '@mui/material';
 
 interface LinkTabProps {
   href: string;
@@ -24,11 +25,12 @@ export default function NavTabs() {
   };
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: '100%', mb: 3 }}>
       <Tabs value={pathMapper[pathname]} aria-label="nav tabs example" role="navigation">
         <LinkTab label="판매" href="/dashboard" />
         <LinkTab label="매입" href="/purchase-dashboard" />
       </Tabs>
+      <Divider />
     </Box>
   );
 }

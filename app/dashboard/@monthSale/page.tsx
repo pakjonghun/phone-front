@@ -28,11 +28,11 @@ const ClientSale = () => {
           sx={{
             flexDirection: {
               xs: 'column',
-              md: 'row',
+              lg: 'row',
             },
             alignItems: {
               xs: 'flex-start',
-              md: 'center',
+              lg: 'center',
             },
           }}
           gap={2}
