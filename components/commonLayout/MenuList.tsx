@@ -18,23 +18,18 @@ const MenuList = () => {
   const role = useAuthStore((state) => state.role);
   const isAdmin = role === Role.ADMIN;
   const pathname = usePathname();
-  const firstURL = pathname.match(/^\/([^/]+)/)?.[1] ?? '';
+  let firstURL = pathname.match(/^\/([^/]+)/)?.[1] ?? '';
+  if (firstURL.includes('-')) firstURL = firstURL.split('-')[1];
   return (
     <List>
       {menuList.map(({ name, id, icon }) => {
         const adminItem = id === 'admin';
-        if (adminItem && !isAdmin)
-          return <Fragment key={id} />;
+        if (adminItem && !isAdmin) return <Fragment key={id} />;
         return (
           <ListItem key={`${name}_${id}`} disablePadding>
-            <ListItemButton
-              selected={id === firstURL}
-              sx={{ p: 0 }}
-            >
+            <ListItemButton selected={id === firstURL} sx={{ p: 0 }}>
               <CustomLink href={`/${id}`}>
-                <ListItemIcon>
-                  {!!icon && icon}
-                </ListItemIcon>
+                <ListItemIcon>{!!icon && icon}</ListItemIcon>
                 <ListItemText primary={name} />
               </CustomLink>
             </ListItemButton>
