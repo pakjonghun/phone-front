@@ -32,7 +32,7 @@ const Dashboard: FC<Props> = ({
     if (!data) return '';
 
     const lastLength = data.length;
-    const recent = data[lastLength - 1].updatedAt;
+    const recent = data[lastLength - 1]?.updatedAt;
     const date = recent ? dayjs(recent).format('MM월 DD일 HH시 MM분') : '';
     return date;
   }
@@ -93,25 +93,6 @@ const Dashboard: FC<Props> = ({
           <Grid item xs={12}>
             {visitClient}
           </Grid>
-          {/* <Grid item xs={6}>
-            {totalSale}
-          </Grid>
-          <Grid item xs={6}>
-            {todaySale}
-          </Grid>
-
-          <Grid item xs={12} lg={6}>
-            {topClient}
-          </Grid>
-          <Grid item xs={12} lg={6}>
-            {topProduct}
-          </Grid>
-          <Grid item xs={12} lg={6}>
-            {clientSale}
-          </Grid>
-          <Grid item xs={12} lg={6}>
-            {clientPurchase}
-          </Grid> */}
         </Grid>
       </Box>
     </CommonLayout>

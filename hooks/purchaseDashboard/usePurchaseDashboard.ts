@@ -21,7 +21,7 @@ const getVisitClient = async () => {
 };
 
 export const useGetVisitClient = () => {
-  return useQuery<(Client & { lastInDate: string })[], void>({
+  return useQuery<(Client & { lastInDate: string; accInPrice: number; count: number })[], void>({
     queryKey: [VISIT_CLIENT_PURCHASE],
     queryFn: getVisitClient,
   });

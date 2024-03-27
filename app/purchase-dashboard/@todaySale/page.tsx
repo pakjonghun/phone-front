@@ -43,18 +43,18 @@ const ClientSale = () => {
             <MonetizationOnIcon />
             <Stack>
               <Typography variant="caption" sx={{ color: 'gray' }}>
-                총매입
+                누적 총매입가
               </Typography>
-              <Typography>{data ? getCurrencyToKRW(data.accInPrice) : 0}</Typography>
+              <Typography>{data?.accInPrice ? getCurrencyToKRW(data.accInPrice) : 0}</Typography>
             </Stack>
           </Stack>
           <Stack direction="row" gap={2} alignItems="center">
             <MonetizationOnIcon />
             <Stack>
               <Typography variant="caption" sx={{ color: 'gray' }}>
-                총수량
+                누적 매입수량
               </Typography>
-              <Typography>{data ? data.count : 0}</Typography>
+              <Typography>{data?.count ?? 0}</Typography>
             </Stack>
           </Stack>
         </Stack>

@@ -1,7 +1,11 @@
-import { Box, Grid, Typography } from '@mui/material';
+'use client';
+
+import { Box, Grid, Stack, Typography } from '@mui/material';
 import { FC, ReactNode } from 'react';
 import CommonLayout from '@/components/commonLayout/CommonLayout';
 import NavTabs from '@/components/TabBar';
+import dayjs from 'dayjs';
+import { useGetUploadRecordList, usePurchaseGetUploadRecordList } from '@/hooks/auth/useAuthData';
 
 interface Props {
   visitClient: ReactNode;
@@ -22,6 +26,16 @@ const Dashboard: FC<Props> = ({
   monthClient,
   todayClient,
 }) => {
+  const { data } = usePurchaseGetUploadRecordList();
+  function getLastDate() {
+    if (!data || !Array.isArray(data)) return '';
+
+    const lastLength = data.length;
+    const recent = data[lastLength - 1]?.updatedAt;
+    const date = recent ? dayjs(recent).format('MM월 DD일 HH시 MM분') : '';
+    return date;
+  }
+
   return (
     <CommonLayout>
       <Box
@@ -33,9 +47,17 @@ const Dashboard: FC<Props> = ({
           pageBreakAfter: 4,
         }}
       >
-        <Typography sx={{ mb: 4 }} variant="h4">
-          대시보드
-        </Typography>
+        <Stack
+          component="header"
+          direction="row"
+          justifyContent="space-between"
+          alignItems="flex-end"
+        >
+          <Typography sx={{ mb: 4 }} variant="h4">
+            대시보드
+          </Typography>
+          <Typography sx={{ mr: 3, mb: 1 }}>{getLastDate()}</Typography>
+        </Stack>
         <NavTabs />
         <Grid
           sx={{
