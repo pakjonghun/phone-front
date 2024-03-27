@@ -1,14 +1,14 @@
 import { Box, Stack } from '@mui/material';
 import SearchKeyword from './SearchKeyword';
 import { DatePicker } from '@mui/x-date-pickers';
-import { useSaleQueryStore } from '@/lib/store/sale/saleList';
+import { usePurchaseQueryStore } from '@/lib/store/purchase/purchaseList';
 import dayjs from 'dayjs';
 
 const SearchFilter = () => {
-  const startDate = useSaleQueryStore((state) => state.startDate);
-  const setStartDate = useSaleQueryStore((state) => state.setStartDate);
-  const endDate = useSaleQueryStore((state) => state.endDate);
-  const setEndDate = useSaleQueryStore((state) => state.setEndDate);
+  const startDate = usePurchaseQueryStore((state) => state.startDate);
+  const setStartDate = usePurchaseQueryStore((state) => state.setStartDate);
+  const endDate = usePurchaseQueryStore((state) => state.endDate);
+  const setEndDate = usePurchaseQueryStore((state) => state.setEndDate);
 
   const getDisableStart = (date: Date) => {
     if (endDate) {
