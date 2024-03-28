@@ -5,10 +5,7 @@ interface Props {
   delay?: number;
 }
 
-export const useDebounce = ({
-  text,
-  delay = 1000,
-}: Props) => {
+export const useDebounce = ({ text, delay = 300 }: Props) => {
   const [delayText, setDelayText] = useState(text);
 
   useEffect(() => {
@@ -16,9 +13,7 @@ export const useDebounce = ({
       setDelayText(text);
     }, delay);
 
-    return () => {
-      clearTimeout(timer);
-    };
+    return () => clearTimeout(timer);
   }, [delay, text]);
 
   return delayText;

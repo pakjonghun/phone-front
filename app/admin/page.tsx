@@ -35,7 +35,7 @@ import {
   useGetUploadRecordList,
   usePurchaseGetUploadRecordList,
 } from '@/hooks/auth/useAuthData';
-import { getDateFormat, getTimeFormat } from '@/util/util';
+import { getTimeFormat } from '@/util/util';
 import { PURCHASE_UPLOAD_LIST, UPLOAD_LIST } from '@/hooks/auth/constant';
 import { DASHBOARD_DATA } from '@/hooks/dashboard/constant';
 
@@ -78,7 +78,6 @@ const Admin = () => {
       {
         onSuccess: () => {
           snackbar('업로드 기록 삭제성공', 'success');
-          setSelectRecordDate(null);
           invalidateKeys.forEach((key) => {
             queryClient.invalidateQueries({
               queryKey: [key],
@@ -87,6 +86,8 @@ const Admin = () => {
         },
         onError: () => {
           snackbar('업로드 기록 삭제성공', 'success');
+        },
+        onSettled: () => {
           setSelectRecordDate(null);
         },
       }
@@ -104,7 +105,7 @@ const Admin = () => {
       {
         onSuccess: () => {
           snackbar('업로드 기록 삭제성공', 'success');
-          setSelectRecordDate(null);
+
           invalidateKeys.forEach((key) => {
             queryClient.invalidateQueries({
               queryKey: [key],
@@ -113,7 +114,9 @@ const Admin = () => {
         },
         onError: () => {
           snackbar('업로드 기록 삭제성공', 'success');
-          setSelectRecordDate(null);
+        },
+        onSettled: () => {
+          setSelectRecordDatePurchase(null);
         },
       }
     );
@@ -395,16 +398,18 @@ const Admin = () => {
             판매 업로드 관리
           </Typography>
           <Tooltip title="마지막으로 업로드한 시점으로 되돌립니다.">
-            <Button
-              disabled={!uploadList?.length}
-              onClick={() => setSelectRecordDate(lastUploadItem)}
-              size="small"
-              variant="contained"
-              color="error"
-              startIcon={<RestartAltIcon />}
-            >
-              되돌리기
-            </Button>
+            <span>
+              <Button
+                disabled={!uploadList?.length}
+                onClick={() => setSelectRecordDate(lastUploadItem)}
+                size="small"
+                variant="contained"
+                color="error"
+                startIcon={<RestartAltIcon />}
+              >
+                되돌리기
+              </Button>
+            </span>
           </Tooltip>
         </Stack>
         <Grid container gap={2} sx={{ p: 2 }}>
@@ -448,16 +453,18 @@ const Admin = () => {
             매입 업로드 관리
           </Typography>
           <Tooltip title="마지막으로 업로드한 시점으로 되돌립니다.">
-            <Button
-              disabled={!purchaseUploadList?.length}
-              onClick={() => setSelectRecordDate(lastUploadItemPurchase)}
-              size="small"
-              variant="contained"
-              color="error"
-              startIcon={<RestartAltIcon />}
-            >
-              되돌리기
-            </Button>
+            <span>
+              <Button
+                disabled={!purchaseUploadList?.length}
+                onClick={() => setSelectRecordDatePurchase(lastUploadItemPurchase)}
+                size="small"
+                variant="contained"
+                color="error"
+                startIcon={<RestartAltIcon />}
+              >
+                되돌리기
+              </Button>
+            </span>
           </Tooltip>
         </Stack>
         <Grid container gap={2} sx={{ p: 2 }}>

@@ -10,6 +10,7 @@ import { useAuthStore } from '@/lib/store/auth/auth';
 import { Sale } from '@/model/sale';
 import { useSaleTable } from '@/lib/store/sale/saleTable';
 import { getCurrencyToKRW, getDateFormat } from '@/util/util';
+import { useDebounce } from '@/hooks/common/useDebounce';
 
 const TableBodyList = () => {
   const selectedIdList = useSaleTable((state) => state.selectedSaleList);
@@ -22,9 +23,10 @@ const TableBodyList = () => {
   const length = useSaleQueryStore((state) => state.length);
   const startDate = useSaleQueryStore((state) => state.startDate);
   const endDate = useSaleQueryStore((state) => state.endDate);
+  const delayText = useDebounce({ text: keyword });
 
   const { data, isPending: isCellLoading } = useSaleList({
-    keyword,
+    keyword: delayText,
     sort,
     length: length,
     startDate,
