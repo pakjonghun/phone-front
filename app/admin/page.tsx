@@ -78,7 +78,6 @@ const Admin = () => {
       {
         onSuccess: () => {
           snackbar('업로드 기록 삭제성공', 'success');
-          setSelectRecordDate(null);
           invalidateKeys.forEach((key) => {
             queryClient.invalidateQueries({
               queryKey: [key],
@@ -87,6 +86,8 @@ const Admin = () => {
         },
         onError: () => {
           snackbar('업로드 기록 삭제성공', 'success');
+        },
+        onSettled: () => {
           setSelectRecordDate(null);
         },
       }
@@ -104,7 +105,7 @@ const Admin = () => {
       {
         onSuccess: () => {
           snackbar('업로드 기록 삭제성공', 'success');
-          setSelectRecordDate(null);
+
           invalidateKeys.forEach((key) => {
             queryClient.invalidateQueries({
               queryKey: [key],
@@ -113,7 +114,9 @@ const Admin = () => {
         },
         onError: () => {
           snackbar('업로드 기록 삭제성공', 'success');
-          setSelectRecordDate(null);
+        },
+        onSettled: () => {
+          setSelectRecordDatePurchase(null);
         },
       }
     );
@@ -453,7 +456,7 @@ const Admin = () => {
             <span>
               <Button
                 disabled={!purchaseUploadList?.length}
-                onClick={() => setSelectRecordDate(lastUploadItemPurchase)}
+                onClick={() => setSelectRecordDatePurchase(lastUploadItemPurchase)}
                 size="small"
                 variant="contained"
                 color="error"
