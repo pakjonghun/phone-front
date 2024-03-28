@@ -2,7 +2,7 @@ import { Client } from '@/model/client';
 
 export interface HeadCell {
   disablePadding: boolean;
-  id: keyof Client;
+  id: keyof (Client & { option: string });
   label: string;
   numeric: boolean;
   sort?: boolean;
@@ -38,5 +38,12 @@ export const headCells: readonly HeadCell[] = [
     disablePadding: false,
     label: 'TOP10 제품',
     width: 400,
+  },
+  {
+    id: 'option',
+    numeric: false,
+    disablePadding: false,
+    label: '',
+    width: 50,
   },
 ];
