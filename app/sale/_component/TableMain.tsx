@@ -13,56 +13,40 @@ import EnhancedTableHead from './TableHeader';
 import EnhancedTableToolbar from './ToolBar';
 import TableBodyList from './TableBody';
 import { useSaleTable } from '@/lib/store/sale/saleTable';
+import { useDebounce } from '@/hooks/common/useDebounce';
 
 export default function SaleTableMain() {
-  const keyword = useSaleQueryStore(
-    (state) => state.keyword
-  );
+  const keyword = useSaleQueryStore((state) => state.keyword);
   const sort = useSaleQueryStore((state) => state.sort);
   const length = useSaleQueryStore((state) => state.length);
-  const startDate = useSaleQueryStore(
-    (state) => state.startDate
-  );
+  const startDate = useSaleQueryStore((state) => state.startDate);
 
-  const endDate = useSaleQueryStore(
-    (state) => state.endDate
-  );
-  const { data, hasNextPage, fetchNextPage, isFetching } =
-    useSaleList({
-      keyword,
-      sort,
-      length: length,
-      startDate,
-      endDate,
-    });
+  const endDate = useSaleQueryStore((state) => state.endDate);
 
-  const callback: IntersectionObserverCallback = (
-    entry
-  ) => {
-    if (
-      hasNextPage &&
-      !isFetching &&
-      entry[0].isIntersecting
-    ) {
+  const delayText = useDebounce({ text: keyword });
+  const { data, hasNextPage, fetchNextPage, isFetching } = useSaleList({
+    keyword: delayText,
+    sort,
+    length: length,
+    startDate,
+    endDate,
+  });
+
+  const callback: IntersectionObserverCallback = (entry) => {
+    if (hasNextPage && !isFetching && entry[0].isIntersecting) {
       fetchNextPage();
     }
   };
 
   const setLastItemRef = useInfinity({ callback });
 
-  const flatSaleData = data?.pages.flatMap(
-    (item) => item.data
-  );
+  const flatSaleData = data?.pages.flatMap((item) => item.data);
 
-  const handleSelectAllClick = useSaleTable(
-    (state) => state.handleSelectAllClick
-  );
+  const handleSelectAllClick = useSaleTable((state) => state.handleSelectAllClick);
 
   return (
     <Paper sx={{ width: '100%', mb: 2 }}>
-      <EnhancedTableToolbar
-        searchDataCount={flatSaleData?.length ?? 0}
-      />
+      <EnhancedTableToolbar searchDataCount={flatSaleData?.length ?? 0} />
       <TableContainer
         sx={{
           maxHeight: 800,
@@ -71,9 +55,7 @@ export default function SaleTableMain() {
       >
         <Table stickyHeader aria-labelledby="tableTitle">
           <EnhancedTableHead
-            onSelectAllClick={() =>
-              handleSelectAllClick(flatSaleData ?? [])
-            }
+            onSelectAllClick={() => handleSelectAllClick(flatSaleData ?? [])}
             rowCount={flatSaleData?.length ?? 0}
           />
 
@@ -89,9 +71,7 @@ export default function SaleTableMain() {
             alignItems: 'center',
           }}
         >
-          {isFetching && (
-            <CircularProgress color="primary" />
-          )}
+          {isFetching && <CircularProgress color="primary" />}
         </Box>
       </TableContainer>
     </Paper>

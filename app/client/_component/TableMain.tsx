@@ -5,28 +5,24 @@ import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableContainer from '@mui/material/TableContainer';
 import Paper from '@mui/material/Paper';
-import { usePurchaseQueryStore } from '@/lib/store/purchase/purchaseList';
-import { usePurchaseList } from '@/hooks/search/purchase/usePurchase';
+import { useClientQueryStore } from '@/lib/store/client/clientList';
+import { useClientList } from '@/hooks/search/client/useClient';
 import { CircularProgress } from '@mui/material';
 import useInfinity from '@/hooks/common/useInfinity';
 import EnhancedTableHead from './TableHeader';
 import EnhancedTableToolbar from './ToolBar';
 import TableBodyList from './TableBody';
-import { usePurchaseTable } from '@/lib/store/purchase/purchaseTable';
+import { useClientTable } from '@/lib/store/client/clientTable';
+import { useDebounce } from '@/hooks/common/useDebounce';
 
-export default function PurchaseTableMain() {
-  const keyword = usePurchaseQueryStore((state) => state.keyword);
-  const sort = usePurchaseQueryStore((state) => state.sort);
-  const length = usePurchaseQueryStore((state) => state.length);
-  const startDate = usePurchaseQueryStore((state) => state.startDate);
+export default function ClientTableMain() {
+  const keyword = useClientQueryStore((state) => state.keyword);
+  const length = useClientQueryStore((state) => state.length);
+  const delayText = useDebounce({ text: keyword });
 
-  const endDate = usePurchaseQueryStore((state) => state.endDate);
-  const { data, hasNextPage, fetchNextPage, isFetching } = usePurchaseList({
-    keyword,
-    sort,
+  const { data, hasNextPage, fetchNextPage, isFetching } = useClientList({
+    keyword: delayText,
     length: length,
-    startDate,
-    endDate,
   });
 
   const callback: IntersectionObserverCallback = (entry) => {
@@ -37,13 +33,13 @@ export default function PurchaseTableMain() {
 
   const setLastItemRef = useInfinity({ callback });
 
-  const flatPurchaseData = data?.pages.flatMap((item) => item.data);
+  const flatClientData = data?.pages.flatMap((item) => item.data);
 
-  const handleSelectAllClick = usePurchaseTable((state) => state.handleSelectAllClick);
+  const handleSelectAllClick = useClientTable((state) => state.handleSelectAllClick);
 
   return (
     <Paper sx={{ width: '100%', mb: 2 }}>
-      <EnhancedTableToolbar searchDataCount={flatPurchaseData?.length ?? 0} />
+      <EnhancedTableToolbar searchDataCount={flatClientData?.length ?? 0} />
       <TableContainer
         sx={{
           maxHeight: 800,
@@ -52,8 +48,8 @@ export default function PurchaseTableMain() {
       >
         <Table stickyHeader aria-labelledby="tableTitle">
           <EnhancedTableHead
-            onSelectAllClick={() => handleSelectAllClick(flatPurchaseData ?? [])}
-            rowCount={flatPurchaseData?.length ?? 0}
+            onSelectAllClick={() => handleSelectAllClick(flatClientData ?? [])}
+            rowCount={flatClientData?.length ?? 0}
           />
 
           <TableBodyList />

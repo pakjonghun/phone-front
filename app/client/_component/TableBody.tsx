@@ -2,64 +2,47 @@ import { Role } from '@/model/user';
 import React from 'react';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
-import { usePurchaseQueryStore } from '@/lib/store/purchase/purchaseList';
-import { usePurchaseList } from '@/hooks/search/purchase/usePurchase';
-import { Skeleton, TableBody, styled } from '@mui/material';
+import { useClientQueryStore } from '@/lib/store/client/clientList';
+import { useClientList } from '@/hooks/search/client/useClient';
+import { Skeleton, TableBody, Typography, styled } from '@mui/material';
 import { useAuthStore } from '@/lib/store/auth/auth';
-import { Purchase } from '@/model/purchase';
-import { usePurchaseTable } from '@/lib/store/purchase/purchaseTable';
-import { getCurrencyToKRW, getDateFormat } from '@/util/util';
+import { Client } from '@/model/client';
+import { useClientTable } from '@/lib/store/client/clientTable';
+import { useDebounce } from '@/hooks/common/useDebounce';
+import EditClientDialog from './EditClientDialog';
 
 const TableBodyList = () => {
-  const selectedIdList = usePurchaseTable((state) => state.selectedPurchaseList);
-  const setSelectedIdList = usePurchaseTable((state) => state.setSelectedPurchaseList);
+  const selectedIdList = useClientTable((state) => state.selectedClientList);
+  const setSelectedIdList = useClientTable((state) => state.setSelectedClientList);
 
   const role = useAuthStore((state) => state.role);
-  const keyword = usePurchaseQueryStore((state) => state.keyword);
+  const keyword = useClientQueryStore((state) => state.keyword);
+  const length = useClientQueryStore((state) => state.length);
 
-  const sort = usePurchaseQueryStore((state) => state.sort);
-  const length = usePurchaseQueryStore((state) => state.length);
-  const startDate = usePurchaseQueryStore((state) => state.startDate);
-  const endDate = usePurchaseQueryStore((state) => state.endDate);
-
-  const { data, isPending: isCellLoading } = usePurchaseList({
-    keyword,
-    sort,
+  const delayText = useDebounce({ text: keyword });
+  const { data, isPending: isCellLoading } = useClientList({
+    keyword: delayText,
     length: length,
-    startDate,
-    endDate,
   });
 
-  const flatPurchaseData = data?.pages.flatMap((item) => item.data) ?? Array.from({ length: 14 });
+  const flatClientData = data?.pages.flatMap((item) => item.data) ?? Array.from({ length: 14 });
 
-  const handleClickRow = (purchaseItem: Purchase) => {
+  const handleClickRow = (clientItem: Client) => {
     if (role === Role.STAFF) return;
-    const isInclude = selectedIdList.find(
-      (item) => `${item.imei}_${item.inDate}` === `${purchaseItem.imei}_${purchaseItem.inDate}`
-    );
+    const isInclude = selectedIdList.find((item) => item._id === clientItem._id);
     if (isInclude) {
-      setSelectedIdList(
-        selectedIdList.filter(
-          (item) => `${item.imei}_${item.inDate}` !== `${purchaseItem.imei}_${purchaseItem.inDate}`
-        )
-      );
+      setSelectedIdList(selectedIdList.filter((item) => item._id === clientItem._id));
     } else {
-      setSelectedIdList([...selectedIdList, purchaseItem]);
+      setSelectedIdList([...selectedIdList, clientItem]);
     }
   };
 
   return (
     <TableBody>
       <>
-        {flatPurchaseData?.map((row, index) => {
+        {flatClientData?.map((row, index) => {
           const rowKey = row?._id ?? index;
-          const isItemSelected = row
-            ? selectedIdList.some(
-                (item) => `${item.imei}_${item.inDate}` === `${row.imei}_${row.inDate}`
-              )
-            : false;
-
-          const labelId = `enhanced-table-checkbox-${index}`;
+          const isItemSelected = row ? selectedIdList.some((item) => item._id === row._id) : false;
 
           return (
             <TableRow
@@ -79,12 +62,28 @@ const TableBodyList = () => {
                 </NoWrapTableCell>
               ) : (
                 <>
-                  <NoWrapTableCell align="left">{getDateFormat(row.inDate)}</NoWrapTableCell>
-                  <NoWrapTableCell align="left">{row.inClient}</NoWrapTableCell>
-                  <NoWrapTableCell align="left">{row.product}</NoWrapTableCell>
-                  <NoWrapTableCell align="left">{row.imei}</NoWrapTableCell>
-                  <NoWrapTableCell align="left">{getCurrencyToKRW(row.inPrice)}</NoWrapTableCell>
-                  <NoWrapTableCell align="center">{row.note}</NoWrapTableCell>
+                  <NoWrapTableCell align="left">{row._id}</NoWrapTableCell>
+                  <NoWrapTableCell align="left">{row.manager}</NoWrapTableCell>
+                  <NoWrapTableCell align="left">{row.note}</NoWrapTableCell>
+                  <NoWrapTableCell align="left">
+                    <>
+                      {row.products?.map((product, index) => {
+                        const isLast = index === row.products!.length - 1;
+                        return (
+                          <Typography key={`${product.product}_${index}`}>
+                            {`${product.product}${isLast ? '' : `, \u00A0\u00A0`}`}
+                          </Typography>
+                        );
+                      })}
+                    </>
+                  </NoWrapTableCell>
+                  <NoWrapTableCell align="left">
+                    <EditClientDialog
+                      id={row._id}
+                      manager={row.manager ?? ''}
+                      note={row.note ?? ''}
+                    />
+                  </NoWrapTableCell>
                 </>
               )}
             </TableRow>

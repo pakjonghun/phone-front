@@ -10,6 +10,8 @@ import { useAuthStore } from '@/lib/store/auth/auth';
 import { Purchase } from '@/model/purchase';
 import { usePurchaseTable } from '@/lib/store/purchase/purchaseTable';
 import { getCurrencyToKRW, getDateFormat } from '@/util/util';
+import { useDebounce } from '@/hooks/common/useDebounce';
+import dayjs from 'dayjs';
 
 const TableBodyList = () => {
   const selectedIdList = usePurchaseTable((state) => state.selectedPurchaseList);
@@ -22,9 +24,9 @@ const TableBodyList = () => {
   const length = usePurchaseQueryStore((state) => state.length);
   const startDate = usePurchaseQueryStore((state) => state.startDate);
   const endDate = usePurchaseQueryStore((state) => state.endDate);
-
+  const delayText = useDebounce({ text: keyword });
   const { data, isPending: isCellLoading } = usePurchaseList({
-    keyword,
+    keyword: delayText,
     sort,
     length: length,
     startDate,

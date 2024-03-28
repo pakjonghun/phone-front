@@ -13,16 +13,18 @@ import EnhancedTableHead from './TableHeader';
 import EnhancedTableToolbar from './ToolBar';
 import TableBodyList from './TableBody';
 import { usePurchaseTable } from '@/lib/store/purchase/purchaseTable';
+import { useDebounce } from '@/hooks/common/useDebounce';
 
 export default function PurchaseTableMain() {
   const keyword = usePurchaseQueryStore((state) => state.keyword);
   const sort = usePurchaseQueryStore((state) => state.sort);
   const length = usePurchaseQueryStore((state) => state.length);
   const startDate = usePurchaseQueryStore((state) => state.startDate);
-
   const endDate = usePurchaseQueryStore((state) => state.endDate);
+
+  const delayText = useDebounce({ text: keyword });
   const { data, hasNextPage, fetchNextPage, isFetching } = usePurchaseList({
-    keyword,
+    keyword: delayText,
     sort,
     length: length,
     startDate,
