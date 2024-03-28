@@ -10,7 +10,7 @@ import { Edit } from '@mui/icons-material';
 import { useEditPurchaseClient } from '@/hooks/search/client/useClient';
 import { useSnackbar } from '@/context/SnackBarProvicer';
 import { useQueryClient } from '@tanstack/react-query';
-import { CLIENT_LIST } from '@/hooks/search/client/constant';
+import { CLIENT_LIST, PURCHASE_CLIENT_LIST } from '@/hooks/search/client/constant';
 import { CircularProgress } from '@mui/material';
 
 interface Props {
@@ -61,7 +61,7 @@ export default function EditClientDialog({ id, note, manager }: Props) {
                 onSuccess: () => {
                   snackbar('편집이 성공 했습니다.', 'success');
                   handleClose();
-                  queryClient.invalidateQueries({ queryKey: [CLIENT_LIST] });
+                  queryClient.invalidateQueries({ queryKey: [PURCHASE_CLIENT_LIST] });
                 },
                 onError: () => {
                   snackbar('편집이 실패 했습니다.', 'error');

@@ -1,1 +1,2 @@
 export const CLIENT_LIST = 'CLIENT_LIST';
+export const PURCHASE_CLIENT_LIST = 'PURCHASE_CLIENT_LIST';

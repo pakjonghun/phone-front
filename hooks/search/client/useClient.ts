@@ -4,7 +4,7 @@ import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { RequestClientList, RequestEditClient } from './type';
 import { Client } from '@/model/client';
-import { CLIENT_LIST } from './constant';
+import { CLIENT_LIST, PURCHASE_CLIENT_LIST } from './constant';
 
 const clientList = async (query: RequestClientList & { page: number }) => {
   return client('/sale-client', { params: query }).then<ListData<Client>>((res) => res.data);
@@ -37,7 +37,7 @@ const purchaseClientList = async (query: RequestClientList & { page: number }) =
 
 export const usePurchaseClientList = (query: RequestClientList) => {
   return useInfiniteQuery<ListData<Client>, AxiosError>({
-    queryKey: [CLIENT_LIST, { ...query }],
+    queryKey: [PURCHASE_CLIENT_LIST, { ...query }],
     queryFn: ({ pageParam = 1 }) => purchaseClientList({ ...query, page: pageParam as number }),
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
