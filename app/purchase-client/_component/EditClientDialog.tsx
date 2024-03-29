@@ -10,7 +10,7 @@ import { Edit } from '@mui/icons-material';
 import { useEditPurchaseClient } from '@/hooks/search/client/useClient';
 import { useSnackbar } from '@/context/SnackBarProvicer';
 import { useQueryClient } from '@tanstack/react-query';
-import { CLIENT_LIST, PURCHASE_CLIENT_LIST } from '@/hooks/search/client/constant';
+import { PURCHASE_CLIENT_LIST } from '@/hooks/search/client/constant';
 import { CircularProgress } from '@mui/material';
 
 interface Props {

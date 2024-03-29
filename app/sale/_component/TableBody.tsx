@@ -37,15 +37,9 @@ const TableBodyList = () => {
 
   const handleClickRow = (saleItem: Sale) => {
     if (role === Role.STAFF) return;
-    const isInclude = selectedIdList.find(
-      (item) => `${item.imei}_${item.outDate}` === `${saleItem.imei}_${saleItem.outDate}`
-    );
+    const isInclude = selectedIdList.find((item) => item._id === saleItem._id);
     if (isInclude) {
-      setSelectedIdList(
-        selectedIdList.filter(
-          (item) => `${item.imei}_${item.outDate}` !== `${saleItem.imei}_${saleItem.outDate}`
-        )
-      );
+      setSelectedIdList(selectedIdList.filter((item) => item._id !== saleItem._id));
     } else {
       setSelectedIdList([...selectedIdList, saleItem]);
     }
@@ -56,11 +50,7 @@ const TableBodyList = () => {
       <>
         {flatSaleData?.map((row, index) => {
           const rowKey = row?._id ?? index;
-          const isItemSelected = row
-            ? selectedIdList.some(
-                (item) => `${item.imei}_${item.outDate}` === `${row.imei}_${row.outDate}`
-              )
-            : false;
+          const isItemSelected = row ? selectedIdList.some((item) => item._id === row._id) : false;
 
           const labelId = `enhanced-table-checkbox-${index}`;
 

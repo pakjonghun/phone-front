@@ -24,7 +24,7 @@ export default function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 
   const handleClickDownload = () => {
     download(
-      selectedPurchaseList.map((item) => `${item.imei}_${item.inDate}`),
+      selectedPurchaseList.map((item) => item._id),
       {
         onSuccess: () => {
           snackBar('다운로드가 완료되었습니다.', 'success');

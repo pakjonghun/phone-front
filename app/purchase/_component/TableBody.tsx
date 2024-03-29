@@ -11,7 +11,6 @@ import { Purchase } from '@/model/purchase';
 import { usePurchaseTable } from '@/lib/store/purchase/purchaseTable';
 import { getCurrencyToKRW, getDateFormat } from '@/util/util';
 import { useDebounce } from '@/hooks/common/useDebounce';
-import dayjs from 'dayjs';
 
 const TableBodyList = () => {
   const selectedIdList = usePurchaseTable((state) => state.selectedPurchaseList);
@@ -37,15 +36,9 @@ const TableBodyList = () => {
 
   const handleClickRow = (purchaseItem: Purchase) => {
     if (role === Role.STAFF) return;
-    const isInclude = selectedIdList.find(
-      (item) => `${item.imei}_${item.inDate}` === `${purchaseItem.imei}_${purchaseItem.inDate}`
-    );
+    const isInclude = selectedIdList.find((item) => item._id === purchaseItem._id);
     if (isInclude) {
-      setSelectedIdList(
-        selectedIdList.filter(
-          (item) => `${item.imei}_${item.inDate}` !== `${purchaseItem.imei}_${purchaseItem.inDate}`
-        )
-      );
+      setSelectedIdList(selectedIdList.filter((item) => item._id !== purchaseItem._id));
     } else {
       setSelectedIdList([...selectedIdList, purchaseItem]);
     }
@@ -56,11 +49,7 @@ const TableBodyList = () => {
       <>
         {flatPurchaseData?.map((row, index) => {
           const rowKey = row?._id ?? index;
-          const isItemSelected = row
-            ? selectedIdList.some(
-                (item) => `${item.imei}_${item.inDate}` === `${row.imei}_${row.inDate}`
-              )
-            : false;
+          const isItemSelected = row ? selectedIdList.some((item) => item._id === row._id) : false;
 
           const labelId = `enhanced-table-checkbox-${index}`;
 
