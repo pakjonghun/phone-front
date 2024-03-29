@@ -5,7 +5,7 @@ import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import { useGetMonthSale } from '@/hooks/dashboard/useDashboard';
 import CardSkeleton from '../_component/CardSkeleton';
 import { Card, CardContent, CardHeader, Stack, Typography } from '@mui/material';
-import { getCurrencyToKRW, getTwoRoundedNumber } from '@/util/util';
+import { getCurrencyToKRW, getTwoRoundedNumber, getWithCommaNumber } from '@/util/util';
 
 const ClientSale = () => {
   const { data, isLoading } = useGetMonthSale();
@@ -28,16 +28,25 @@ const ClientSale = () => {
           sx={{
             flexDirection: {
               xs: 'column',
-              lg: 'row',
+              xl: 'row',
             },
             alignItems: {
               xs: 'flex-start',
-              lg: 'center',
+              xl: 'center',
             },
           }}
           gap={2}
           justifyContent="space-around"
         >
+          <Stack direction="row" gap={2} alignItems="center">
+            <MonetizationOnIcon />
+            <Stack>
+              <Typography variant="caption" sx={{ color: 'gray' }}>
+                총 수량
+              </Typography>
+              <Typography>{data ? getWithCommaNumber(data.count) : 0}</Typography>
+            </Stack>
+          </Stack>
           <Stack direction="row" gap={2} alignItems="center">
             <MonetizationOnIcon />
             <Stack>

@@ -8,6 +8,7 @@ export type TotalSale = {
   accOutPrice: number;
   accMargin: number;
   accMarginRate: number;
+  count: number;
 };
 
 export type Dashboard = {
