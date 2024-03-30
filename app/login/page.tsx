@@ -52,9 +52,9 @@ const Login = () => {
     });
   };
 
-  if (isLoading || (data && !isError)) {
-    return <></>;
-  }
+  // if (isLoading || (!isLoading && data && !isError)) {
+  //   return <></>;
+  // }
 
   return (
     <Form
