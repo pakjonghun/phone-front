@@ -1,7 +1,6 @@
 'use client';
 import * as React from 'react';
 import { AppBar } from '@mui/material';
-import { useMyInfo } from '@/hooks/auth/useAuthData';
 import { useAuthStore } from '@/lib/store/auth/auth';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -20,6 +19,7 @@ interface Props {
 export default function CommonLayout({ children }: Props) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
+  const userId = useAuthStore((state) => state.id);
 
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -35,17 +35,9 @@ export default function CommonLayout({ children }: Props) {
       setMobileOpen(!mobileOpen);
     }
   };
-
-  const setUserInfo = useAuthStore(
-    (state) => state.setUser
-  );
-  const { data, isFetching } = useMyInfo();
-
-  React.useEffect(() => {
-    if (!isFetching && data) {
-      setUserInfo(data);
-    }
-  }, [data, isFetching, setUserInfo]);
+  if (!userId) {
+    return <></>;
+  }
 
   return (
     <Box
@@ -125,7 +117,6 @@ export default function CommonLayout({ children }: Props) {
         }}
       >
         <Toolbar />
-
         {children}
       </Box>
     </Box>

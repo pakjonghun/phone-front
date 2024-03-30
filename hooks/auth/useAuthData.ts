@@ -3,7 +3,7 @@ import { CommonError, CommonMutation } from '@/api/type';
 import { User } from '@/model/user';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { ResponseMyInfo } from './type';
-import { PURCHASE_UPLOAD_LIST, UPLOAD_LIST } from './constant';
+import { MY_INFO, PURCHASE_UPLOAD_LIST, UPLOAD_LIST } from './constant';
 
 const signUp = (body: User) => {
   return client
@@ -39,15 +39,21 @@ const myInfo = async () => {
 
 export const useMyInfo = () => {
   return useQuery<ResponseMyInfo, void>({
-    queryKey: ['myInfo'],
+    queryKey: [MY_INFO],
     queryFn: myInfo,
     staleTime: 0,
     retry: false,
   });
 };
 
-export const logout = () => {
+const logout = async () => {
   client.get('/user/logout').then((res) => res.data);
+};
+
+export const useLogout = () => {
+  return useMutation<void, void>({
+    mutationFn: logout,
+  });
 };
 
 const getUploadRecordList = async () => {

@@ -3,18 +3,12 @@
 import SubmitButton from '@/components/SubmitButton';
 import { Form } from '@/components/common';
 import { useSnackbar } from '@/context/SnackBarProvicer';
-import { useLogin } from '@/hooks/auth/useAuthData';
+import { useLogin, useMyInfo } from '@/hooks/auth/useAuthData';
 import { useAuthStore } from '@/lib/store/auth/auth';
 import { User } from '@/model/user';
-import {
-  FormGroup,
-  InputLabel,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { FormGroup, InputLabel, Stack, TextField, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 type LoginUser = Omit<User, 'role'>;
@@ -24,6 +18,14 @@ const Login = () => {
   const { mutate: login, isPending } = useLogin();
   const router = useRouter();
   const setUser = useAuthStore((state) => state.setUser);
+  const userId = useAuthStore((state) => state.id);
+  const { data, isLoading, isError } = useMyInfo();
+
+  useEffect(() => {
+    if (userId) {
+      router.push('/dashboard');
+    }
+  }, [userId, router]);
 
   const {
     register,
@@ -41,7 +43,7 @@ const Login = () => {
       onSuccess: (response) => {
         snackbar('로그인 성공', 'success');
         setUser(response.userInfo);
-        router.push('/');
+        router.replace('/dashboard');
       },
       onError: (error) => {
         const errorMessage = error.response?.data.message;
@@ -49,6 +51,10 @@ const Login = () => {
       },
     });
   };
+
+  if (isLoading || (data && !isError)) {
+    return <></>;
+  }
 
   return (
     <Form
@@ -71,8 +77,7 @@ const Login = () => {
               required: '아이디를 입력하세요',
               minLength: {
                 value: 2,
-                message:
-                  '아이디는 2글자 이상을 입력하세요.',
+                message: '아이디는 2글자 이상을 입력하세요.',
               },
             })}
             variant="outlined"
@@ -87,8 +92,7 @@ const Login = () => {
               required: '비밀번호를 입력하세요',
               minLength: {
                 value: 8,
-                message:
-                  '비밀번호는 8글자 이상을 입력하세요.',
+                message: '비밀번호는 8글자 이상을 입력하세요.',
               },
             })}
             variant="outlined"

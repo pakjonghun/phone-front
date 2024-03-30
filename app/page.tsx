@@ -1,16 +1,20 @@
 'use client';
 
 import { useMyInfo } from '@/hooks/auth/useAuthData';
-import { redirect } from 'next/navigation';
+import { useAuthStore } from '@/lib/store/auth/auth';
+import { redirect, usePathname } from 'next/navigation';
 
 const Home = () => {
-  const { data: userInfo, isLoading, isError } = useMyInfo();
+  redirect('/dashboard');
+  // // const { data: userInfo, isLoading, isError } = useMyInfo();
+  // const userId = useAuthStore(state=>state.id);
+  // const path = usePathname();
 
-  if ((!userInfo && !isLoading) || isError) {
-    redirect('/login');
-  } else {
-    redirect('/dashboard');
-  }
+  // if(path==='/login/'&&userId){
+  //   redirect('/dashboard');
+  // }else{
+  //   redirect('/login');
+  // }
 };
 
 export default Home;

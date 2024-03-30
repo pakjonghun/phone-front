@@ -1,9 +1,9 @@
 'use client';
 
 import { useMyInfo } from '@/hooks/auth/useAuthData';
-import { CircularProgress } from '@mui/material';
+import { useAuthStore } from '@/lib/store/auth/auth';
 import { redirect, usePathname } from 'next/navigation';
-import React, { FC, ReactNode } from 'react';
+import { FC, ReactNode, useEffect } from 'react';
 
 interface Props {
   children: ReactNode;
@@ -12,28 +12,22 @@ interface Props {
 const publicPath = ['/login/'];
 
 const AuthGuard: FC<Props> = ({ children }) => {
-  const { data: userInfo, isError, isLoading } = useMyInfo();
+  const { isError } = useMyInfo();
+
+  const setUser = useAuthStore((state) => state.setUser);
   const path = usePathname();
+  const isPublic = publicPath.includes(path);
+  useEffect(() => {
+    if (isError && !isPublic) {
+      setUser({ id: null, role: null });
+    }
+  }, [isPublic, isError, setUser]);
 
-  if (isLoading) {
-    return <CircularProgress />;
+  if (isError && !isPublic) {
+    redirect('/login');
   }
 
-  const hasUserData = !!userInfo && !isError;
-
-  if (publicPath.includes(path)) {
-    return hasUserData ? ( //
-      redirect('/dashboard')
-    ) : (
-      <>{children}</>
-    );
-  } else {
-    return hasUserData ? ( //
-      <>{children}</>
-    ) : (
-      redirect('/login')
-    );
-  }
+  return children;
 };
 
 export default AuthGuard;

@@ -16,12 +16,11 @@ const initState: AuthUser = {
   role: null,
 };
 
-const authApi: StateCreator<
-  AuthUser & AuthAction,
-  [['zustand/devtools', never]]
-> = (set) => ({
+const authApi: StateCreator<AuthUser & AuthAction, [['zustand/devtools', never]]> = (set) => ({
   ...initState,
-  setUser: (user) => set(() => ({ ...user }), false, 'user'),
+  setUser: (user) => set(() => ({ id: user.id, role: user.role }), false, 'user'),
 });
 
-export const useAuthStore = create<AuthAction & AuthUser>()(devtools(authApi));
+export const useAuthStore = create<AuthAction & AuthUser>()(
+  persist(devtools(authApi), { name: 'PHONE_USER_INFO' })
+);
