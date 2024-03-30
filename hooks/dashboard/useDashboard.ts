@@ -9,26 +9,31 @@ import {
   TODAY_SALE,
   VISIT_CLIENT,
 } from './constant';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { CommonMutation } from '@/api/type';
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
+import { CommonMutation, ListData } from '@/api/type';
 import { AxiosError } from 'axios';
-import { RequestEditDashboard } from './type';
+import { RequestEditDashboard, RequestPageParam } from './type';
 import { TopRecord, TotalSale } from '@/model/dashboard';
 import { Client } from '@/model/client';
+import { LENGTH } from '@/api/constant';
 
-const getVisitClient = async () => {
-  return client.get('/dashboard/visit-client').then((res) => {
+const getVisitClient = async (params: RequestPageParam) => {
+  return client.get('/dashboard/visit-client', { params }).then((res) => {
     return res.data;
   });
 };
 
-export const useGetVisitClient = () => {
-  return useQuery<
-    (Client & { accOutPrice: number; accMargin: number; marginRate: number })[],
-    void
+export const useGetVisitClientInfinity = () => {
+  return useInfiniteQuery<
+    ListData<(Client & { accOutPrice: number; accMargin: number; marginRate: number })[]>,
+    RequestPageParam
   >({
+    getNextPageParam: (lastPage, allPage) => (lastPage.hasNext ? allPage.length + 1 : null),
+    initialPageParam: 1,
     queryKey: [VISIT_CLIENT, DASHBOARD_DATA],
-    queryFn: getVisitClient,
+    queryFn: ({ pageParam = 1 }) => {
+      return getVisitClient({ page: pageParam as number, length: LENGTH });
+    },
   });
 };
 

@@ -47,7 +47,6 @@ export const usePurchaseClientList = (query: RequestClientList) => {
 };
 
 const editPurchaseClient = async (body: RequestEditClient) => {
-  console.log(body);
   return client.put('/purchase/client', body).then((res) => res.data);
 };
 

@@ -13,6 +13,7 @@ import {
   DialogActions,
   DialogContent,
   Stack,
+  TableContainer,
   TextField,
   Typography,
 } from '@mui/material';
@@ -132,59 +133,61 @@ export default function ClientVisitTable({ title, data = [] }: Props) {
       <Typography ml={3} mb={3} variant="h5">
         {title}
       </Typography>
-      <Table aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            {header.map((head) => (
-              <TableCell key={head}>{head}</TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              key={row.name}
-              sx={{
-                '&:last-child td, &:last-child th': {
-                  border: 0,
-                },
-              }}
-            >
-              <TableCell component="th" scope="row">
-                {row.duration}
-              </TableCell>
-
-              <TableCell align="left">{row.name}</TableCell>
-              <TableCell align="left">{getCurrencyToKRW(row.accInPrice)}</TableCell>
-              <TableCell align="left">{getWithCommaNumber(row.count)}</TableCell>
-              <TableCell align="left" sx={{ width: '30%' }}>
-                <Stack direction="row">
-                  <Typography variant="body2" whiteSpace="collapse">
-                    {row.note}
-                  </Typography>
-                  <Button
-                    onClick={() => {
-                      setIsOpen(true);
-                      setSelectedClient(row);
-                      setValue('note', row.note);
-                    }}
-                    size="small"
-                    sx={{
-                      whiteSpace: 'nowrap',
-                      ml: 'auto',
-                      height: 'fit-content',
-                    }}
-                    variant="contained"
-                    endIcon={<Edit />}
-                  >
-                    비고작성
-                  </Button>
-                </Stack>
-              </TableCell>
+      <TableContainer sx={{ maxHeight: '650px' }}>
+        <Table aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              {header.map((head) => (
+                <TableCell key={head}>{head}</TableCell>
+              ))}
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            {rows.map((row) => (
+              <TableRow
+                key={row.name}
+                sx={{
+                  '&:last-child td, &:last-child th': {
+                    border: 0,
+                  },
+                }}
+              >
+                <TableCell component="th" scope="row">
+                  {row.duration}
+                </TableCell>
+
+                <TableCell align="left">{row.name}</TableCell>
+                <TableCell align="left">{getCurrencyToKRW(row.accInPrice)}</TableCell>
+                <TableCell align="left">{getWithCommaNumber(row.count)}</TableCell>
+                <TableCell align="left" sx={{ width: '30%' }}>
+                  <Stack direction="row">
+                    <Typography variant="body2" whiteSpace="collapse">
+                      {row.note}
+                    </Typography>
+                    <Button
+                      onClick={() => {
+                        setIsOpen(true);
+                        setSelectedClient(row);
+                        setValue('note', row.note);
+                      }}
+                      size="small"
+                      sx={{
+                        whiteSpace: 'nowrap',
+                        ml: 'auto',
+                        height: 'fit-content',
+                      }}
+                      variant="contained"
+                      endIcon={<Edit />}
+                    >
+                      비고작성
+                    </Button>
+                  </Stack>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Paper>
   );
 }

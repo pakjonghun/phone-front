@@ -13,6 +13,7 @@ import {
   DialogActions,
   DialogContent,
   Stack,
+  TableContainer,
   TextField,
   Typography,
 } from '@mui/material';
@@ -60,6 +61,8 @@ type DisplayClient = {
 
 interface Props {
   title: string;
+  isLoading?: boolean;
+  infinityRef?: (elem: HTMLTableRowElement) => void;
   data?: (Client & { accOutPrice: number; accMargin: number; marginRate: number })[];
 }
 
@@ -67,7 +70,7 @@ type EditForm = {
   note: string;
 };
 
-export default function ClientVisitTable({ title, data = [] }: Props) {
+export default function ClientVisitTable({ title, data = [], infinityRef, isLoading }: Props) {
   const { register, handleSubmit, setValue } = useForm<EditForm>({
     defaultValues: {
       note: '',
@@ -134,60 +137,67 @@ export default function ClientVisitTable({ title, data = [] }: Props) {
       <Typography ml={3} mb={3} variant="h5">
         {title}
       </Typography>
-      <Table aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            {header.map((head) => (
-              <TableCell key={head}>{head}</TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              key={row.name}
-              sx={{
-                '&:last-child td, &:last-child th': {
-                  border: 0,
-                },
-              }}
-            >
-              <TableCell component="th" scope="row">
-                {row.duration}
-              </TableCell>
+      <TableContainer sx={{ maxHeight: '650px' }}>
+        <Table aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              {header.map((head) => (
+                <TableCell key={head}>{head}</TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row) => (
+              <TableRow
+                key={row.name}
+                sx={{
+                  '&:last-child td, &:last-child th': {
+                    border: 0,
+                  },
+                }}
+              >
+                <TableCell component="th" scope="row">
+                  {row.duration}
+                </TableCell>
 
-              <TableCell align="left">{row.name}</TableCell>
-              <TableCell align="left">{row.accOutPrice}</TableCell>
-              <TableCell align="left">{row.accMargin}</TableCell>
-              <TableCell align="left">{row.marginRate}</TableCell>
-              <TableCell align="left" sx={{ width: '30%' }}>
-                <Stack direction="row">
-                  <Typography variant="body2" whiteSpace="collapse">
-                    {row.note}
-                  </Typography>
-                  <Button
-                    onClick={() => {
-                      setIsOpen(true);
-                      setSelectedClient(row);
-                      setValue('note', row.note);
-                    }}
-                    size="small"
-                    sx={{
-                      whiteSpace: 'nowrap',
-                      ml: 'auto',
-                      height: 'fit-content',
-                    }}
-                    variant="contained"
-                    endIcon={<Edit />}
-                  >
-                    비고작성
-                  </Button>
-                </Stack>
+                <TableCell align="left">{row.name}</TableCell>
+                <TableCell align="left">{row.accOutPrice}</TableCell>
+                <TableCell align="left">{row.accMargin}</TableCell>
+                <TableCell align="left">{row.marginRate}</TableCell>
+                <TableCell align="left" sx={{ width: '30%' }}>
+                  <Stack direction="row">
+                    <Typography variant="body2" whiteSpace="collapse">
+                      {row.note}
+                    </Typography>
+                    <Button
+                      onClick={() => {
+                        setIsOpen(true);
+                        setSelectedClient(row);
+                        setValue('note', row.note);
+                      }}
+                      size="small"
+                      sx={{
+                        whiteSpace: 'nowrap',
+                        ml: 'auto',
+                        height: 'fit-content',
+                      }}
+                      variant="contained"
+                      endIcon={<Edit />}
+                    >
+                      비고작성
+                    </Button>
+                  </Stack>
+                </TableCell>
+              </TableRow>
+            ))}
+            <TableRow>
+              <TableCell colSpan={6} ref={infinityRef} sx={{ textAlign: 'center', height: '50px' }}>
+                {isLoading === true ? <CircularProgress size={20} /> : ''}
               </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Paper>
   );
 }
