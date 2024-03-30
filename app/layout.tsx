@@ -6,6 +6,7 @@ import SnackBarProvider from '@/context/SnackBarProvicer';
 import ReactQueryClientProvider from '@/context/ReactQueryClientProvider';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import MuiDateProvider from '@/context/MuiDateProvider';
+import AuthGuard from '@/context/AuthGuard';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -34,7 +35,7 @@ export default function RootLayout({
             <MuiThemeProvider>
               <SnackBarProvider>
                 <MuiDateProvider>
-                  {children}
+                  <AuthGuard>{children}</AuthGuard>
                 </MuiDateProvider>
               </SnackBarProvider>
             </MuiThemeProvider>

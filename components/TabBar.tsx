@@ -20,8 +20,8 @@ function LinkTab(props: LinkTabProps) {
 export default function NavTabs() {
   const pathname = usePathname();
   const pathMapper = {
-    ['/dashboard' as string]: 0,
-    ['/purchase-dashboard']: 1,
+    ['/dashboard/' as string]: 0,
+    ['/purchase-dashboard/']: 1,
   };
 
   return (

@@ -1,15 +1,9 @@
 import { USER_LIST } from './constant';
 import { User } from '@/model/user';
 import { client } from '@/api/client';
-import {
-  ChangePasswordRequest,
-  ChangeRoleRequest,
-} from './type';
+import { ChangePasswordRequest, ChangeRoleRequest } from './type';
 import { CommonError, CommonMutation } from '@/api/type';
-import {
-  useMutation,
-  useQuery,
-} from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 const userList = async () => {
   return client.get('/user').then((res) => res.data);
@@ -20,10 +14,7 @@ export const useUserList = () => {
     queryKey: [USER_LIST],
     queryFn: userList,
     select: (data) => {
-      const originUser = data as unknown as (Omit<
-        User,
-        'id' | 'password'
-      > & { _id: string })[];
+      const originUser = data as unknown as (Omit<User, 'id' | 'password'> & { _id: string })[];
 
       const result = originUser.map((user) => ({
         role: user.role,
@@ -35,10 +26,7 @@ export const useUserList = () => {
   });
 };
 
-const changePassword = async ({
-  id,
-  password,
-}: ChangePasswordRequest) => {
+const changePassword = async ({ id, password }: ChangePasswordRequest) => {
   return client
     .put<CommonMutation>(`/user/password/${id}`, {
       password,
@@ -47,35 +35,23 @@ const changePassword = async ({
 };
 
 export const useChangePassword = () => {
-  return useMutation<
-    CommonMutation,
-    CommonError,
-    ChangePasswordRequest
-  >({
+  return useMutation<CommonMutation, CommonError, ChangePasswordRequest>({
     mutationFn: changePassword,
   });
 };
 
 const changeRole = async (body: ChangeRoleRequest) => {
-  return client
-    .put(`/user/role/${body.id}`, { role: body.role })
-    .then((res) => res.data);
+  return client.put(`/user/role/${body.id}`, { role: body.role }).then((res) => res.data);
 };
 
 export const useChangeRole = () => {
-  return useMutation<
-    CommonMutation,
-    CommonError,
-    ChangeRoleRequest
-  >({
+  return useMutation<CommonMutation, CommonError, ChangeRoleRequest>({
     mutationFn: changeRole,
   });
 };
 
 const dropAccount = async (id: string) => {
-  return client
-    .delete(`/user/${id}`)
-    .then((res) => res.data);
+  return client.delete(`/user/${id}`).then((res) => res.data);
 };
 
 export const useDropAccount = () => {

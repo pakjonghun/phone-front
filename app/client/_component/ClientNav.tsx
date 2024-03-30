@@ -20,8 +20,8 @@ function LinkTab(props: LinkTabProps) {
 export default function NavTabs() {
   const pathname = usePathname();
   const pathMapper = {
-    ['/client' as string]: 0,
-    ['/purchase-client']: 1,
+    ['/client/' as string]: 0,
+    ['/purchase-client/']: 1,
   };
 
   return (

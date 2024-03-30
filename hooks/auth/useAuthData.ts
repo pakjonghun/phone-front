@@ -33,7 +33,7 @@ export const useLogin = () => {
   });
 };
 
-const myInfo = () => {
+const myInfo = async () => {
   return client.get('/user/me').then((res) => res.data);
 };
 

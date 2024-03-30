@@ -1,10 +1,12 @@
-import { serverMe } from '@/api/user';
+'use client';
+
+import { useMyInfo } from '@/hooks/auth/useAuthData';
 import { redirect } from 'next/navigation';
 
-const Home = async () => {
-  const userInfo = await serverMe();
+const Home = () => {
+  const { data: userInfo, isLoading, isError } = useMyInfo();
 
-  if (!userInfo) {
+  if ((!userInfo && !isLoading) || isError) {
     redirect('/login');
   } else {
     redirect('/dashboard');
