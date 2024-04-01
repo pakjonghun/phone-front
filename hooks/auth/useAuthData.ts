@@ -41,7 +41,7 @@ export const useMyInfo = () => {
   return useQuery<ResponseMyInfo, void>({
     queryKey: [MY_INFO],
     queryFn: myInfo,
-    staleTime: 0,
+    gcTime: 0,
     retry: false,
   });
 };

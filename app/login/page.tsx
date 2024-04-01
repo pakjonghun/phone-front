@@ -18,16 +18,15 @@ const Login = () => {
   const { mutate: login, isPending } = useLogin();
   const router = useRouter();
   const setUser = useAuthStore((state) => state.setUser);
-  const userId = useAuthStore((state) => state.id);
-  const { isLoading, isError, isFetching, isRefetching } = useMyInfo();
+  const { isLoading, isError } = useMyInfo();
 
   useEffect(() => {
-    if (isLoading || isFetching) return;
+    if (isLoading) return;
 
     if (!isError) {
       router.push('/dashboard');
     }
-  }, [isError, isLoading, isFetching, router]);
+  }, [isError, isLoading, router]);
 
   const {
     register,
@@ -54,11 +53,7 @@ const Login = () => {
     });
   };
 
-  if (isLoading || isFetching) {
-    return <></>;
-  }
-
-  if (!isError) {
+  if (isLoading || !isError) {
     return <></>;
   }
 
