@@ -12,13 +12,13 @@ interface Props {
 const publicPath = ['/login/'];
 
 const AuthGuard: FC<Props> = ({ children }) => {
-  const { isError, data, isLoading } = useMyInfo();
+  const { isError, data, isLoading, isFetching } = useMyInfo();
 
   const setUser = useAuthStore((state) => state.setUser);
   const path = usePathname();
   const isPublic = publicPath.includes(path);
   useEffect(() => {
-    if (isLoading) return;
+    if (isLoading || isFetching) return;
 
     if (isError) {
       setUser({ id: null, role: null });
@@ -27,9 +27,9 @@ const AuthGuard: FC<Props> = ({ children }) => {
     if (!isError && data) {
       setUser({ id: data.id, role: data.role });
     }
-  }, [isPublic, isError, data, isLoading, setUser]);
+  }, [isPublic, isError, data, isLoading, isFetching, setUser]);
 
-  if (!isLoading && isError && !isPublic) {
+  if (!isFetching && !isLoading && isError && !isPublic) {
     redirect('/login');
   }
 

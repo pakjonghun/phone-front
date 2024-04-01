@@ -19,15 +19,15 @@ const Login = () => {
   const router = useRouter();
   const setUser = useAuthStore((state) => state.setUser);
   const userId = useAuthStore((state) => state.id);
-  const { isLoading, isError } = useMyInfo();
+  const { isLoading, isError, isFetching, isRefetching } = useMyInfo();
 
   useEffect(() => {
-    if (isLoading) return;
+    if (isLoading || isFetching) return;
 
     if (!isError) {
       router.push('/dashboard');
     }
-  }, [isError, isLoading, router]);
+  }, [isError, isLoading, isFetching, router]);
 
   const {
     register,
@@ -54,9 +54,13 @@ const Login = () => {
     });
   };
 
-  // if (isLoading || (!isLoading && data && !isError)) {
-  //   return <></>;
-  // }
+  if (isLoading || isFetching) {
+    return <></>;
+  }
+
+  if (!isError) {
+    return <></>;
+  }
 
   return (
     <Form
