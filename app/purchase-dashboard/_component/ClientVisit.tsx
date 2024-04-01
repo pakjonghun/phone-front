@@ -21,12 +21,13 @@ import { Client } from '@/model/client';
 import dayjs from 'dayjs';
 import { Edit } from '@mui/icons-material';
 import FormDialog from '@/components/dialog/FormDialog';
-import { useEditDashboardNote } from '@/hooks/dashboard/useDashboard';
+import { useEditDashboardNote } from '@/hooks/purchaseDashboard/usePurchaseDashboard';
 import { useSnackbar } from '@/context/SnackBarProvicer';
 import { useQueryClient } from '@tanstack/react-query';
 import { VISIT_CLIENT } from '@/hooks/dashboard/constant';
 import { useForm } from 'react-hook-form';
 import { getCurrencyToKRW, getWithCommaNumber } from '@/util/util';
+import { VISIT_CLIENT_PURCHASE } from '@/hooks/purchaseDashboard/constant';
 
 function createSaleData({
   _id,
@@ -89,7 +90,7 @@ export default function ClientVisitTable({ title, data = [] }: Props) {
           setIsOpen(false);
           setSelectedClient(null);
           queryClient.invalidateQueries({
-            queryKey: [VISIT_CLIENT],
+            queryKey: [VISIT_CLIENT_PURCHASE],
           });
         },
         onError: (err) => {
