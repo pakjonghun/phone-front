@@ -28,7 +28,7 @@ const MonthProduct = () => {
       isLoading={isLoading}
       infinityRef={infinityRef}
       data={flatData}
-      title="월 거래가 저조한 판매처"
+      title="거래가 저조한 판매처"
     />
   );
 };

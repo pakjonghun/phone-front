@@ -11,7 +11,7 @@ const MonthProduct = () => {
     return <TableSkeleton />;
   }
 
-  return <>{!!data && <ClientVisitTable data={data} title="월 거래가 저조한 거래처" />}</>;
+  return <>{!!data && <ClientVisitTable data={data} title="거래가 저조한 거래처" />}</>;
 };
 
 export default MonthProduct;
