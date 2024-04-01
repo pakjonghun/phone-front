@@ -1,5 +1,5 @@
 import { StateCreator, create } from 'zustand';
-import { devtools, persist } from 'zustand/middleware';
+import { devtools } from 'zustand/middleware';
 import { Role } from '@/model/user';
 
 type AuthUser = {
@@ -21,6 +21,4 @@ const authApi: StateCreator<AuthUser & AuthAction, [['zustand/devtools', never]]
   setUser: (user) => set(() => ({ id: user.id, role: user.role }), false, 'user'),
 });
 
-export const useAuthStore = create<AuthAction & AuthUser>()(
-  persist(devtools(authApi), { name: 'PHONE_USER_INFO' })
-);
+export const useAuthStore = create<AuthAction & AuthUser>()(devtools(authApi));

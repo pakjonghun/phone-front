@@ -51,7 +51,7 @@ function createSaleData({
   };
 }
 
-const header = ['날짜', '업체명', '월매출', '월수익', '수익율', '비고'];
+const header = ['날짜', '업체명', '월매출', '월수익', '수익율', '비고', ''];
 
 type DisplayClient = {
   name: string;
@@ -138,7 +138,7 @@ export default function ClientVisitTable({ title, data = [], infinityRef, isLoad
         {title}
       </Typography>
       <TableContainer sx={{ maxHeight: '650px' }}>
-        <Table aria-label="simple table">
+        <Table aria-label="simple table" stickyHeader>
           <TableHead>
             <TableRow>
               {header.map((head) => (

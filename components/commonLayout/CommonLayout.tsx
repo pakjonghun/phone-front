@@ -35,6 +35,7 @@ export default function CommonLayout({ children }: Props) {
       setMobileOpen(!mobileOpen);
     }
   };
+
   if (!userId) {
     return <></>;
   }

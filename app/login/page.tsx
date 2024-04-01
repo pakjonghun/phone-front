@@ -19,13 +19,15 @@ const Login = () => {
   const router = useRouter();
   const setUser = useAuthStore((state) => state.setUser);
   const userId = useAuthStore((state) => state.id);
-  const { data, isLoading, isError } = useMyInfo();
+  const { isLoading, isError } = useMyInfo();
 
   useEffect(() => {
-    if (userId) {
+    if (isLoading) return;
+
+    if (!isError) {
       router.push('/dashboard');
     }
-  }, [userId, router]);
+  }, [isError, isLoading, router]);
 
   const {
     register,

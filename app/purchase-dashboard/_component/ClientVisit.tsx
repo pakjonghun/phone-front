@@ -49,7 +49,7 @@ function createSaleData({
   };
 }
 
-const header = ['날짜', '업체명', '누적 매입가', '누적 매입수량', '비고'];
+const header = ['날짜', '업체명', '누적 매입가', '누적 매입수량', '비고', ''];
 
 type DisplayClient = {
   name: string;
@@ -134,7 +134,7 @@ export default function ClientVisitTable({ title, data = [] }: Props) {
         {title}
       </Typography>
       <TableContainer sx={{ maxHeight: '650px' }}>
-        <Table aria-label="simple table">
+        <Table aria-label="simple table" stickyHeader>
           <TableHead>
             <TableRow>
               {header.map((head) => (
@@ -159,7 +159,7 @@ export default function ClientVisitTable({ title, data = [] }: Props) {
                 <TableCell align="left">{row.name}</TableCell>
                 <TableCell align="left">{getCurrencyToKRW(row.accInPrice)}</TableCell>
                 <TableCell align="left">{getWithCommaNumber(row.count)}</TableCell>
-                <TableCell align="left" sx={{ width: '30%' }}>
+                <TableCell align="left" sx={{ width: '30%', px: 1 }}>
                   <Stack direction="row">
                     <Typography variant="body2" whiteSpace="collapse">
                       {row.note}

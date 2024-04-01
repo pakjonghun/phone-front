@@ -12,18 +12,24 @@ interface Props {
 const publicPath = ['/login/'];
 
 const AuthGuard: FC<Props> = ({ children }) => {
-  const { isError } = useMyInfo();
+  const { isError, data, isLoading } = useMyInfo();
 
   const setUser = useAuthStore((state) => state.setUser);
   const path = usePathname();
   const isPublic = publicPath.includes(path);
   useEffect(() => {
-    if (isError && !isPublic) {
+    if (isLoading) return;
+
+    if (isError) {
       setUser({ id: null, role: null });
     }
-  }, [isPublic, isError, setUser]);
 
-  if (isError && !isPublic) {
+    if (!isError && data) {
+      setUser({ id: data.id, role: data.role });
+    }
+  }, [isPublic, isError, data, isLoading, setUser]);
+
+  if (!isLoading && isError && !isPublic) {
     redirect('/login');
   }
 
