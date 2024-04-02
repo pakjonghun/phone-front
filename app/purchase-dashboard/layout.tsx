@@ -56,7 +56,10 @@ const Dashboard: FC<Props> = ({
           <Typography sx={{ mb: 4 }} variant="h4">
             대시보드
           </Typography>
-          <Typography sx={{ mr: 3, mb: 1 }}>{getLastDate()}</Typography>
+          <Typography sx={{ ml: 'auto', alignSelf: 'flex-start' }} variant="body1">
+            {`오늘날짜 : ${dayjs().format('YYYY년 MM월 DD일')}`}
+          </Typography>
+          {/* <Typography sx={{ mr: 3, mb: 1 }}>{getLastDate()}</Typography> */}
         </Stack>
         <NavTabs />
         <Grid
