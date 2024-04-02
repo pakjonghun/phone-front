@@ -6,9 +6,11 @@ import { useGetMonthSale } from '@/hooks/dashboard/useDashboard';
 import CardSkeleton from '../_component/CardSkeleton';
 import { Card, CardContent, CardHeader, Stack, Typography } from '@mui/material';
 import { getCurrencyToKRW, getTwoRoundedNumber, getWithCommaNumber } from '@/util/util';
+import { useDashboardStore } from '@/lib/store/dashboard/dashboardDate';
 
 const ClientSale = () => {
-  const { data, isLoading } = useGetMonthSale();
+  const saleDate = useDashboardStore((state) => state.saleDate);
+  const { data, isLoading } = useGetMonthSale(saleDate);
   if (isLoading) {
     return <CardSkeleton />;
   }

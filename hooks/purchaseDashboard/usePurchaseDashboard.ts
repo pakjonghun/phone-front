@@ -13,6 +13,7 @@ import {
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { RequestEditDashboard, TopPurchase } from './type';
+import { Dayjs } from 'dayjs';
 
 const getVisitClient = async () => {
   return client.get('/purchase/dashboard/visit-client').then((res) => {
@@ -27,16 +28,17 @@ export const useGetVisitClient = () => {
   });
 };
 
-const getMonthClient = async () => {
-  return client.get('/purchase/dashboard/month-client').then((res) => {
+const getMonthClient = async (date: string | null) => {
+  return client.get('/purchase/dashboard/month-client', { params: { date } }).then((res) => {
     return res.data;
   });
 };
 
-export const useGetMonthClient = () => {
+export const useGetMonthClient = (date: Dayjs | null) => {
+  const purchaseDate = date == null ? null : date.format('YYYYMMDDHHmmss');
   return useQuery<TopPurchase[], void>({
-    queryKey: [MONTH_CLIENT_PURCHASE],
-    queryFn: getMonthClient,
+    queryKey: [MONTH_CLIENT_PURCHASE, purchaseDate],
+    queryFn: () => getMonthClient(purchaseDate),
   });
 };
 
@@ -53,16 +55,17 @@ export const useGetTodayClient = () => {
   });
 };
 
-const getMonthProduct = async () => {
-  return client.get('/purchase/dashboard/month-product').then((res) => {
+const getMonthProduct = async (date: string | null) => {
+  return client.get('/purchase/dashboard/month-product', { params: { date } }).then((res) => {
     return res.data;
   });
 };
 
-export const useGetMonthProduct = () => {
+export const useGetMonthProduct = (date: Dayjs | null) => {
+  const purhcaseDate = date == null ? null : date.format('YYYYMMDDHHmmss');
   return useQuery<TopPurchase[], void>({
-    queryKey: [MONTH_PRODUCT_PURCHASE],
-    queryFn: getMonthProduct,
+    queryKey: [MONTH_PRODUCT_PURCHASE, purhcaseDate],
+    queryFn: () => getMonthProduct(purhcaseDate),
   });
 };
 
@@ -79,16 +82,23 @@ export const useGetTodayProduct = () => {
   });
 };
 
-const getMonthSale = async () => {
-  return client.get('/purchase/dashboard/month-purchase').then((res) => {
-    return res.data;
-  });
+const getMonthSale = async (date: string | null) => {
+  return client
+    .get('/purchase/dashboard/month-purchase', {
+      params: {
+        date,
+      },
+    })
+    .then((res) => {
+      return res.data;
+    });
 };
 
-export const useGetMonthSale = () => {
+export const useGetMonthSale = (date: null | Dayjs) => {
+  const purchaseDate = date == null ? null : date.format('YYYYMMDDHHmmss');
   return useQuery<TopPurchase, void>({
-    queryKey: [MONTH_PURCHASE],
-    queryFn: getMonthSale,
+    queryKey: [MONTH_PURCHASE, purchaseDate],
+    queryFn: () => getMonthSale(purchaseDate),
   });
 };
 
