@@ -161,28 +161,28 @@ export default function ClientVisitTable({ title, data = [] }: Props) {
                 <TableCell align="left">{getCurrencyToKRW(row.accInPrice)}</TableCell>
                 <TableCell align="left">{getWithCommaNumber(row.count)}</TableCell>
                 <TableCell align="left" sx={{ width: '30%', px: 1 }}>
-                  <Stack direction="row">
-                    <Typography variant="body2" whiteSpace="collapse">
-                      {row.note}
-                    </Typography>
-                    <Button
-                      onClick={() => {
-                        setIsOpen(true);
-                        setSelectedClient(row);
-                        setValue('note', row.note);
-                      }}
-                      size="small"
-                      sx={{
-                        whiteSpace: 'nowrap',
-                        ml: 'auto',
-                        height: 'fit-content',
-                      }}
-                      variant="contained"
-                      endIcon={<Edit />}
-                    >
-                      비고작성
-                    </Button>
-                  </Stack>
+                  <Typography variant="body2" whiteSpace="collapse">
+                    {row.note}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Button
+                    onClick={() => {
+                      setIsOpen(true);
+                      setSelectedClient(row);
+                      setValue('note', row.note);
+                    }}
+                    size="small"
+                    sx={{
+                      whiteSpace: 'nowrap',
+                      ml: 'auto',
+                      height: 'fit-content',
+                    }}
+                    variant="contained"
+                    endIcon={<Edit />}
+                  >
+                    비고작성
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
