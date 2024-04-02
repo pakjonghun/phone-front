@@ -1,11 +1,13 @@
 'use client';
 
+import { useDashboardStore } from '@/lib/store/dashboard/dashboardDate';
 import TableSkeleton from '../_component/TableSkeleton';
 import TopTenTable from '../_component/TopTenTable';
 import { useGetMonthProduct } from '@/hooks/purchaseDashboard/usePurchaseDashboard';
 
 const MonthProduct = () => {
-  const { data, isLoading } = useGetMonthProduct();
+  const date = useDashboardStore((state) => state.purchaseDate);
+  const { data, isLoading } = useGetMonthProduct(date);
 
   if (isLoading) {
     return <TableSkeleton />;

@@ -16,6 +16,7 @@ import { RequestEditDashboard, RequestPageParam } from './type';
 import { TopRecord, TotalSale } from '@/model/dashboard';
 import { Client } from '@/model/client';
 import { LENGTH } from '@/api/constant';
+import { Dayjs } from 'dayjs';
 
 const getVisitClient = async (params: RequestPageParam) => {
   return client.get('/dashboard/visit-client', { params }).then((res) => {
@@ -37,16 +38,18 @@ export const useGetVisitClientInfinity = () => {
   });
 };
 
-const getMonthClient = async () => {
-  return client.get('/dashboard/month-client').then((res) => {
+const getMonthClient = async (date: string | null) => {
+  return client.get('/dashboard/month-client', { params: { date } }).then((res) => {
     return res.data;
   });
 };
 
-export const useGetMonthClient = () => {
+export const useGetMonthClient = (date: null | Dayjs) => {
+  const saleDate = date != null ? date.format('YYYYMMDDHHmmss') : null;
+
   return useQuery<TopRecord[], void>({
-    queryKey: [MONTH_CLIENT, DASHBOARD_DATA],
-    queryFn: getMonthClient,
+    queryKey: [MONTH_CLIENT, DASHBOARD_DATA, saleDate],
+    queryFn: () => getMonthClient(saleDate),
   });
 };
 
@@ -63,16 +66,17 @@ export const useGetTodayClient = () => {
   });
 };
 
-const getMonthProduct = async () => {
-  return client.get('/dashboard/month-product').then((res) => {
+const getMonthProduct = async (date: string | null) => {
+  return client.get('/dashboard/month-product', { params: { date } }).then((res) => {
     return res.data;
   });
 };
 
-export const useGetMonthProduct = () => {
+export const useGetMonthProduct = (date: Dayjs | null) => {
+  const saleDate = date == null ? null : date.format('YYYYMMDDHHmmss');
   return useQuery<TopRecord[], void>({
-    queryKey: [MONTH_PRODUCT, DASHBOARD_DATA],
-    queryFn: getMonthProduct,
+    queryKey: [MONTH_PRODUCT, DASHBOARD_DATA, saleDate],
+    queryFn: () => getMonthProduct(saleDate),
   });
 };
 
@@ -89,16 +93,23 @@ export const useGetTodayProduct = () => {
   });
 };
 
-const getMonthSale = async () => {
-  return client.get('/dashboard/month-sale').then((res) => {
-    return res.data;
-  });
+const getMonthSale = async (date: string | null) => {
+  return client
+    .get('/dashboard/month-sale', {
+      params: {
+        date,
+      },
+    })
+    .then((res) => {
+      return res.data;
+    });
 };
 
-export const useGetMonthSale = () => {
+export const useGetMonthSale = (date: Dayjs | null) => {
+  const saleDate = date != null ? date.format('YYYYMMDDHHmmss') : null;
   return useQuery<TotalSale, void>({
-    queryKey: [MONTH_SALE, DASHBOARD_DATA],
-    queryFn: getMonthSale,
+    queryKey: [MONTH_SALE, DASHBOARD_DATA, saleDate],
+    queryFn: () => getMonthSale(saleDate),
   });
 };
 

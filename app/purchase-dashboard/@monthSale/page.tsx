@@ -5,9 +5,11 @@ import CardSkeleton from '../_component/CardSkeleton';
 import { Card, CardContent, CardHeader, Stack, Typography } from '@mui/material';
 import { getCurrencyToKRW } from '@/util/util';
 import { useGetMonthSale } from '@/hooks/purchaseDashboard/usePurchaseDashboard';
+import { useDashboardStore } from '@/lib/store/dashboard/dashboardDate';
 
 const ClientSale = () => {
-  const { data, isLoading } = useGetMonthSale();
+  const purchaseDate = useDashboardStore((state) => state.purchaseDate);
+  const { data, isLoading } = useGetMonthSale(purchaseDate);
   if (isLoading) {
     return <CardSkeleton />;
   }
