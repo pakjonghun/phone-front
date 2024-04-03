@@ -24,7 +24,6 @@ import FormDialog from '@/components/dialog/FormDialog';
 import { useEditDashboardNote } from '@/hooks/purchaseDashboard/usePurchaseDashboard';
 import { useSnackbar } from '@/context/SnackBarProvicer';
 import { useQueryClient } from '@tanstack/react-query';
-import { VISIT_CLIENT } from '@/hooks/dashboard/constant';
 import { useForm } from 'react-hook-form';
 import { getCurrencyToKRW, getWithCommaNumber } from '@/util/util';
 import { VISIT_CLIENT_PURCHASE } from '@/hooks/purchaseDashboard/constant';
