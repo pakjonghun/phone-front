@@ -3,7 +3,6 @@
 import { Box, Grid, Stack, Typography } from '@mui/material';
 import { FC, ReactNode } from 'react';
 import CommonLayout from '@/components/commonLayout/CommonLayout';
-import { useGetUploadRecordList } from '@/hooks/auth/useAuthData';
 import dayjs from 'dayjs';
 import NavTabs from '@/components/TabBar';
 
@@ -26,17 +25,6 @@ const Dashboard: FC<Props> = ({
   monthClient,
   todayClient,
 }) => {
-  const { data } = useGetUploadRecordList();
-
-  function getLastDate() {
-    if (!data) return '';
-
-    const lastLength = data.length;
-    const recent = data[lastLength - 1]?.updatedAt;
-    const date = recent ? dayjs(recent).format('MM월 DD일 HH시 MM분') : '';
-    return date;
-  }
-
   return (
     <CommonLayout>
       <Box
@@ -60,7 +48,6 @@ const Dashboard: FC<Props> = ({
           <Typography sx={{ ml: 'auto', alignSelf: 'flex-start' }} variant="body1">
             {`오늘날짜 : ${dayjs().format('YYYY년 MM월 DD일')}`}
           </Typography>
-          {/* <Typography sx={{ mr: 3, mb: 1 }}>{getLastDate()}</Typography> */}
         </Stack>
         <NavTabs />
         <Grid

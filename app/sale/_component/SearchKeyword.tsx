@@ -11,7 +11,7 @@ const SearchKeyword = () => {
 
   useEffect(() => {
     setSelectedIdList([]);
-  }, [keyword]);
+  }, [keyword, setSelectedIdList]);
 
   return (
     <TextField
