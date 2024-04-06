@@ -8,8 +8,6 @@ import { Box, Toolbar, Divider, Typography, ListItemButton } from '@mui/material
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import MenuList from '../MenuList';
-import { useQueryClient } from '@tanstack/react-query';
-import { MY_INFO } from '@/hooks/auth/constant';
 
 const CommonDrawer = () => {
   const setUserInfo = useAuthStore((state) => state.setUser);
