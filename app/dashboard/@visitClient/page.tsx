@@ -4,9 +4,16 @@ import { useGetVisitClientInfinity } from '@/hooks/dashboard/useDashboard';
 import TableSkeleton from '../_component/TableSkeleton';
 import ClientVisitTable from '../_component/ClientVisit';
 import useInfinity from '@/hooks/common/useInfinity';
+import { useDashboardStore } from '@/lib/store/dashboard/dashboardDate';
+import { useEffect } from 'react';
 
 const MonthProduct = () => {
-  const { data, isLoading, hasNextPage, fetchNextPage } = useGetVisitClientInfinity();
+  const date = useDashboardStore((state) => state.saleDate);
+  const { data, isLoading, hasNextPage, fetchNextPage, refetch } = useGetVisitClientInfinity(date);
+
+  useEffect(() => {
+    refetch();
+  }, [date, refetch]);
 
   const callback: IntersectionObserverCallback = (entries) => {
     if (entries[0].isIntersecting) {

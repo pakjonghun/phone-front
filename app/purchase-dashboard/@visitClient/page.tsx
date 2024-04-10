@@ -3,9 +3,16 @@
 import { useGetVisitClient } from '@/hooks/purchaseDashboard/usePurchaseDashboard';
 import TableSkeleton from '../_component/TableSkeleton';
 import ClientVisitTable from '../_component/ClientVisit';
+import { useDashboardStore } from '@/lib/store/dashboard/dashboardDate';
+import { useEffect } from 'react';
 
 const MonthProduct = () => {
-  const { data, isLoading } = useGetVisitClient();
+  const date = useDashboardStore((state) => state.purchaseDate);
+  const { data, isLoading, refetch } = useGetVisitClient(date);
+
+  useEffect(() => {
+    refetch();
+  }, [date, refetch]);
 
   if (isLoading) {
     return <TableSkeleton />;

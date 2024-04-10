@@ -15,16 +15,17 @@ import { AxiosError } from 'axios';
 import { RequestEditDashboard, TopPurchase } from './type';
 import { Dayjs } from 'dayjs';
 
-const getVisitClient = async () => {
-  return client.get('/purchase/dashboard/visit-client').then((res) => {
+const getVisitClient = async (date: string | null) => {
+  return client.get('/purchase/dashboard/visit-client', { params: { date } }).then((res) => {
     return res.data;
   });
 };
 
-export const useGetVisitClient = () => {
+export const useGetVisitClient = (date: Dayjs | null) => {
+  const purchaseDate = date == null ? null : date.format('YYYYMMDDHHmmss');
   return useQuery<(Client & { lastInDate: string; accInPrice: number; count: number })[], void>({
     queryKey: [VISIT_CLIENT_PURCHASE],
-    queryFn: getVisitClient,
+    queryFn: () => getVisitClient(purchaseDate),
   });
 };
 

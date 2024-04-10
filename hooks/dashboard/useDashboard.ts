@@ -18,13 +18,14 @@ import { Client } from '@/model/client';
 import { LENGTH } from '@/api/constant';
 import { Dayjs } from 'dayjs';
 
-const getVisitClient = async (params: RequestPageParam) => {
+const getVisitClient = async (params: RequestPageParam & { date: string | null }) => {
   return client.get('/dashboard/visit-client', { params }).then((res) => {
     return res.data;
   });
 };
 
-export const useGetVisitClientInfinity = () => {
+export const useGetVisitClientInfinity = (date: null | Dayjs) => {
+  const saleDate = date == null ? null : date.format('YYYYMMDDHHmmss');
   return useInfiniteQuery<
     ListData<(Client & { accOutPrice: number; accMargin: number; marginRate: number })[]>,
     RequestPageParam
@@ -33,7 +34,7 @@ export const useGetVisitClientInfinity = () => {
     initialPageParam: 1,
     queryKey: [VISIT_CLIENT, DASHBOARD_DATA],
     queryFn: ({ pageParam = 1 }) => {
-      return getVisitClient({ page: pageParam as number, length: LENGTH });
+      return getVisitClient({ page: pageParam as number, length: LENGTH, date: saleDate });
     },
   });
 };
