@@ -1,12 +1,14 @@
 'use client';
 
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Divider } from '@mui/material';
+import { Divider, IconButton, Stack } from '@mui/material';
 import { useDashboardStore } from '@/lib/store/dashboard/dashboardDate';
 import { DatePicker } from '@mui/x-date-pickers';
 
@@ -36,6 +38,18 @@ export default function NavTabs() {
   const date = isSalePath ? saleDate : purchaseDate;
   const setDate = isSalePath ? setSaleDate : setPurchaseDate;
 
+  const clickMonthArrow = (args: 'plus' | 'subtract') => {
+    if (!date) return;
+
+    if (args === 'plus') {
+      const plusDate = date?.add(1, 'month');
+      setDate(plusDate);
+    } else {
+      const subtractDate = date?.subtract(1, 'month');
+      setDate(subtractDate);
+    }
+  };
+
   return (
     <Box sx={{ width: '100%', mb: 3 }}>
       <Box
@@ -52,14 +66,23 @@ export default function NavTabs() {
           <LinkTab label="판매" href="/dashboard" />
           <LinkTab label="매입" href="/purchase-dashboard" />
         </Tabs>
-        <DatePicker
-          sx={{ my: { xs: 3, md: 0 } }}
-          value={date}
-          onChange={setDate}
-          format="YYYY년 MM월"
-          label="연도, 월 선택"
-          views={['year', 'month']}
-        />
+        <Stack direction="row" flexWrap="nowrap" justifyContent="flex-start" alignItems="center">
+          <IconButton onClick={() => clickMonthArrow('subtract')}>
+            <ArrowLeftIcon />
+          </IconButton>
+          <DatePicker
+            sx={{ my: { xs: 3, md: 0 } }}
+            value={date}
+            onChange={setDate}
+            format="YYYY년 MM월"
+            label="연도, 월 선택"
+            views={['year', 'month']}
+          />
+
+          <IconButton onClick={() => clickMonthArrow('plus')}>
+            <ArrowRightIcon />
+          </IconButton>
+        </Stack>
       </Box>
       <Divider />
     </Box>

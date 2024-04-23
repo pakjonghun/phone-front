@@ -1,6 +1,6 @@
 import { StateCreator, create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { immer } from 'zustand/middleware/immer';
 
 type NullableDate = Dayjs | null;
@@ -18,8 +18,8 @@ type DashboardRangeAction = {
 type DashboardRangeState = DashboardRangeAction & DashboardRange;
 
 const initState: DashboardRange = {
-  saleDate: null,
-  purchaseDate: null,
+  saleDate: dayjs(),
+  purchaseDate: dayjs(),
 };
 
 const dashboardDateApi: StateCreator<
