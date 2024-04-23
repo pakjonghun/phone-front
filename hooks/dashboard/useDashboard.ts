@@ -54,16 +54,23 @@ export const useGetMonthClient = (date: null | Dayjs) => {
   });
 };
 
-const getTodayClient = async () => {
-  return client.get('/dashboard/today-client').then((res) => {
-    return res.data;
-  });
+const getTodayClient = async (date: string | null) => {
+  return client
+    .get('/dashboard/today-client', {
+      params: {
+        date,
+      },
+    })
+    .then((res) => {
+      return res.data;
+    });
 };
 
-export const useGetTodayClient = () => {
+export const useGetTodayClient = (date: Dayjs | null) => {
+  const saleDate = date == null ? null : date.format('YYYYMMDDHHmmss');
   return useQuery<TopRecord[], void>({
-    queryKey: [TODAY_CLIENT, DASHBOARD_DATA],
-    queryFn: getTodayClient,
+    queryKey: [TODAY_CLIENT, DASHBOARD_DATA, saleDate],
+    queryFn: () => getTodayClient(saleDate),
   });
 };
 
@@ -81,16 +88,23 @@ export const useGetMonthProduct = (date: Dayjs | null) => {
   });
 };
 
-const getTodayProduct = async () => {
-  return client.get('/dashboard/today-product').then((res) => {
-    return res.data;
-  });
+const getTodayProduct = async (date: string | null) => {
+  return client
+    .get('/dashboard/today-product', {
+      params: {
+        date,
+      },
+    })
+    .then((res) => {
+      return res.data;
+    });
 };
 
-export const useGetTodayProduct = () => {
+export const useGetTodayProduct = (date: Dayjs | null) => {
+  const saleDate = date == null ? null : date.format('YYYYMMDDHHmmss');
   return useQuery<TopRecord[], void>({
-    queryKey: [TODAY_PRODUCT, DASHBOARD_DATA],
-    queryFn: getTodayProduct,
+    queryKey: [TODAY_PRODUCT, DASHBOARD_DATA, saleDate],
+    queryFn: () => getTodayProduct(saleDate),
   });
 };
 
@@ -114,16 +128,23 @@ export const useGetMonthSale = (date: Dayjs | null) => {
   });
 };
 
-const getTodaySale = async () => {
-  return client.get('/dashboard/today-sale').then((res) => {
-    return res.data;
-  });
+const getTodaySale = async (date: string | null) => {
+  return client
+    .get('/dashboard/today-sale', {
+      params: {
+        date,
+      },
+    })
+    .then((res) => {
+      return res.data;
+    });
 };
 
-export const useGetTodaySale = () => {
+export const useGetTodaySale = (date: Dayjs | null) => {
+  const saleDate = date != null ? date.format('YYYYMMDDHHmmss') : null;
   return useQuery<TotalSale, void>({
-    queryKey: [TODAY_SALE, DASHBOARD_DATA],
-    queryFn: getTodaySale,
+    queryKey: [TODAY_SALE, DASHBOARD_DATA, saleDate],
+    queryFn: () => getTodaySale(saleDate),
   });
 };
 

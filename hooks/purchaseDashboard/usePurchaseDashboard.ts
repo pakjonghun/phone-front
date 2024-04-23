@@ -43,16 +43,17 @@ export const useGetMonthClient = (date: Dayjs | null) => {
   });
 };
 
-const getTodayClient = async () => {
-  return client.get('/purchase/dashboard/today-client').then((res) => {
+const getTodayClient = async (date: string | null) => {
+  return client.get('/purchase/dashboard/today-client', { params: { date } }).then((res) => {
     return res.data;
   });
 };
 
-export const useGetTodayClient = () => {
+export const useGetTodayClient = (date: Dayjs | null) => {
+  const purchaseDate = date == null ? null : date.format('YYYYMMDDHHmmss');
   return useQuery<TopPurchase[], void>({
-    queryKey: [TODAY_CLIENT_PURCHASE],
-    queryFn: getTodayClient,
+    queryKey: [TODAY_CLIENT_PURCHASE, purchaseDate],
+    queryFn: () => getTodayClient(purchaseDate),
   });
 };
 
@@ -63,23 +64,30 @@ const getMonthProduct = async (date: string | null) => {
 };
 
 export const useGetMonthProduct = (date: Dayjs | null) => {
-  const purhcaseDate = date == null ? null : date.format('YYYYMMDDHHmmss');
+  const purchaseDate = date == null ? null : date.format('YYYYMMDDHHmmss');
   return useQuery<TopPurchase[], void>({
-    queryKey: [MONTH_PRODUCT_PURCHASE, purhcaseDate],
-    queryFn: () => getMonthProduct(purhcaseDate),
+    queryKey: [MONTH_PRODUCT_PURCHASE, purchaseDate],
+    queryFn: () => getMonthProduct(purchaseDate),
   });
 };
 
-const getTodayProduct = async () => {
-  return client.get('/purchase/dashboard/today-product').then((res) => {
-    return res.data;
-  });
+const getTodayProduct = async (date: null | string) => {
+  return client
+    .get('/purchase/dashboard/today-product', {
+      params: {
+        date,
+      },
+    })
+    .then((res) => {
+      return res.data;
+    });
 };
 
-export const useGetTodayProduct = () => {
+export const useGetTodayProduct = (date: Dayjs | null) => {
+  const purchaseDate = date == null ? null : date.format('YYYYMMDDHHmmss');
   return useQuery<TopPurchase[], void>({
-    queryKey: [TODAY_PRODUCT_PURCHASE],
-    queryFn: getTodayProduct,
+    queryKey: [TODAY_PRODUCT_PURCHASE, purchaseDate],
+    queryFn: () => getTodayProduct(purchaseDate),
   });
 };
 
@@ -103,16 +111,23 @@ export const useGetMonthSale = (date: null | Dayjs) => {
   });
 };
 
-const getTodaySale = async () => {
-  return client.get('/purchase/dashboard/today-purchase').then((res) => {
-    return res.data;
-  });
+const getTodaySale = async (date: string | null) => {
+  return client
+    .get('/purchase/dashboard/today-purchase', {
+      params: {
+        date,
+      },
+    })
+    .then((res) => {
+      return res.data;
+    });
 };
 
-export const useGetTodaySale = () => {
+export const useGetTodaySale = (date: Dayjs | null) => {
+  const purchaseDate = date == null ? null : date.format('YYYYMMDDHHmmss');
   return useQuery<TopPurchase, void>({
-    queryKey: [TODAY_PURCHASE],
-    queryFn: getTodaySale,
+    queryKey: [TODAY_PURCHASE, purchaseDate],
+    queryFn: () => getTodaySale(purchaseDate),
   });
 };
 

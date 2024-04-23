@@ -6,9 +6,11 @@ import { useGetTodaySale } from '@/hooks/purchaseDashboard/usePurchaseDashboard'
 import CardSkeleton from '../_component/CardSkeleton';
 import { Card, CardContent, CardHeader, Stack, Typography } from '@mui/material';
 import { getCurrencyToKRW, getTwoRoundedNumber } from '@/util/util';
+import { useDashboardStore } from '@/lib/store/dashboard/dashboardDate';
 
 const ClientSale = () => {
-  const { data, isLoading } = useGetTodaySale();
+  const date = useDashboardStore((state) => state.purchaseDate);
+  const { data, isLoading } = useGetTodaySale(date);
 
   if (isLoading) {
     return <CardSkeleton />;

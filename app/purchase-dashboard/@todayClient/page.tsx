@@ -3,9 +3,11 @@
 import { useGetTodayClient } from '@/hooks/purchaseDashboard/usePurchaseDashboard';
 import TableSkeleton from '../_component/TableSkeleton';
 import TopTenTable from '../_component/TopTenTable';
+import { useDashboardStore } from '@/lib/store/dashboard/dashboardDate';
 
 const MonthProduct = () => {
-  const { data, isLoading } = useGetTodayClient();
+  const date = useDashboardStore((state) => state.purchaseDate);
+  const { data, isLoading } = useGetTodayClient(date);
 
   if (isLoading) {
     return <TableSkeleton />;

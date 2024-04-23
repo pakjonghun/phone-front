@@ -42,10 +42,10 @@ export default function NavTabs() {
     if (!date) return;
 
     if (args === 'plus') {
-      const plusDate = date?.add(1, 'month');
+      const plusDate = date?.add(1, 'day');
       setDate(plusDate);
     } else {
-      const subtractDate = date?.subtract(1, 'month');
+      const subtractDate = date?.subtract(1, 'day');
       setDate(subtractDate);
     }
   };
@@ -74,9 +74,9 @@ export default function NavTabs() {
             sx={{ my: { xs: 3, md: 0 } }}
             value={date}
             onChange={setDate}
-            format="YYYY년 MM월"
-            label="연도, 월 선택"
-            views={['year', 'month']}
+            format="YYYY년 MM월 DD일"
+            label="날짜 선택"
+            views={['year', 'month', 'day']}
           />
 
           <IconButton onClick={() => clickMonthArrow('plus')}>
