@@ -6,6 +6,7 @@ interface Props {
 }
 
 const AdminLayout: FC<Props> = ({ children }) => {
+  console.log('admin layout');
   return <CommonLayout>{children}</CommonLayout>;
 };
 
