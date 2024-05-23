@@ -2,6 +2,7 @@ import { StateCreator, create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { Role } from '@/model/user';
 
+//
 type AuthUser = {
   id: string | null;
   role: Role | null;
