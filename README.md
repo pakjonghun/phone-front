@@ -5,7 +5,7 @@
 - 기타 거래처에 대한 데이터를 입력하여 확인을 용의하게 하기 위한 목적으로 제작한 프로젝트 입니다.
 
 ### 사용기술
-- front : nextjs, react, materialUI, react-query
+- front : nextjs, react, materialUI, react-query, zustand
 - backend : mongodb, nestjs
 - devops : aws beanstalk, aws cloudfront, aws amplify
 
