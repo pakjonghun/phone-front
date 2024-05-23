@@ -52,7 +52,6 @@ const Login = () => {
       },
     });
   };
-  console.log('login');
   if (isLoading || !isError) {
     return <></>;
   }
